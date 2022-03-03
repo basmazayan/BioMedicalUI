@@ -1,0 +1,80 @@
+<div>
+    <p-dialog [(visible)]="priorityDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'Priority.AddNewPriority'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddPriorityForm.valid && savePriority()" #AddPriorityForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="Code"> {{'Priority.Code'|translate}}</label>
+                            <input type="text" class="form-control" id="priorityCode"
+                             name="priorityCode" #priorityCode="ngModel"
+                             pTooltip="Enter a Priority code" tooltipPosition="bottom"  [(ngModel)]="priorityObj.code" 
+                                [class.is-invalid]="priorityCode.touched && priorityCode.errors || AddPriorityForm.submitted" 
+                                [class.is-valid]="priorityCode.valid && AddPriorityForm.submitted" required>
+                                <div *ngIf="(priorityCode.touched || AddPriorityForm.submitted) && priorityCode.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'Priority.Required'|translate}}                         
+                                    </span>
+                               </div>
+                        </div>
+
+
+
+                        <div class="col-md-12">
+                            <label for="priorityLevel">{{'Priority.PriorityLevel'|translate}}</label>
+                            <input type="text" class="form-control" id="priorityLevel"
+                             name="priorityLevel" #priorityLevel="ngModel"
+                             pTooltip="Enter a Priority level"tooltipPosition="bottom"  [(ngModel)]="priorityObj.priorityLevel" 
+                                [class.is-invalid]="priorityLevel.touched && priorityLevel.errors || AddPriorityForm.submitted" 
+                                [class.is-valid]="priorityLevel.valid && AddPriorityForm.submitted" required>
+                                <div *ngIf="(priorityLevel?.touched || AddPriorityForm.submitted) && priorityLevel.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'Priority.Required'|translate}}                          
+                                    </span>
+                               </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="priorityArLevel">{{'Priority.PriorityLevelAr'|translate}}</label>
+                            <input type="text" class="form-control" id="priorityArLevel" name="priorityArLevel" #priorityArLevel="ngModel"
+                            pTooltip="Enter a priorityLevel in Arabic"tooltipPosition="bottom" [(ngModel)]="priorityObj.priorityLevelAr" 
+                                [class.is-invalid]="priorityArLevel.touched && priorityArLevel.errors || AddPriorityForm.submitted" 
+                                [class.is-valid]="priorityArLevel.valid && AddPriorityForm.submitted" required>
+                                <div *ngIf="(priorityArLevel.touched || AddPriorityForm.submitted) && priorityArLevel.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'Priority.Required'|translate}}                             
+                                    </span>
+                               </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" 
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>                        
+                      </div>
+                      <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" 
+                        class="btn btn-info" value="save" type="submit"></button>
+                      </div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+    </p-dialog>
+
+            
+<p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+    <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+   <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+</p-dialog>
+</div>

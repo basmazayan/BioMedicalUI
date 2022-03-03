@@ -1,0 +1,57 @@
+<div class="card">
+    <span class="text-danger error">{{error}}</span>
+    <p-card header="BEMS" subheader="Welcome" [style]="{width: '50rem'}" styleClass="p-card-shadow">
+        
+        <form (ngSubmit)="LoginForm.valid && login()" #LoginForm="ngForm">
+            <div class="row">
+                <div class=" col-md-7 inputs">
+
+                    <div class="p-field  col-md-9 item">
+                        <label for="email" class="labelStyle">Email</label>
+                        <input type="email" pInputText id="email" [ngModelOptions]="{standalone: true}"
+                            class="form-control" [(ngModel)]="user.email" required autofocus #email="ngModel"/>
+                        <span class="text-danger"
+                             *ngIf="(email.touched || LoginForm.submitted) && email.errors?.required">
+                             Email is required
+                        </span> 
+                    </div>
+                   <br>
+                    <div class="p-field col-md-9 item">
+                        <label for="password"  class="labelStyle" style="float: left;">Password</label>
+                        <input type="password" pInputText id="password" [ngModelOptions]="{standalone: true}"
+                            class="form-control" [(ngModel)]="user.password" required
+
+                             autofocus #password="ngModel" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]).{8,32}$"/>
+                        <span class="text-danger"
+                             *ngIf="(password.touched || LoginForm.submitted) && password.errors?.required">
+                             password is required
+                        </span>
+                        <span class="text-danger"
+                             *ngIf="(password.touched || LoginForm.submitted) && password.dirty && password.errors">
+                             password is not correct
+                        </span>
+                    </div>
+                    <br />
+                    <div class="col-md-5">
+                        <a class="col-md-5 link" routerLink="/forgetPassword">Forget Password</a>
+                    </div>       
+                    
+                    <br>
+                    <div class="p-field col-md-9 item">
+                        <input type="submit" value="SignIN"  class="form-control btn btn-primary" [disabled]="!LoginForm.valid"/>
+                    </div>
+                    
+                </div>
+                <div class="col-md-5">
+                    <img claSS="img" src="./../assets/images/medical2.jpg"  />
+                    <a class="col-md-5 link" routerLink="/Register">Don't Have Account?</a>
+                </div>
+            </div>
+        </form>
+        <div class="card">
+            <p-toast></p-toast>
+        
+            <p-captcha siteKey="6Lf2XQkTAAAAANcvOwYqPxWL4iZDksFqHpS39GDA" (onResponse)="showResponse($event)"></p-captcha>
+        </div>
+    </p-card>
+</div>

@@ -1,0 +1,200 @@
+<div class="container-fluid">
+
+    <div class="card">
+        <p-toast posinset="top-right"></p-toast>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <h5>{{'equipmentcategory.ManageCategories' |translate}}</h5>
+                </div>
+                <div class="col-md-1" style="text-align: right;">
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                        routerLink="/home/addCategory" pTooltip="Add a New Category" tooltipPosition="right"></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+                    <p-table #dt [value]="CategoriesList" [rows]="10" styleClass="p-datatable-responsive-demo"
+                        [paginator]="true" [(selection)]="selectedCategories" [rowHover]="true" dataKey="id"
+                        styleClass="p-datatable-striped"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [showCurrentPageReport]="true"
+                        [globalFilterFields]="['categoryName','categoryNameAr','categoryCode']">
+                        <ng-template pTemplate="caption">
+                            <div class="p-d-flex p-ai-center p-jc-between" style="text-align: inherit;">
+
+
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text" class="form-control"
+                                        (input)="dt.filterGlobal($event.target.value,'contains')"
+                                        placeholder="{{'search.Search'|translate}}..." />
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="text-align: inherit;" pSortableColumn="categoryCode">
+                                    {{'equipmentcategory.CategoryCode'|translate}}<p-sortIcon field="categoryCode">
+                                    </p-sortIcon>
+                                </th>
+                                <th style="text-align: inherit;" pSortableColumn="categoryName">
+                                    {{'name.name'|translate}}<p-sortIcon field="categoryName"></p-sortIcon>
+                                </th>
+
+                                <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'categoryCode', 'contains')"
+                                        [value]="dt.filters['categoryCode']?.value"
+                                        placeholder="{{'equipmentcategory.SearchbyCode'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+
+
+                                <th>
+                                    <input pInputText type="text" *ngIf="translate.currentLang==='En'"
+                                        (input)="dt.filter($event.target.value, 'categoryName', 'contains')"
+                                        [value]="dt.filters['categoryName']?.value"
+                                        placeholder="{{'equipmentcategory.SearchbyName'|translate}}"
+                                        class="p-column-filter form-control">
+
+                                    <input pInputText type="text" *ngIf="translate.currentLang==='Ar'"
+                                        (input)="dt.filter($event.target.value, 'categoryNameAr', 'contains')"
+                                        [value]="dt.filters['categoryNameAr']?.value"
+                                        placeholder="{{'search.SearchbycategoryName'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+
+
+
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-cat>
+                            <tr>
+                                <td style="text-align: inherit;"> {{cat.categoryCode}}</td>
+                                <td style="text-align: inherit;">
+                                    {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                </td>
+
+
+                                <td>
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-info edit" (click)="openNew(cat)"
+                                        pTooltip="edit a category" tooltipPosition="top"></button>
+                                    <button pButton pRipple pTooltip="delete a category" tooltipPosition="top"
+                                        (click)="confirmDelete(cat.id,cat.categoryName)" icon="pi pi-trash"
+                                        class="p-button-rounded p-button-danger edit"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                {{'In total there are.In total there are'| translate}} {{CategoriesList ?
+                                CategoriesList.length : 0 }} {{'Sidebar.EquipmentCategories' |translate}}.
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="categoryDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'equipmentcategory.Editcategory'|translate}}</h3>
+            </div>
+
+        </div>
+        <form (ngSubmit)="EditEquipmentCategoryForm.valid && updateCategory()" #EditEquipmentCategoryForm="ngForm">
+            <fieldset class="tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="categoryCode">{{'equipmentcategory.CategoryCode'|translate}}</label>
+                        <input type="text" class="form-control" id="categoryCode" name="categoryCode"
+                            [(ngModel)]="category.categoryCode" #categoryCode="ngModel"
+                            [class.is-invalid]="categoryCode.touched && categoryCode.errors || EditEquipmentCategoryForm.submitted"
+                            [class.is-valid]="categoryCode.valid && EditEquipmentCategoryForm.submitted" required
+                            pTooltip="Enter Code" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(categoryCode.touched || EditEquipmentCategoryForm.submitted) && categoryCode.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="categoryName">{{'equipmentcategory.CategoryName'|translate}}</label>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName"
+                            [(ngModel)]="category.categoryName" #categoryName="ngModel"
+                            [class.is-invalid]="categoryName.touched && categoryName.errors || EditEquipmentCategoryForm.submitted"
+                            [class.is-valid]="categoryName.valid && EditEquipmentCategoryForm.submitted" required
+                            pTooltip="Enter A name in English" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(categoryName.touched || EditEquipmentCategoryForm.submitted) && categoryName.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="name">{{'equipmentcategory.CategoryNameAr'|translate}}</label>
+                        <input type="text" class="form-control" id="name" name="arname"
+                            [(ngModel)]="category.categoryNameAr" #ArName="ngModel"
+                            [class.is-invalid]="ArName.touched && ArName.errors || EditEquipmentCategoryForm.submitted"
+                            [class.is-valid]="ArName.valid && EditEquipmentCategoryForm.submitted" required
+                            pTooltip="Enter A name in arabic" tooltipPosition="bottom">
+                        <div *ngIf="(ArName.touched || EditEquipmentCategoryForm.submitted) && ArName.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label for="categoryDescription">{{'equipmentcategory.CategoryDescription'|translate}}</label>
+                        <textarea type="text" class="form-control" id="categoryDescription"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="category.categoryDescription"
+                            pTooltip="Enter Description in English" tooltipPosition="bottom"></textarea>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label for="categoryDescription">{{'equipmentcategory.CategoryDescriptionAr'|translate}}</label>
+                        <textarea class="form-control" id="categoryDescription" [ngModelOptions]="{standalone: true}"
+                            pTooltip="Enter Description in arabic" tooltipPosition="bottom"
+                            [(ngModel)]="category.categoryDescriptionAr"></textarea>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                    </div>
+                    <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                            class="btn btn-info" value="save" type="submit"></button>
+                    </div>
+                </div>
+
+                <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
+                    <p-header style="color: rgb(181, 4, 4);"> {{'General.Error'|translate}} </p-header>
+                    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+                </p-dialog>
+
+
+            </fieldset>
+
+        </form>
+
+    </ng-template>
+
+
+</p-dialog>

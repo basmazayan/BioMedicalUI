@@ -1,0 +1,90 @@
+<div>
+    <p-dialog [(visible)]="departmentDialog" [style]="{width: '800px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'department.AddNewDepartment'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddDepartmentForm.valid && saveDepartment()" #AddDepartmentForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <label for="departmentCode">{{'department.Code'|translate}}</label>
+                            <input type="text" class="form-control" id="departmentCode" name="departmentCode"
+                                #departmentCode="ngModel" placeholder="{{'department.Code'|translate}}"
+                                [(ngModel)]="departmentObj.departmentCode"
+                                [class.is-invalid]="departmentCode.touched && departmentCode.errors || AddDepartmentForm.submitted"
+                                [class.is-valid]="departmentCode.valid && AddDepartmentForm.submitted" required
+                                pTooltip="Please,Enter A departmentCode" tooltipPosition="bottom">
+                            <div
+                                *ngIf="(departmentCode.touched || AddDepartmentForm.submitted) && departmentCode.errors?.required">
+                                <span class="text-danger">
+                                    {{'department.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="departmentName">{{'department.DepartmentName'|translate}}</label>
+                            <input type="text" class="form-control" id="departmentName"
+                             name="departmentName" #departmentEnName="ngModel"
+                                placeholder="{{'department.DepartmentName'|translate}}" [(ngModel)]="departmentObj.departmentName" 
+                                [class.is-invalid]="departmentEnName.touched && departmentEnName.errors || AddDepartmentForm.submitted" 
+                                [class.is-valid]="departmentEnName.valid && AddDepartmentForm.submitted" required
+                                pTooltip="Please,Enter A DepartmentName in English" tooltipPosition="bottom">
+                                <div *ngIf="(departmentEnName.touched || AddDepartmentForm.submitted) && departmentEnName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'department.Required'|translate}}                             
+                                    </span>
+                               </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="departmentArName">{{'department.DepartmentNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="departmentArName" name="departmentArName"
+                             #departmentArName="ngModel"
+                                placeholder="{{'department.DepartmentNameAr'|translate}}" [(ngModel)]="departmentObj.departmentNameAr" 
+                                [class.is-invalid]="departmentArName.touched && departmentArName.errors || AddDepartmentForm.submitted" 
+                                [class.is-valid]="departmentArName.valid && AddDepartmentForm.submitted" required
+                                pTooltip="Please,Enter A DepartmentName in Arabic" tooltipPosition="bottom">
+                                <div *ngIf="(departmentArName.touched || AddDepartmentForm.submitted) && departmentArName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'department.Required'|translate}}                               
+                                    </span>
+                               </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"><br/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>                      
+                      </div>
+                      <div class="col-lg-6">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" 
+                            class="btn btn-info" value="save" type="submit"></button>
+                      </div>
+                    </div>
+                    <br><br>
+                </fieldset>
+
+            </form>
+
+           
+        </ng-template>
+    </p-dialog>
+
+        
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+    </p-dialog>
+</div>
+
+

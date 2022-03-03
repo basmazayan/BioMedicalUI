@@ -1,0 +1,81 @@
+<div>
+    <p-dialog [(visible)]="supplierDialog" [style]="{width: '800px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'supplier.AddNewSupplier'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddSupplierForm.valid && saveSupplier()" #AddSupplierForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="supplierName">{{'supplier.Code'|translate}}</label>
+                            <input type="text" class="form-control" id="supplierCode" name="supplierCode"
+                                #supplierCode="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
+                                [(ngModel)]="supplierObj.supplierCode"
+                                [class.is-invalid]="supplierCode.touched && supplierCode.errors || AddSupplierForm.submitted"
+                                [class.is-valid]="supplierCode.valid && AddSupplierForm.submitted" required>
+                            <div
+                                *ngIf="(supplierCode.touched || AddSupplierForm.submitted) && supplierCode.errors?.required">
+                                <span class="text-danger">
+                                    {{'ecricodes.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <label for="supplierName">{{'supplier.SupplierName'|translate}}</label>
+                            <input type="text" class="form-control" id="supplierName" name="supplierName" #supplierEnName="ngModel"
+                                pTooltip="Enter a Name"tooltipPosition="bottom"  [(ngModel)]="supplierObj.supplierName" 
+                                [class.is-invalid]="supplierEnName.touched && supplierEnName.errors || AddSupplierForm.submitted" 
+                                [class.is-valid]="supplierEnName.valid && AddSupplierForm.submitted" required>
+                                <div *ngIf="(supplierEnName.touched || AddSupplierForm.submitted) && supplierEnName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'ecricodes.Required'|translate}}                        
+                                    </span>
+                               </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="supplierName">{{'supplier.SupplierNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="supplierName" name="supplierArName" #supplierArName="ngModel"
+                            pTooltip="Enter a Name in Arabic"tooltipPosition="bottom"  [(ngModel)]="supplierObj.supplierNameAr" 
+                                [class.is-invalid]="supplierArName.touched && supplierArName.errors || AddSupplierForm.submitted" 
+                                [class.is-valid]="supplierArName.valid && AddSupplierForm.submitted" required>
+                                <div *ngIf="(supplierArName.touched || AddSupplierForm.submitted) && supplierArName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'ecricodes.Required'|translate}}                        
+                                    </span>
+                               </div>
+                        </div>
+
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" 
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>                       
+                      </div>
+                      <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" 
+                        class="btn btn-info" value="save" type="submit"></button>
+                      </div>
+                    </div>
+                    <br><br>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+    </p-dialog>
+</div>

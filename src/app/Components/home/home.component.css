@@ -1,0 +1,26 @@
+/* /LATEST MERGE */
+ .container-fluid{
+    /* padding-right: 0 !important;
+    position: relative;
+    padding-left: 0 !important; */
+overflow-x: hidden;
+overflow-y: hidden; }
+/* ///////////////////////////////////// */
+/*width:1220px;
+    /* position:relative; */
+    /* left:250px; */
+    /* width: 1000px; */
+ /* }  */
+
+  /* @media only screen and (min-width: 991px) {
+    .col-lg-3 ,#side {
+      width: 25%;
+    }
+    #content
+    {
+      width: 75%;
+    }
+  } */
+  /* #side{
+    padding: 0!important;
+  } */

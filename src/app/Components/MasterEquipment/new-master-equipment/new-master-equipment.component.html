@@ -1,0 +1,264 @@
+<div>
+    <p-dialog [(visible)]="equipmentDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid"
+        (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div class="header" style="margin-top: -20px;">
+                <h5 class="title">{{'masterEquipment.AddEquipmentinmaster' | translate}}</h5>
+                <img src="./../assets/images/medical-equipment-icon.jpg" class="img" style="margin-top: 60px;width: 40px;height: 40px;" [alt]="product">
+            </div>
+
+            <form (ngSubmit)="AddMasterEquipForm.valid && saveEquipment()" #AddMasterEquipForm="ngForm">
+                <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                    <p-tabPanel header="{{'equipment.Details' | translate}}">
+                        <fieldset class="tab">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="masterCode">{{'masterEquipment.MasterCode' | translate}}</label>
+
+                                    <input type="text" class="form-control" id="masterCode" name="masterCode" #masterCode="ngModel"
+                                        pTooltip="Enter a code" tooltipPosition="bottom"
+                                        [(ngModel)]="masterEquipmentObj.masterCode"
+                                        [class.is-invalid]="masterCode.touched && masterCode.errors || AddMasterEquipForm.submitted"
+                                        [class.is-valid]="masterCode.valid && AddMasterEquipForm.submitted">
+                                     <div
+                                        *ngIf="(masterCode.touched || AddMasterEquipForm.submitted) && masterCode.errors?.required">
+                                        <span class="text-danger">
+                                            {{'ecricodes.Required'|translate}}
+                                        </span>
+                                    </div> 
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="upa">{{'masterEquipment.upaCode' | translate}}</label>
+
+
+                                    <input type="text" class="form-control" id="upa" name="upa" #upa="ngModel"
+                                    pTooltip="Enter a UPA code" tooltipPosition="bottom"
+                                    [(ngModel)]="masterEquipmentObj.upaCode">
+                         
+
+
+
+                                    <!-- <input type="text" class="form-control" id="upa" name="upa" #upa="ngModel"
+                                        pTooltip="Enter a UPA code" tooltipPosition="bottom"
+                                        [(ngModel)]="masterEquipment.upaCode"
+                                        [class.is-invalid]="upa.touched && upa.errors || AddMasterEquipForm.submitted"
+                                        [class.is-valid]="upa.valid && AddMasterEquipForm.submitted" required>
+                                    <div *ngIf="(upa.touched || AddMasterEquipForm.submitted) && upa.errors?.required">
+                                        <span class="text-danger">
+                                            UPACode is required
+                                        </span>
+                                    </div> -->
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="name">{{'masterEquipment.Name' | translate}}</label>
+                                    <input type="text" class="form-control" id="name" name="EnName"
+                                        [(ngModel)]="masterEquipmentObj.name" #EnName="ngModel"
+                                        [class.is-invalid]="EnName.touched && EnName.errors || AddMasterEquipForm.submitted"
+                                        [class.is-valid]="EnName.valid && AddMasterEquipForm.submitted"
+                                        pTooltip="Enter a Name" tooltipPosition="bottom">
+                                    <div
+                                        *ngIf="(EnName.touched || AddMasterEquipForm.submitted) && EnName.errors?.required">
+                                        <span class="text-danger">
+                                            {{'ecricodes.Required'|translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="nameAr">{{'masterEquipment.NameAr' | translate}}</label>
+                                    <input type="text" class="form-control" id="NameAr" name="NameAr" #NameAr="ngModel"
+                                        [(ngModel)]="masterEquipmentObj.nameAr" pTooltip="Enter a Name in Arabic"
+                                        [class.is-invalid]="NameAr.touched && NameAr.errors || AddMasterEquipForm.submitted"
+                                        [class.is-valid]="NameAr.valid && AddMasterEquipForm.submitted"
+                                        tooltipPosition="bottom">
+                                       
+                                       
+                                       
+                                        <div  *ngIf="(NameAr.touched || AddMasterEquipForm.submitted) && NameAr.errors?.required">
+                                        <span class="text-danger">
+                                            {{'ecricodes.Required'|translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="category">{{'equipment.Category'| translate}}</label>
+                                    <select class="form-control" id="category" name="category" #category="ngModel"
+                                        [(ngModel)]="masterEquipmentObj.equipmentCategoryId"
+                                        (change)="fillSubCategory(masterEquipmentObj.equipmentCategoryId)" 
+                                        pTooltip="Please Select Category" tooltipPosition="bottom" [value]="0">
+                                        <option selected value="0">--select--</option>
+                                        <option *ngFor="let cat of categoriesList" [value]="cat.id">
+                                            {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                        </option>
+                                    </select>
+                                    <!-- <div
+                                        *ngIf="(category.touched || AddMasterEquipForm.submitted) && category.errors?.required">
+                                        <span class="text-danger">
+                                            category is required
+                                        </span>
+                                    </div> -->
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="subCategory">{{'equipment.SubCategory'| translate}}</label>
+                                    <select class="form-control" id="subCategory" name="subCategory"
+                                        #subCategory="ngModel"
+                                        [(ngModel)]="masterEquipmentObj.equipmentSubCategoryId"  [value]="0"
+                                        pTooltip="Select A SubCategory" tooltipPosition="bottom">
+                                        <option selected value="0">--select--</option>
+                                        <option *ngFor="let s of subCategoriesList" [value]="s.id">
+                                            {{translate.currentLang == "En" ? s.subCategoryName:s.subCategoryNameAr}}
+                                        </option>
+                                    </select>
+                                    <!-- <div
+                                        *ngIf="(subCategory.touched || AddMasterEquipForm.submitted) && subCategory.errors?.required">
+                                        <span class="text-danger">
+                                            subCategory name is required
+                                        </span>
+                                    </div> -->
+                                </div>
+
+
+                            </div>
+
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+                           
+                        </fieldset>
+                    </p-tabPanel>
+                    <p-tabPanel header="{{'equipment.IndustryDetails' | translate}}">
+                        <fieldset class="tab">
+                            <legend>{{'equipment.IndustryDetails' | translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="manufacturer">{{'equipment.Manufacturer'| translate}}</label>
+
+                                    <select class="form-control" id="manufacturer" #manufacturer="ngModel"
+                                        name="manufacturer" [(ngModel)]="masterEquipmentObj.manufacturerId"
+                                        pTooltip="Select Brand" tooltipPosition="bottom" [value]="0">
+                                        <option selected value="0">--select--</option>
+                                        <option *ngFor="let m of manufacturerList" [value]="m.id">
+                                            {{translate.currentLang == "En" ? m.manufacturerName:m.manufacturerNameAr}}
+                                        </option>
+                                    </select>
+                                    <!-- <span class="text-danger"
+                                        *ngIf="(manufacturer.touched || AddMasterEquipForm.submitted) && manufacturer.errors?.required">
+                                        Manufacturer is required
+                                    </span> -->
+                                <!-- </div>
+                                <div class="col-md-3 form-group"> -->
+                                    <label for="origin">{{'equipment.Origin'| translate}}</label>
+                                    <select class="form-control" id="origin" #origin="ngModel" name="origin"
+                                        [(ngModel)]="masterEquipmentObj.originId"  [value]="0"
+                                        pTooltip="Select Origin" tooltipPosition="bottom">
+                                        <option value="0">--select--</option>
+                                        <option *ngFor="let o of originsList" [value]="o.id">{{o.originCode}}</option>
+                                    </select>
+                                    <!-- <span class="text-danger"
+                                        *ngIf="(origin.touched || AddMasterEquipForm.submitted) && origin.errors?.required">
+                                        Origin is required
+                                    </span> -->
+                                <!-- </div>
+                                <div class="col-md-3"> -->
+                                    <label for="ExpectedLifeTime">{{'equipment.expectedtimelife'| translate}}</label>
+                                    <input type="number" pInputText id="ExpectedLifeTime"
+                                        [ngModelOptions]="{standalone: true}" class="form-control"
+                                        [(ngModel)]="masterEquipmentObj.expectedLifeTime"
+                                        pTooltip="Enter An ExpectedLifeTime" tooltipPosition="bottom" />
+                                    <!-- <small class="p-error"
+                                        *ngIf="submitted && !masterEquipmentObj.expectedLifeTime">Employee
+                                        is
+                                        required.</small> -->
+                                <!-- </div>
+                                <div class="col-md-3"> -->
+                                    <label for="modelNumber">{{'equipment.modelNumber'| translate}}</label>
+                                    <input type="text" pInputText id="modelNumber" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="masterEquipmentObj.modelNumber"
+                                        pTooltip="Enter A modelNumber" tooltipPosition="bottom" />
+                                <!-- </div>
+                                <div class="col-md-3"> -->
+                                   
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="priority">{{'equipment.EquipmentPriority'|translate}}</label>
+                                    <div>
+                                        <ul class="list-group" pTooltip="Select A priority" tooltipPosition="bottom">
+                                            <li class="list-group-item" *ngFor="let item of priorityList;let i = index">
+                                                <input type="radio" [(ngModel)]="masterEquipmentObj.priorityId"
+                                                    name="priority{{i}}" id="priority{{i}}" #priority="ngModel"
+                                                    [value]="item.id" group="priority" [checked]="(i === 0)"/>
+                                                {{translate.currentLang == "En" ?
+                                                item.priorityLevel:item.priorityLevelAr}}
+
+                                            </li>
+                                        </ul>
+                                        <!-- <div *ngIf="!masterEquipmentObj.priorityId">
+                                            <span class="text-danger">
+                                                priority is required
+                                            </span>
+                                        </div> -->
+                                    </div>
+<br/>
+
+                                    <label for="versionNumber">{{'equipment.versionNumber'| translate}}</label>
+                                    <input type="text" pInputText id="versionNumber" class="form-control"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="masterEquipmentObj.versionNumber" pTooltip="Enter A Version Number"
+                                        tooltipPosition="bottom" />
+
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+                        </fieldset>
+                    </p-tabPanel>
+                    <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+
+                        <fieldset class="tab">
+                            <legend>{{'Actions.Attachments' |translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <p-fileUpload name="demo1[]" multiple="true"
+                                        url="http://biomedicalupd-001-site1.itempurl.com/api/MasterEquipmentAttachment/Masterupload/"                                      
+                                        accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                        maxFileSize="1000000000">
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+ 
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                        (click)="hideDialog()" type="button" value="cancel"
+                                        class="btn btn-info"></button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                        value="save" type="submit" class="btn btn-info"></button>
+                                </div>
+                            </div>
+                            <br>
+
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                            [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                            [hidden]="isPrevvalid">previous</button>
+
+                            
+                        </fieldset>
+                    </p-tabPanel>
+
+                </p-tabView>
+            </form>
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+    </p-dialog>
+</div>

@@ -1,0 +1,402 @@
+/* You can add global styles to this file, and also import other style files */
+@import url();
+@import "https://js.arcgis.com/4.19/@arcgis/core/assets/esri/themes/light/main.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html, body { height: 100%; }
+body 
+{ 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    /* overflow-x: hidden; */
+    /* width: 80%;
+    position: relative !important;
+    left:250px;   */
+}
+.p-datatable .p-datatable-thead > tr > th{
+   /* text-align: justify !important; */
+   text-align: inherit;
+    padding: 1rem 0.5rem !important;
+}
+/* .p-datatable .p-datatable-tbody > tr > td {
+    text-align: justify !important;
+} */
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link 
+{
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  
+}
+:lang(Ar) .navbar {
+    float: left !important;
+}
+.example-viewport {
+    height: 200px;
+    width: 200px;
+    border: 1px solid black;
+  }
+  
+  .example-item {
+    height: 50px;
+  }
+  .p-sidebar
+  {
+    overflow-y: auto;
+  }
+
+
+  .container-fluid{
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
+
+  p-button.p-button-icon-only.p-button-rounded {
+    border-radius: 50%;
+    height: 1.5rem;
+}
+
+
+.p-button.p-button-icon-only {
+  /* width: 1.75rem; */
+  padding: 0.3rem 0;
+}
+/* .p-datatable .p-datatable-tbody > tr >td :lang(en){
+  text-align: left !important;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 0.3rem 1rem; 
+} */
+.p-datatable .p-datatable-tbody > tr >td{
+  text-align: inherit !important; 
+  border: 1px solid #e9ecef;
+ border-width: 0 0 1px 0;
+ padding: 0.3rem 1rem;   
+}  
+
+/* .p-datatable .p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+  background-color: #8fc1e7;
+  border-width: 0 0 1px 0;
+  padding: 0.3rem 1rem;
+} */
+/* 
+.p-datatable .p-datatable-tbody > tr {
+  background: #ffffff;
+}
+
+ */
+
+
+  /**************************************/
+.logo{
+  width:100px;
+  height:100px;
+  /* margin-left: 80px; */
+  border-radius: 50%;
+}
+
+.collapse.in
+{
+  display: block !important;
+}
+.mat-icon {
+  margin-right: 8px;
+}
+.mat-toolbar {
+  background: #d1e5f3;
+  /* color: #090d95; */
+  font-size: 20px;
+  font-weight: bold;
+}
+.mat-sidenav {
+  margin: 5px;
+  width: 300px;
+  height: 100%;
+  border-right: none;
+  /* background: #d1e5f3; */
+  color: white;
+  border-radius: 5px;
+  padding: 0px;
+  /* text-align: center; */
+}
+.mat-sidenav-container {
+  height: calc(100vh - 85px);
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+.content {
+  border-radius: 5px;
+   margin-top: 20px;
+ }
+ .menu-button {
+  transition: 100ms ease-in-out;
+  transform: rotate(0deg);
+}
+.menu-button.rotated {
+  transform: rotate(180deg);
+}
+.contentTopMargin {
+  margin-top: 25px;
+}
+.headerlinks {
+  text-decoration: none;
+  color: #090d95;
+  font-size: 14px;
+  font-weight: bold;
+}
+.logout {
+  color:#F47C3C;
+  vertical-align: middle;
+}
+
+#headerrightlinks li {
+  display: inline;
+  list-style-type: none;
+  padding-right: 20px;
+  float: left;
+}
+.mat-list-base {
+  padding-top: 0px;
+}
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+  text-align: center;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.list-group-item
+{
+  position: relative;
+  display: block;
+  border: 2px solid rgba(5, 1, 1, 0.125);
+  /* background: #d1e5f3; */
+  /* color: aliceblue; */
+}
+
+.p-panelmenu .p-menuitem-link
+{
+  display: block !important;
+}
+.p-multiselect{
+  height: 1.5rem !important;;
+}
+.p-multiselect .p-multiselect-label {
+  padding: 0 !important;
+}
+.form-control{
+  height:1.5rem;
+  padding:0 !important;
+}
+.list-group-item{
+  padding: .1rem;
+}
+.p-inputtext
+{
+  padding: 0 !important;
+}
+.p-dropdown
+{
+    width: 100% !important;
+}
+ /* .p-message .p-message-detail
+ {
+   margin-left: 50rem !important;
+ } */
+.p-message-detail:lang(Ar) {
+  margin-left: 50rem !important;  } 
+.p-message-detail:lang(En) {
+  margin-left: 0.5rem !important;  }
+
+  /* .multiselect-dropdown{
+    line-height: 1.3;
+  } */
+   .multiselect-dropdown .dropdown-btn {
+
+    display: inline-block;
+    border: 1px solid silver !important;
+    width: 100%;
+    padding: 0 !important;
+    margin-bottom: 0;
+    font-weight: 300;
+    line-height: 1.3!important;
+    text-align: left;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border-radius: 4px;
+}
+/* .p-datatable .p-datatable-tbody > tr > td{
+  border: none !important;
+  background-color: #E9ECEF;
+}
+.p-datatable .p-datatable-tbody > tr {
+  border: 2px solid rgb(156, 159, 161)!important;
+} */
+
+/******************ERI****************************/
+/* @import "https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/dark/main.css"; */
+
+html,
+body,
+#viewDiv,
+#viewDiv-en {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.popupTableInfo {
+  font-family: "Avenir Next", "Helvetica Neue", "Helvetica", "Arial",
+    "sans-serif";
+  border-collapse: collapse;
+  width: 100%;
+  direction: rtl;
+}
+
+.popupTableInfo th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: right;
+  background-color: #04aa6d;
+  color: white;
+}
+
+.popupTableInfo td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: right;
+}
+
+.popupTableInfo tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.popupTableInfo tr:hover {
+  background-color: #ddd;
+}
+
+.popupTableInfo_eng {
+  font-family: "Avenir Next", "Helvetica Neue", "Helvetica", "Arial",
+    "sans-serif";
+  border-collapse: collapse;
+  width: 100%;
+  direction: rtl;
+}
+
+.popupTableInfo_eng th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}
+
+.popupTableInfo_eng td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.popupTableInfo_eng tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.popupTableInfo_eng tr:hover {
+  background-color: #ddd;
+}
+/* popup style */
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: right;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 5px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: rgb(147, 163, 209);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.tabTab {
+  font-size: 30px;
+  text-align: center;
+  right: 38%;
+}
+
+.mat-slider-thumb-label {
+  width: 50px !important;
+  height: 50px !important;
+}
+.mat-slider-horizontal .mat-slider-thumb-label {
+  top: -58px !important;
+  right: -25px !important;
+}
+
+.esri-popup--is-docked-top-left .esri-popup__main-container,
+.esri-popup--is-docked-top-right .esri-popup__main-container,
+.esri-popup--is-docked-bottom-left .esri-popup__main-container,
+.esri-popup--is-docked-bottom-right .esri-popup__main-container {
+  width: 35%;
+  height: 70%;
+  margin: 4%;
+  cursor: default;
+}
+
+.mat-slider-horizontal {
+  min-width: 306px !important;
+}
+
+.displayDepartmentName {
+  text-align: right !important;
+  color: blue !important;
+  font-size: 19px !important;
+}
+
+.displayDepartmentName_eng {
+  text-align: left !important;
+  color: blue !important;
+  font-size: 19px !important;
+}
+
+
+#tabsOverMap {
+  width: 237px;
+  height: 227px;
+}
+
+.mat-form-field {
+  text-align: right !important;
+  right: -16px;
+  top: 13px;
+}
+

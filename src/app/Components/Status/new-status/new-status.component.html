@@ -1,0 +1,78 @@
+<div>
+    <p-dialog [(visible)]="statusDialog" [style]="{width: '800px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'status.AddNewStatus'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddStatusForm.valid && saveStatus()" #AddStatusForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+
+         <div class="col-md-12">
+                            <label for="status">{{'status.Code'|translate}}</label>
+                            <input type="text" class="form-control" id="statusCode" name="statusCode" #statusCode="ngModel"
+                            pTooltip="Enter a Name"tooltipPosition="bottom" [(ngModel)]="equipmentStatusObj.code" 
+                                [class.is-invalid]="statusCode.touched && statusCode.errors || AddStatusForm.submitted" 
+                                [class.is-valid]="statusCode?.valid && AddStatusForm.submitted" required>
+                                <div *ngIf="(statusCode?.touched || AddStatusForm.submitted) && statusCode.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'status.Required'|translate}}                    
+                                    </span>
+                               </div>
+                        </div>
+
+                        
+                        <div class="col-md-12">
+                            <label for="status">{{'status.status'|translate}}</label>
+                            <input type="text" class="form-control" id="Enstatus" name="Enstatus" #Enstatus="ngModel"
+                            pTooltip="Enter a Name"tooltipPosition="bottom" [(ngModel)]="equipmentStatusObj.status" 
+                                [class.is-invalid]="Enstatus.touched && Enstatus.errors || AddStatusForm.submitted" 
+                                [class.is-valid]="Enstatus.valid && AddStatusForm.submitted" required>
+                                <div *ngIf="(Enstatus.touched || AddStatusForm.submitted) && Enstatus.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'status.Required'|translate}}                            
+                                    </span>
+                               </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="status">{{'status.statusAr'|translate}}</label>
+                            <input type="text" class="form-control" id="status" name="Arstatus" #Arstatus="ngModel"
+                            pTooltip="Enter a Name in Arabic"tooltipPosition="bottom"  [(ngModel)]="equipmentStatusObj.statusAr" 
+                                [class.is-invalid]="Arstatus.touched && Arstatus.errors || AddStatusForm.submitted" 
+                                [class.is-valid]="Arstatus.valid && AddStatusForm.submitted" required>
+                                <div *ngIf="(Arstatus.touched || AddStatusForm.submitted) && Arstatus.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'status.Required'|translate}}                       
+                                    </span>
+                               </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" 
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>                       
+                      </div>
+                      <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" 
+                        class="btn btn-info" value="save" type="submit"></button>
+                      </div>
+                    </div>
+                    <br><br>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+    </p-dialog>
+</div>

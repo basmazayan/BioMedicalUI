@@ -1,0 +1,49 @@
+.ng-valid[required] {
+    border: 1px solid silver;
+    border-left: 5px solid #42A948; /* green */
+    background-image: none;
+    padding-right: 0%;
+  }
+.btnIn, .btnOut{
+    width: 30%;
+    border-radius: 30%;
+}
+.btns
+{
+    position: relative;
+    left: 4rem;
+    top: 10rem;
+}
+.btnsAr
+{
+    position: relative;
+    right: 4rem;
+    top: 10rem;
+}
+.btnSubmit
+{
+    border-radius: 10%;
+}
+/* .list-group-item {
+    border: none !important;
+    background-color: #e9ecef;
+} */
+#filterBetweenFromDateIdEn,#filterBetweenToDateIdEn
+{
+    position: relative;
+    top:-20px;
+    margin-left: 300px;
+}
+#filterBetweenFromDateIdAr,#filterBetweenToDateIdAr
+{
+    position: relative;
+    top:-20px;
+    margin-right: 50px;
+}
+
+/* #filterBetweenToDateId
+{
+    position: relative;
+    margin-left: 200px;
+    top:-20px;
+} */

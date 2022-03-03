@@ -1,0 +1,403 @@
+    <div class="container-fluid">
+
+        <div class="card" >
+            
+    <!-- <p-messages lang='translate.currentLang' [value]="msgs"></p-messages> -->
+    <p-toast posinset="top-right"></p-toast>
+    <!-- [hidden]="msgappear"  -->
+            <div class="card-body" >
+                <div class="row">
+                    <div class="col-md-11"><h5>{{'masterEquipment.ManageMasterEquipment'|translate}}</h5></div>
+                    <div class="col-md-1" style="text-align: right;">     
+                        <button pButton pRipple icon="pi pi-plus" class="p-button-primary p-button-rounded p-mr-2"
+                        routerLink="/home/AddMasterEquipment" pTooltip="add an Add a MasterEquipment"
+                        tooltipPosition="right"></button>  </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br/></div></div>
+            <div class="row">
+                <div class="col-md-12"> 
+
+    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+    <p-table #dt [value]="MasterEquipments" styleClass="p-datatable-responsive-demo" [rows]="5" 
+    [paginator]="false" styleClass="p-datatable-striped"
+        [(selection)]="MasterEquipments" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [showCurrentPageReport]="true"  
+        [globalFilterFields]="['Name','masterCode','upaCode','modelNumber','originCode','manufacturerName','manufacturerNameAr','nameAr']">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+            
+
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="form-control"
+                        (input)="dt.filterGlobal($event.target.value,'contains')"
+                        placeholder="{{'search.Search'|translate}}..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th  style="width: 8%;" pSortableColumn="masterCode">{{'masterEquipment.Code'|translate}}<p-sortIcon field="masterCode"></p-sortIcon>
+                </th>
+                <th  style="width: 8%;" pSortableColumn="upaCode">{{'masterEquipment.upaCode'|translate}}<p-sortIcon field="upaCode"></p-sortIcon>
+                </th>
+                <th  style="width: 32%;" pSortableColumn="Name">{{'masterEquipment.Name'|translate}}<p-sortIcon field="Name"></p-sortIcon>
+                </th>
+                <th  style="width: 20%;" pSortableColumn="manufacturerName">{{'masterEquipment.Brand'|translate}}<p-sortIcon field="manufacturerName"></p-sortIcon>
+                </th>
+                <th  style="width: 10%;" pSortableColumn="modelNumber">{{'masterEquipment.modelNumber'|translate}}<p-sortIcon field="modelNumber"></p-sortIcon>
+                </th>
+                <th  style="width: 8%;" pSortableColumn="originCode">{{'masterEquipment.originCode'|translate}}<p-sortIcon field="originCode"></p-sortIcon>
+                </th>
+                <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'masterCode', 'contains')"
+                        [value]="dt.filters['masterCode']?.value" placeholder="{{'search.Search'|translate}}"
+                        class="p-column-filter form-control" style="width: 50px;">
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'upaCode', 'contains')"
+                        [value]="dt.filters['upaCode']?.value" placeholder="{{'search.Search'|translate}}"
+                        class="p-column-filter form-control" style="width: 50px;">
+                </th>
+                <th >
+                    <input *ngIf="translate.currentLang==='En'" pInputText type="text" (input)="dt.filter($event.target.value, 'name', 'contains')"
+                        [value]="dt.filters['name']?.value" placeholder="{{'search.Search'|translate}}"
+                        class="p-column-filter form-control">
+                        <input *ngIf="translate.currentLang==='Ar'" pInputText type="text" (input)="dt.filter($event.target.value, 'nameAr', 'contains')"
+                        [value]="dt.filters['nameAr']?.value" placeholder="{{'search.Search'|translate}}"
+                        class="p-column-filter form-control">
+                </th>
+                <th>
+                    <!-- <input *ngIf="translate.currentLang==='En'" pInputText type="text" (input)="dt.filter($event.target.value, 'manufacturerName', 'contains')"
+                        [value]="dt.filters['manufacturerName']?.value" placeholder="Search"
+                        class="p-column-filter form-control">
+                        <input *ngIf="translate.currentLang==='Ar'" pInputText type="text" (input)="dt.filter($event.target.value, 'manufacturerNameAr', 'contains')"
+                        [value]="dt.filters['manufacturerNameAr']?.value" placeholder="Search"
+                        class="p-column-filter form-control"> -->
+
+                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                        optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                        (onChange)="dt.filter($event.value,'manufacturerName','equals')"
+                        [filterBy]="dt.filters['manufacturerName']?.value" styleClass="ui-column-filter"
+                        class="filterDropdwon"></p-dropdown>
+
+
+
+                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                        optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                        (onChange)="dt.filter($event.value,'manufacturerNameAr','equals')"
+                        [filterBy]="dt.filters['manufacturerNameAr']?.value" styleClass="ui-column-filter"
+                        class="filterDropdwon"></p-dropdown>
+                        
+                </th>
+                <th>
+                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'modelNumber', 'contains')"
+                            [value]="dt.filters['modelNumber']?.value" placeholder="{{'search.Search'|translate}}"
+                            class="p-column-filter form-control">
+                </th>
+                <th style="width: 10%;">
+                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'originCode', 'contains')"
+                            [value]="dt.filters['originCode']?.value" placeholder="{{'search.Search'|translate}}"
+                            class="p-column-filter form-control" style="width: 50px;">
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-masterEquipment>
+            <tr>
+                <td  style="text-align: inherit;">
+                    {{masterEquipment.masterCode}}
+                </td>
+                <td  style="text-align: inherit;">
+                    {{masterEquipment.upaCode}}
+                </td>
+                <td  style="text-align: inherit;">
+                    {{translate.currentLang == "En" ? masterEquipment.name:masterEquipment.nameAr}}
+
+                </td>
+                <td  style="text-align: inherit;">
+                    {{translate.currentLang == "En" ? masterEquipment.manufacturerName:masterEquipment.manufacturerNameAr}}
+                </td>
+                <td  style="text-align: inherit;">
+                    {{masterEquipment.modelNumber}}
+                </td>
+                <td  style="text-align: inherit;">
+                    {{masterEquipment.originCode}}
+                </td>
+                <td  style="text-align: inherit;">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit" style="margin: 0px 5px;"
+                        (click)="openNew(masterEquipment)" pTooltip="edit an Equipment" tooltipPosition="top"></button>
+
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" 
+                        (click)="confirmDelete(masterEquipment.id,masterEquipment.name)" pTooltip="delete an Equipment"
+                        tooltipPosition="bottom"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                {{'In total there are.In total there are'| translate}}{{MasterEquipments ? MasterEquipments.length : 0 }} {{'Sidebar.MasterEquipment' | translate}}.
+            </div>
+        </ng-template>
+    </p-table>
+    <p-paginator [rows]="10" [totalRecords]="count" (onPageChange)="clicktbl($event)"></p-paginator>
+</div>
+</div></div></div></div>
+
+
+
+
+
+<p-dialog [(visible)]="msterEquipmentDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'masterEquipment.EditEquipmentinmaster'|translate}}</h3>
+            </div>
+
+        </div>
+            <form (ngSubmit)="EditMasterEquipForm.valid && updateMasterEquipment()" #EditMasterEquipForm="ngForm">
+                <p-tabView [activeIndex]="index" (onChange)="handleChange($event)" >
+                    <p-tabPanel header="{{'equipment.Details' | translate}}">
+                        <fieldset class="tab">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="Code">{{'masterEquipment.masterCode'|translate}}</label>
+
+                                    <input type="text" class="form-control" id="Code" name="Code" #Code="ngModel"
+                                        pTooltip="Enter a code" tooltipPosition="bottom"
+                                        [(ngModel)]="masterEquipmentObj.masterCode"
+                                        [class.is-invalid]="Code.touched && Code.errors || EditMasterEquipForm.submitted"
+                                        [class.is-valid]="Code.valid && EditMasterEquipForm.submitted" required>
+                                    <div
+                                        *ngIf="(Code.touched || EditMasterEquipForm.submitted) && Code.errors?.required">
+                                        <span class="text-danger">
+                                            {{'ecricodes.Required'|translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="upa">{{'masterEquipment.upaCode'|translate}}</label>
+
+                                    <input type="text" class="form-control" id="upa" name="upa" #upa="ngModel"
+                                        pTooltip="Enter a UPA code" tooltipPosition="bottom"
+                                        [(ngModel)]="masterEquipmentObj.upaCode" >
+   
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="name">{{'masterEquipment.Name'|translate}}</label>
+                                    <input type="text" class="form-control" id="name" name="EnName"
+                                        [(ngModel)]="masterEquipmentObj.name" #EnName="ngModel"
+                                        [class.is-invalid]="EnName.touched && EnName.errors || EditMasterEquipForm.submitted"
+                                        [class.is-valid]="EnName.valid && EditMasterEquipForm.submitted"
+                                        pTooltip="Enter a Name" tooltipPosition="bottom" required>
+                                    <div
+                                        *ngIf="(EnName.touched || EditMasterEquipForm.submitted) && EnName.errors?.required">
+                                        <span class="text-danger">
+                                            {{'ecricodes.Required'|translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="name">{{'masterEquipment.NameAr'|translate}}</label>
+                                    <input type="text" class="form-control" id="ArName" name="ArName" #ArName="ngModel"
+                                        [(ngModel)]="masterEquipmentObj.nameAr" pTooltip="Enter a Name in Arabic"
+                                        tooltipPosition="bottom"
+                                        [class.is-invalid]="ArName?.touched && ArName.errors || EditMasterEquipForm.submitted"
+                                        [class.is-valid]="ArName?.valid && EditMasterEquipForm.submitted">
+                                    <div
+                                        *ngIf="(ArName?.touched || EditMasterEquipForm.submitted) && ArName.errors?.required">
+                                        <span class="text-danger">
+                                            {{'ecricodes.Required'|translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="category">{{'equipment.Category'| translate}}</label>
+                                    <select class="form-control" id="category" name="category" #category="ngModel"
+                                        [(ngModel)]="masterEquipmentObj.equipmentCategoryId"
+                                        (change)="fillSubCategory(masterEquipment.equipmentCategoryId)" 
+                                        pTooltip="Please,Select Category" tooltipPosition="bottom">
+                                        <option selected value="0">--select--</option>
+                                        <option *ngFor="let cat of categoriesList" [value]="cat.id">
+                                            {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                        </option>
+                                    </select>
+                                 
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="subCategory">{{'equipment.SubCategory'| translate}}</label>
+                                    <select class="form-control" id="subCategory" name="subCategory"
+                                        #subCategory="ngModel"
+                                        
+                                        [(ngModel)]="masterEquipmentObj.equipmentSubCategoryId" 
+                                        pTooltip="Select A SubCategory" tooltipPosition="bottom">
+                                        <option selected value="0">--select--</option>
+                                        <option *ngFor="let s of subCategoriesList" [value]="s.id">
+                                            {{translate.currentLang == "En" ? s.subCategoryName:s.subCategoryNameAr}}
+                                        </option>
+                                    </select>
+                                  
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">{{'General.Next'| translate}}</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">{{'General.Previous'| translate}}</button>
+                            <br><br>
+                        </fieldset>
+                    </p-tabPanel>
+                    <p-tabPanel header="{{'equipment.IndustryDetails' | translate}}">
+                        <fieldset class="tab">
+                            <legend>{{'equipment.IndustryDetails' | translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="manufacturer">{{'equipment.Manufacturer'| translate}}</label>
+
+                                    <select class="form-control" id="manufacturer" #manufacturer="ngModel"
+                                        name="manufacturer" [(ngModel)]="masterEquipmentObj.manufacturerId"
+                                        pTooltip="Select A Brand" tooltipPosition="bottom">
+                                        <option  value="0">--select--</option>
+                                        <option *ngFor="let m of manufacturerList" [value]="m.id">
+                                            {{translate.currentLang == "En" ? m.manufacturerName:m.manufacturerNameAr}}
+                                        </option>
+                                    </select>
+                     
+                                    <label for="origin">{{'equipment.Origin'| translate}}</label>
+                                    <select class="form-control" id="origin" #origin="ngModel" name="origin"
+                                        [(ngModel)]="masterEquipmentObj.originId"
+                                        pTooltip="Select An Origin" tooltipPosition="bottom">
+                                        <option selected value="0">--select--</option>
+                                        <option *ngFor="let o of originsList" [value]="o.id">{{o.originCode}}</option>
+                                    </select>
+                        
+                                    <label for="ExpectedLifeTime">{{'equipment.expectedtimelife'| translate}}</label>
+                                    <input type="number" pInputText id="ExpectedLifeTime"
+                                        [ngModelOptions]="{standalone: true}" class="form-control"
+                                        [(ngModel)]="masterEquipmentObj.expectedLifeTime"
+                                        pTooltip="Enter An ExpectedLifeTime" tooltipPosition="bottom" />
+
+                                    <label for="modelNumber">{{'equipment.modelNumber'| translate}}</label>
+                                    <input type="text" pInputText id="modelNumber" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="masterEquipmentObj.modelNumber"
+                                        pTooltip="Enter A modelNumber" tooltipPosition="bottom" />
+      
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="priority">{{'equipment.EquipmentPriority'|translate}}</label>
+                                    <div>
+                                        <ul class="list-group" pTooltip="Select A priority" tooltipPosition="bottom">
+                                            <li class="list-group-item" *ngFor="let item of priorityList; let i= index">
+                                                <input type="radio" [(ngModel)]="masterEquipmentObj.priorityId"
+                                                    name="priority{{i}}" id="priority{{i}}" group="prt" #priority="ngModel"
+                                                    [value]="item.id" />
+                                                {{translate.currentLang == "En" ?
+                                                item.priorityLevel:item.priorityLevelAr}}
+
+                                            </li>
+                                        </ul>
+                                       
+                                    </div>
+
+                                    <br/>
+                                    <label for="versionNumber">{{'equipment.versionNumber'| translate}}</label>
+                                    <input type="text" pInputText id="versionNumber" class="form-control"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="masterEquipmentObj.versionNumber" pTooltip="Enter A Version Number"
+                                        tooltipPosition="bottom" />
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">{{'General.Next'| translate}}</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">{{'General.Previous'| translate}}</button>
+                        </fieldset>
+                    </p-tabPanel>
+                    <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+
+                        <fieldset class="tab">
+                            <legend>{{'Actions.Attachments' |translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p-fileUpload url="http://biomedicalupd-001-site1.itempurl.com/api/MasterEquipmentAttachment/Masterupload/"
+                                        multiple="multiple"
+                                        accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                        maxFileSize="1000000000" value="{Attachs}">
+                                    </p-fileUpload>
+                                    <ul class="ulStyle">
+                                        <div *ngFor="let file of Attachs">
+                                            <li *ngIf="(file.fileName).includes('svg')||(file.fileName).includes('png')||
+                                                                           (file.fileName).includes('jpg')">
+                                                <span><img
+                                                        src="http://biomedicalupd-001-site1.itempurl.com/{{file.fileName}}"
+                                                        class="ng-star-inserted" width="50" [hidden]="isvisible"></span>
+                                                &nbsp; &nbsp; &nbsp;
+                                                <button icon="pi pi-times" pbutton="" type="button"
+                                                    ng-reflect-icon="pi pi-times"
+                                                    class="p-button p-component p-button-icon-only"
+                                                    (click)="RemoveAttach(file.id)" [hidden]="isbtnvisible">
+                                                    <span class="p-button-icon pi pi-times" aria-hidden="true"></span>
+                                                    <span aria-hidden="true" class="p-button-label">&nbsp;&nbsp;</span>
+                                                </button>
+                                            </li>
+                                            <li
+                                                *ngIf="(file.fileName).includes('xls')||(file.fileName).includes('xlsx')||
+                                                                        (file.fileName).includes('doc')||(file.fileName).includes('docx')||
+                                                                        (file.fileName).includes('ppt')||(file.fileName).includes('pptx')||
+                                                                        (file.fileName).includes('txt')||(file.fileName).includes('pdf')">
+                                                <span class="ng-star-inserted" [hidden]="isvisible">
+                                                    {{file.fileName.substring(17)}}
+                                                </span>
+                                                &nbsp; &nbsp;
+                                                <button icon="pi pi-times" pbutton="" type="button"
+                                                    ng-reflect-icon="pi pi-times"
+                                                    class="p-button p-component p-button-icon-only"
+                                                    (click)="RemoveAttach(file.id)" [hidden]="isbtnvisible">
+                                                    <span class="p-button-icon pi pi-times" aria-hidden="true"></span>
+                                                    <span aria-hidden="true" class="p-button-label">&amp;nbsp;</span>
+                                                </button>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                        (click)="hideDialog()" type="button" value="cancel"
+                                        class="btn btn-info"></button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                        value="save" type="submit" class="btn btn-info"></button>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+                    </p-tabPanel>
+
+                </p-tabView>
+            </form>    
+    </ng-template>
+
+ 
+</p-dialog>
+<p-dialog [(visible)]="errorDisplay" [style]="{width: '300px'}">
+    <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+   <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+</p-dialog>

@@ -1,0 +1,21 @@
+.img{
+  
+    width: 65px;
+    height: 65px;
+    position: relative;
+left:250px;
+top:-40px
+  }
+
+  
+.header .img, 
+.header .title {
+    display: inline-block;
+   
+}
+.ng-valid[required] {
+  border: 1px solid silver;
+  border-left: 5px solid #42A948; /* green */
+  background-image: none;
+  padding-right: 0%;
+}

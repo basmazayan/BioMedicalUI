@@ -1,0 +1,41 @@
+fieldset {
+    background-color: white;
+    padding: 3px 10px 10px 10px;
+  }
+  
+  legend {
+    background-color: rgb(210, 221, 245);
+    color:  rgb(2, 21, 63);
+    padding: 5px 0px;
+  }
+  .img{
+    width: 50px;
+    height: 50px;
+    position: relative;
+    left:450px;
+    top:-40px
+  }
+
+  
+  .header .img, 
+  .header .title {
+    display: inline-block;
+    /* vertical-align: bottom; */
+}
+.ng-valid[required] {
+  border: 1px solid silver;
+  border-left: 5px solid #42A948; /* green */
+  background-image: none;
+  padding-right: 0%;
+}
+
+.list-group-item+.list-group-item {
+  border-top-width: 0;
+  border: 0px;
+}
+
+.p-dialog .p-dialog-content {
+  background: #ffffff;
+  color: #495057;
+  padding: 0 0.75rem 1rem 1rem;
+}

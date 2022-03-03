@@ -1,0 +1,86 @@
+<div>
+    <p-dialog [(visible)]="ecriCodeDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'ecricodes.Add'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddecriCodeForm.valid && saveCode()" #AddecriCodeForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="ecri_code">{{'ecricodes.Code'|translate}}</label>
+                            <input type="text" class="form-control" pTooltip="Enter a ecri Code"
+                                tooltipPosition="bottom" id="ecri_code" name="ecri_code" #ecri_code="ngModel"
+                                [(ngModel)]="ecriObj.ecri_code" autofocus required
+                                [class.is-invalid]="(ecri_code.touched && ecri_code.errors) || AddecriCodeForm.submitted"
+                                [class.is-valid]="ecri_code.valid && AddecriCodeForm.submitted">
+                                <div *ngIf="(ecri_code.touched || AddecriCodeForm.submitted) && ecri_code.errors?.required">
+                                    <span class="text-danger">
+                                        {{'ecricodes.Required'|translate}}
+                                    </span>
+                                </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="name">{{'ecricodes.Name'|translate}}</label>
+                            <input type="text" class="form-control" pTooltip="Enter a ECRI name"
+                                tooltipPosition="bottom" id="name" name="name" #name="ngModel"
+                                [(ngModel)]="ecriObj.name" autofocus required
+                                [class.is-invalid]="(name.touched && name.errors) || AddecriCodeForm.submitted"
+                                [class.is-valid]="name.valid && AddecriCodeForm.submitted">
+                                <div *ngIf="(name.touched || AddecriCodeForm.submitted) && name.errors?.required">
+                                    <span class="text-danger">
+                                        {{'ecricodes.Required'|translate}}
+                                    </span>
+                                </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="nameAr">{{'ecricodes.NameAr'|translate}}</label>
+                            <input type="text" class="form-control" pTooltip="Enter a ECRI Arabic Name"
+                                tooltipPosition="bottom" id="nameAr" name="nameAr" #nameAr="ngModel"
+                                [(ngModel)]="ecriObj.nameAr" autofocus required
+                                [class.is-invalid]="(nameAr?.touched && nameAr.errors) || AddecriCodeForm.submitted"
+                                [class.is-valid]="nameAr?.valid && AddecriCodeForm.submitted">
+                                <div *ngIf="(nameAr?.touched || AddecriCodeForm.submitted) && nameAr.errors?.required">
+                                    <span class="text-danger">
+                                        {{'ecricodes.Required'|translate}}
+                                    </span>
+                                </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"><br/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Cancel' |translate}}" icon="pi pi-times"
+                                class="btn btn-info" type="button" (click)="hideDialog()" value="cancel"></button>
+                        </div>
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                class="btn btn-info" type="submit" value="save"></button>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+
+    </p-dialog>
+
+    
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+    </p-dialog>
+</div>

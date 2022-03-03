@@ -1,0 +1,178 @@
+<div class="container-fluid">
+    <div class="card">
+        <p-toast posinset="top-right"></p-toast>
+
+        <div class="card-body" >
+
+            <div class="row">
+                <div class="col-md-11"><h5 class="p-m-0">{{'Manufacturer.ManageManufacturers'|translate}}</h5></div>
+                <div class="col-md-1" style="text-align: right;">     
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary p-button-rounded p-mr-2"
+                    routerLink="/home/addManufacturer" pTooltip="Add a New Manufacturer"
+                    tooltipPosition="right"></button>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><br/></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"> 
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="manufacturersList" [rows]="10" styleClass="p-datatable-responsive-demo"[paginator]="true" [(selection)]="selectedmanufacturers"
+            [rowHover]="true" dataKey="id"  styleClass="p-datatable-striped"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true" [globalFilterFields]="['manufacturerName','manufacturerNameAr','code']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+              
+
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" class="form-control"
+                            (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="{{'search.Search'|translate}}..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="code">{{'Manufacturer.manufacturerCode'|translate}} <p-sortIcon
+                        field="code"></p-sortIcon>
+                </th>
+                    <th pSortableColumn="manufacturerName">{{'Manufacturer.manufacturerName'|translate}} <p-sortIcon
+                            field="manufacturerName"></p-sortIcon>
+                    </th>
+
+                    <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+                </tr>
+                <tr>
+                    <th><input pInputText type="text" 
+                        (input)="dt.filter($event.target.value, 'code', 'contains')"
+                        [value]="dt.filters['code']?.value"
+                        placeholder="{{'Manufacturer.SearchbyCode'|translate}}"
+                        class="p-column-filter form-control"></th>
+                    <th>
+                        <input pInputText type="text"  *ngIf="translate.currentLang==='En'"
+                            (input)="dt.filter($event.target.value, 'manufacturerName', 'contains')"
+                            [value]="dt.filters['manufacturerName']?.value"
+                            placeholder="{{'Manufacturer.SearchbyName'|translate}}"
+                            class="p-column-filter form-control">
+
+                            <input pInputText type="text"  *ngIf="translate.currentLang==='Ar'"
+                            (input)="dt.filter($event.target.value, 'manufacturerNameAr', 'contains')"
+                            [value]="dt.filters['manufacturerNameAr']?.value"
+                            placeholder="{{'Manufacturer.SearchbyName'|translate}}"
+                            class="p-column-filter form-control">                  
+                    </th>
+
+
+
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-manufacturer>
+                <tr>
+                    <td  style="text-align: inherit;">{{manufacturer.code}}</td>
+                    <td  style="text-align: inherit;">
+                        {{translate.currentLang == "En" ?
+                        manufacturer.manufacturerName:manufacturer.manufacturerNameAr}}
+                    </td>
+
+
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(manufacturer)" pTooltip="edit a manufacturer"
+                            tooltipPosition="top"></button>
+
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(manufacturer.id,manufacturer.manufacturerName)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    {{'In total there are.In total there are'|translate}} {{manufacturersList ? manufacturersList.length : 0 }} priorities.
+                </div>
+            </ng-template>
+        </p-table></div></div>
+    </div></div>
+    <p-dialog [(visible)]="manufacturerDialog" [style]="{width: '800px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'Manufacturer.EditManufacturer'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="EditManufacturerForm.valid && updateManfacturer()" #EditManufacturerForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <label for="code">{{'Manufacturer.manufacturerCode'|translate}}</label>
+                            <input type="text" class="form-control" id="code" name="code"
+                                #code="ngModel" placeholder="{{'Manufacturer.manufacturerCode'|translate}}"
+                                [(ngModel)]="manufacturer.code"
+                                [class.is-invalid]="code.touched && code.errors || EditManufacturerForm.submitted"
+                                [class.is-valid]="code.valid && EditManufacturerForm.submitted" required
+                                pTooltip="Please, enter code" tooltipPosition="bottom">
+                            <div
+                                *ngIf="(code.touched || EditManufacturerForm.submitted) && code.errors?.required">
+                                <span class="text-danger">
+                                    {{'Manufacturer.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="manufacturerName">{{'Manufacturer.manufacturerName'|translate}}</label>
+                            <input type="text" class="form-control" id="manufacturerName" name="manufacturerEnName"
+                                pTooltip="Enter a Name" tooltipPosition="bottom" #manufacturerEnName="ngModel"
+                                [(ngModel)]="manufacturer.manufacturerName"
+                                [class.is-invalid]="manufacturerEnName.touched && manufacturerEnName.errors || EditManufacturerForm.submitted"
+                                [class.is-valid]="manufacturerEnName.valid && EditManufacturerForm.submitted" required>
+                            <div
+                                *ngIf="(manufacturerEnName.touched || EditManufacturerForm.submitted) && manufacturerEnName.errors?.required">
+                                <span class="text-danger">
+                                    {{'Manufacturer.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="manufacturerNameAr">{{'Manufacturer.manufacturerNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="manufacturerName" name="manufacturerArName"
+                                pTooltip="Enter a Name in Arabic" tooltipPosition="bottom"
+                                [(ngModel)]="manufacturer.manufacturerNameAr" #manufacturerArName="ngModel"
+                                [class.is-invalid]="manufacturerArName.touched && manufacturerArName.errors || EditManufacturerForm.submitted"
+                                [class.is-valid]="manufacturerArName.valid && EditManufacturerForm.submitted" required>
+                            <div
+                                *ngIf="(manufacturerArName.touched || EditManufacturerForm.submitted) && manufacturerArName.errors?.required">
+                                <span class="text-danger">
+                                    {{'Manufacturer.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br><Br>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                        </div>
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                class="btn btn-info" value="save" type="submit"></button>
+                        </div>
+                    </div>
+                    <br><Br>
+                </fieldset>
+            </form>
+        </ng-template>
+    </p-dialog>
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+    </p-dialog>
+</div>

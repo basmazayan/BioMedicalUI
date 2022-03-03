@@ -1,0 +1,22 @@
+export class HealthCareUnit{
+    id:number;
+    healthCareUnitName:string;
+    healthCareUnitNameAr:string;
+    Address:string;
+    Director:string;
+    Phone:string;
+    Mobile:string;
+    Email:string;
+    Long:number;
+    Lat:number;
+    healthCareUnitCode:string;
+    healthDistrictId:number;
+    healthDirectoryId:number;
+    OrganizationId:number;
+    healthDistrictName:string;
+    healthDistrictNameAr:string;
+    healthDirectoryName:string;
+    healthDirectoryNameAr:string;
+    OrganizationName:string;
+    OrganizationNameAr:string;
+}

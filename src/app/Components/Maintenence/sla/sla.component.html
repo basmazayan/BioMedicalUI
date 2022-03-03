@@ -1,0 +1,297 @@
+<!-- <div class="card">
+        <p-toolbar styleClass="p-mb-4">
+            <h3>Equipment Maintenance Contract</h3>
+            <ng-template pTemplate="left">
+                <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                    class="p-button-warning download" pTooltip="PDF" tooltipPosition="bottom"></button>
+            </ng-template>
+
+        </p-toolbar>
+    </div> -->
+<p-dialog [(visible)]="contractDialog" (onHide)="hideDialog()" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <p-toolbar styleClass="p-mb-4">
+                    <h3 class="title">{{'contract.AddNewContract' | translate}}</h3>
+                    <ng-template pTemplate="left">
+                        <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                            class="p-button-warning download" pTooltip="PDF" tooltipPosition="bottom"></button>
+                    </ng-template>
+
+                </p-toolbar>
+            </div>
+            <div>
+            </div>
+        </div>
+        <form (ngSubmit)="AddContractForm.valid && saveContract()" #AddContractForm="ngForm">
+            <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                <p-tabPanel header="{{'contract.Details' | translate}}">
+                    <fieldset class="tab">
+                        <legend>{{'contract.Details'| translate}}</legend>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="subject">{{'contract.subject'| translate}}</label>
+                                <input type="text" pInputText id="subject" class="form-control"
+                                    name="subject" [(ngModel)]="contractObj.subject" #subject="ngModel"
+                                    [class.is-invalid]="subject.touched && subject.errors || AddContractForm.submitted"
+                                    [class.is-valid]="subject.valid && AddContractForm.submitted" required/>
+                                    <div *ngIf="(subject.touched || AddContractForm.submitted) && subject.errors?.required">
+                                        <span class="text-danger">        
+                                            subject is required                               
+                                        </span>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="date">{{'contract.StartDate'|translate}}</label>
+                                <input type="date" class="form-control" id="date" name="date" #date="ngModel"
+                                    placeholder="Start Date" [(ngModel)]="contractObj.startDate"
+                                    [class.is-invalid]="date.touched && date.errors || AddContractForm.submitted"
+                                    [class.is-valid]="date.valid && AddContractForm.submitted" required>
+                                    <div *ngIf="(date.touched || AddContractForm.submitted) && date.errors?.required">
+                                        <span class="text-danger">        
+                                            Start date is required                               
+                                        </span>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="date">{{'contract.EndDate'|translate}}</label>
+                                <input type="date" class="form-control" id="date" name="Date" #Date="ngModel"
+                                    placeholder="End Date" [(ngModel)]="contractObj.endDate"
+                                    [class.is-invalid]="Date.touched && Date.errors || AddContractForm.submitted"
+                                    [class.is-valid]="Date.valid && AddContractForm.submitted" required>
+                                    <div *ngIf="(Date.touched || AddContractForm.submitted) && Date.errors?.required">
+                                        <span class="text-danger">        
+                                            End date is required                               
+                                        </span>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="healthName">{{'equipment.healthCareUnit'|translate}}</label>
+                                <select class="form-control" id="healthName" name="healthName" #healthName="ngModel"
+                                    [(ngModel)]="contractObj.healthCareUnitId"
+                                    [class.is-invalid]="healthName.touched && healthName.errors || AddContractForm.submitted"
+                                    [class.is-valid]="healthName.valid && AddContractForm.submitted" required>
+                                    <option selected>--select--</option>
+                                    <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
+                                        {{translate.currentLang == "En" ? h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(healthName.touched || AddContractForm.submitted) && healthName.errors?.required">
+                                    <span class="text-danger">        
+                                        Health name is required                               
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="manufacturer">{{'equipment.Manufacturer'| translate}}</label>
+
+                                <select class="form-control" id="manufacturer" #manufacturer="ngModel"
+                                    name="manufacturer" [(ngModel)]="contractObj.manufacturerId"
+                                    [class.is-invalid]="manufacturer.touched && manufacturer.errors || AddContractForm.submitted"
+                                    [class.is-valid]="manufacturer.valid && AddContractForm.submitted" required>
+                                    <option selected>--select--</option>
+                                    <option *ngFor="let m of manufacturerList" [value]="m.id">
+                                        {{translate.currentLang == "En" ? m.manufacturerName:m.manufacturerNameAr}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(manufacturer.touched || AddContractForm.submitted) && manufacturer.errors?.required">
+                                    <span class="text-danger">        
+                                        Manufacturer name is required                               
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="supplier">{{'equipment.Supplier'|translate}}</label>
+                                <select type="text" id="supplier" class="form-control"
+                                    name="supplier" #supplier="ngModel" [(ngModel)]="contractObj.supplierId"
+                                    [class.is-invalid]="supplier.touched && supplier.errors || AddContractForm.submitted"
+                                    [class.is-valid]="supplier.valid && AddContractForm.submitted" required>
+                                    <option selected>--select--</option>
+                                    <option *ngFor="let s of suppliersList" [value]="s.id">{{s.supplierName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(supplier.touched || AddContractForm.submitted) && supplier.errors?.required">
+                                    <span class="text-danger">        
+                                        Supplier name is required                               
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <label for="Description">{{'equipment.Description'| translate}}</label>
+                                <textarea class="form-control" id="Description" type="text"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="contractObj.description" required></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()" [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()" [hidden]="isPrevvalid">previous</button>
+                    </fieldset>
+                </p-tabPanel>
+
+    
+
+                <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+                    <fieldset class="tab">
+                        <legend>{{'Actions.Attachments' |translate}}</legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p-fileUpload (onUpload)="upload($event)" name="demo[]"
+                                    url="http://localhost:51368/api/ImgUpload/" multiple="multiple"
+                                    accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" maxFileSize="1000000">
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <button pButton pRipple label="Cancel" icon="pi pi-times" class="btn btn-info"
+                                    (click)="hideDialog()" value="cancel" type="button"></button>
+                            </div>
+                            <div class="col-lg-2">
+                                <button pButton pRipple label="Save" icon="pi pi-check" class="btn btn-info"
+                                        value="save" type="submit"></button>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()" [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()" [hidden]="isPrevvalid">previous</button>
+                    </fieldset>
+                </p-tabPanel>
+
+            </p-tabView>
+
+
+        </form>
+    </ng-template>
+
+</p-dialog>
+
+
+<!-- <p-dialog [(visible)]="eqCovrageDialog" (onHide)="hideDialog()" [style]="{width: '1024px'}" [modal]="true"
+styleClass="p-fluid">
+<ng-template pTemplate="content">
+    <div>
+        <div class="header">
+            <p-toolbar styleClass="p-mb-4">
+                <h3 class="title">{{'contract.AddNewEquipmentContract' | translate}}</h3>
+                <ng-template pTemplate="left">
+                    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                        class="p-button-warning download" pTooltip="PDF" tooltipPosition="bottom"></button>
+                </ng-template>
+
+            </p-toolbar>
+        </div>
+        <div>
+        </div>
+    </div>
+    <form (ngSubmit)="AddEqCoverageForm.valid && saveObject(equipmentCoverage)" #AddEqCoverageForm="ngForm">
+        <p-tabView>
+          
+
+            <p-tabPanel header="{{'equipmentCoverage.EqDetails' | translate}}">
+                <fieldset class="tab">
+                    <legend>{{'contract.Details'| translate}}</legend>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="subject">{{'contract.subject'|translate}}</label>
+                            <select class="form-control" id="subject" name="subject" #subject="ngModel"
+                                [(ngModel)]="eqCoverage.contractId" [ngModelOptions]="{standalone: true}"
+                                (click)="getAllContract()">
+                                <option selected>--select--</option>
+                                <option *ngFor="let c of contractsList" [value]="c.contractId">
+                                    {{c.subject}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <p-multiSelect [options]="equipmentList" optionValue="id"
+                                [(ngModel)]="eqCoverage.equipmentsIDs" [ngModelOptions]="{standalone: true}"
+                                defaultLabel="Select an Equipment" optionLabel="equipmentName"></p-multiSelect>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="responseTime">{{'contract.responseTime'| translate}}</label>
+                            <input type="number" id="responseTime" class="form-control"
+                                placeholder="response Time" required [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="eqCoverage.responseTime" autofocus />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="noOfvisits">{{'contract.noOfvisits'|translate}}</label>
+                            <input type="number" class="form-control" id="numberOfVisits"
+                                placeholder="No.Ofvisits" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="eqCoverage.numberOfVisits" required autofocus>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="spare" for="sparePart">{{'contract.sparePart'|translate}}
+                                <input type="checkbox" name="sparePart" id="sparePart" /></label>
+
+                        </div>
+                        <div class="col-md-3">
+                            <label for="name">{{'contract.subject'|translate}}</label>
+                            <select class="form-control" id="sparePart" name="sparePart" #sparePart="ngModel"
+                                [(ngModel)]="eqCoverage.sparePartId">
+                                <option selected>--select--</option>
+                                <option *ngFor="let s of sparePartsList" [value]="s.id">
+                                    {{s.sparePartName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="Description">{{'equipment.Description'| translate}}</label>
+                            <textarea class="form-control" id="Description" type="text"
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="eqCoverage.description"
+                                required autofocus></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </p-tabPanel>
+
+
+            <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+                <fieldset class="tab">
+                    <legend>{{'Actions.Attachments' |translate}}</legend>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p-fileUpload (onUpload)="upload($event)" name="demo[]"
+                                url="http://localhost:51368/api/ImgUpload/" multiple="multiple"
+                                accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                maxFileSize="1000000">
+                            </p-fileUpload>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ng-template pTemplate="footer">
+                                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                                    (click)="hideDialog()" value="cancel"></button>
+                                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                                    value="save" type="submit"></button>
+                            </ng-template>
+                        </div>
+                    </div>
+                </fieldset>
+            </p-tabPanel>
+
+        </p-tabView>
+
+
+    </form>
+</ng-template>
+
+</p-dialog> -->

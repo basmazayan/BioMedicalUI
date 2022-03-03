@@ -1,0 +1,200 @@
+<div class="row">
+<aside class="col-5 col-md-2 ">
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+
+        <!-- //////////////////////// Directories-->
+          <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse2" role="button" aria-expanded="false" 
+              aria-controls="collapseExample">{{'equipment.healthDirectory' |translate}}</a>
+                <div id="collapse2"  class="panel-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body p-0" style="margin-top: -20px;">
+                        <div style="display: block;" class="input-group">
+                        <div class="form-outline ">
+                            <label class="form-label" for="formS1"></label>
+                        </div>
+                        </div>
+                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                            <li class="list-group-item" *ngFor="let item of this.ELSHARKYAArr">
+                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                            [value]="item.code">
+                                             {{item.arName}} -->
+                                <p-checkbox name="group1" [value]="item.code" [(ngModel)]="mohafazatCode"
+                                                (click)="selectMohafza()"></p-checkbox>
+                                                <!-- {{item.arName}} -->
+                                {{translate.currentLang == "En" ?
+                                item.enName:item.arName}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+        <!------------------Cities-------------------------->
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse3" role="button" aria-expanded="false" 
+              aria-controls="collapseExample">{{'equipment.district' |translate}}</a>
+                <div id="collapse3"  class="panel-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body p-0" style="margin-top: -20px;">
+                        <div style="display: block;" class="input-group">
+                        <div class="form-outline ">
+                            <label class="form-label" for="formS1"></label>
+                        </div>
+                        </div>
+                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                            <li class="list-group-item" *ngFor="let item of this.ADMIN_ELSHARKYAArr">
+                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                            [value]="item.code">
+                                             {{item.arName}} -->
+                                <p-checkbox name="group1" [value]="item.cityCode" [(ngModel)]="ctyCode"
+                                                (click)="selectCity()"></p-checkbox>
+                                                <!-- {{item.arName}} -->
+                                {{translate.currentLang == "En" ?
+                                item.enName:item.arName}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+        <!--------------------Organizations------------------->
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse4" role="button" aria-expanded="false" 
+              aria-controls="collapseExample">{{'equipment.organization' |translate}}</a>
+                <div id="collapse4"  class="panel-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body p-0" style="margin-top: -20px;">
+                        <div style="display: block;" class="input-group">
+                        <div class="form-outline ">
+                            <label class="form-label" for="formS1"></label>
+                        </div>
+                        </div>
+                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                            <li class="list-group-item" *ngFor="let item of orginataions">
+                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                            [value]="item.code">
+                                             {{item.arName}} -->
+                                <p-checkbox name="group1" [value]="item.hospitalId" [(ngModel)]="organizationIds"
+                                (click)="selectOrginataions()"></p-checkbox>
+                                                <!-- {{item[0].nameAr}} -->
+                                {{translate.currentLang == "En" ?
+                                item.name:item.nameAr}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        <!-----------------------SubOrganization--------------------------->
+
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse5" role="button" aria-expanded="false" 
+              aria-controls="collapseExample">{{'equipment.SubOrganization' |translate}}</a>
+                <div id="collapse5"  class="panel-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body p-0" style="margin-top: -20px;">
+                        <div style="display: block;" class="input-group">
+                        <div class="form-outline ">
+                            <label class="form-label" for="formS1"></label>
+                        </div>
+                        </div>
+                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                            <li class="list-group-item" *ngFor="let item of subOrginataions">
+                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                            [value]="item.code">
+                                             {{item.arName}} -->
+                                <p-checkbox name="group1" [value]="item.hospitaIds" [(ngModel)]="subOrganizationIds"
+                                (click)="selectSubOrginataions()"></p-checkbox>
+                                                <!-- {{item.name}} -->
+                                {{translate.currentLang == "En" ?
+                                item.name:item.nameAr}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+        <!-----------------------Department----------------------------->
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse6" role="button" aria-expanded="false" 
+              aria-controls="collapseExample">{{'equipment.Department' |translate}}</a>
+                <div id="collapse6"  class="panel-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body p-0" style="margin-top: -20px;">
+                        <div style="display: block;" class="input-group">
+                        <div class="form-outline ">
+                            <label class="form-label" for="formS1"></label>
+                        </div>
+                        </div>
+                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                            <li class="list-group-item" *ngFor="let item of DepartmantsData">
+                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                            [value]="item.code">
+                                             {{item.arName}} -->
+                                <p-checkbox name="group1" [value]="item.departmentID" [(ngModel)]="departmentIds"
+                                (click)="selectDepartmants()"></p-checkbox>
+                                                <!-- {{item.name}} -->
+                                {{translate.currentLang == "En" ?
+                                item.departmentEngName:item.departmentArName}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+        <!-----------------------Manufacturer----------------------------->
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse7" role="button" aria-expanded="false" 
+              aria-controls="collapseExample">{{'equipment.Manufacturer' |translate}}</a>
+                <div id="collapse7"  class="panel-collapse collapse" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body p-0" style="margin-top: -20px;">
+                        <div style="display: block;" class="input-group">
+                        <div class="form-outline ">
+                            <label class="form-label" for="formS1"></label>
+                        </div>
+                        </div>
+                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                            <li class="list-group-item" *ngFor="let item of brands">
+                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                            [value]="item.code">
+                                             {{item.arName}} -->
+                                <p-checkbox name="group1" [value]="item.hospitalCode" [(ngModel)]="brandIds"
+                                (click)="selectBrand()"></p-checkbox>
+                                                <!-- {{item.name}} -->
+                                {{translate.currentLang == "En" ?
+                                item.manFactureName:item.manFactureNameAr}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        
+        <!-----------------------Suppliers----------------------------->
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse8" role="button" aria-expanded="false" 
+        aria-controls="collapseExample">{{'equipment.Supplier' |translate}}</a>
+          <div id="collapse8"  class="panel-collapse collapse" aria-labelledby="headingOne"
+              data-bs-parent="#accordionExample">
+              <div class="accordion-body p-0" style="margin-top: -20px;">
+                  <div style="display: block;" class="input-group">
+                  <div class="form-outline ">
+                      <label class="form-label" for="formS1"></label>
+                  </div>
+                  </div>
+                  <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
+                      <li class="list-group-item" *ngFor="let item of supplierNames">
+                          <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
+                                      [value]="item.code">
+                                       {{item.arName}} -->
+                          <p-checkbox name="group1" [value]="item.id" [(ngModel)]="supplierIds"
+                          ></p-checkbox>
+                                          <!-- {{item.name}} -->
+                          {{translate.currentLang == "En" ?
+                          item.name:item.nameAr}}
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </div>
+</aside>
+
+<!-- <div *ngIf="translate.currentLang==='Ar'" class="col-7  col-md-10" style="height: 100vh;">
+    <div id="viewDiv" class="w-100 h-100 "></div>
+</div> -->
+<div class="col-7 col-md-10" style="height: 100vh;">
+    <div id="viewDiv" class="w-100 h-100 "></div>
+</div>
+
+</div>

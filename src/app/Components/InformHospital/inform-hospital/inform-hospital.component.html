@@ -1,0 +1,98 @@
+<!-----------------------------------InForm Hospital UI--------------------------------->
+<div class="container" *ngIf="currentUser.roleName==='Admin' ">
+    <div class="header">
+        <h3 class="title" style="text-align: center;">Maintenance Contract_Hospital Notification
+        </h3>
+    </div>
+    <p-toast posinset="top-right"></p-toast>
+    <hr style="width: 50%;">
+    <br>
+    <div class="row">
+        <!-- <input type="submit" value="back to requests" (click)="backToRequest()" class="btnSubmit btn btn-info"> -->
+        <div class="p-grid p-nogutter p-justify-between btnSubmit">
+            <p-button label="back to requests" (click)="backToRequest()" icon="pi pi-angle-left"></p-button>
+        </div>
+        <div class="col-lg-6">
+            <input type="button" (click)="InformHospital()" value="Inform Hospital" class="inform btn btn-info"
+                >
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-lg-2">
+            <label>{{'ContractRequest.RequestNumber' |translate}}</label>
+        </div>
+        <div class="col-lg-4">
+            <select class="form-control" name="contract" required
+                id="contractId" (change)="onSelectContract()">
+                <option selected disabled>--select--</option>
+                <option *ngFor="let c of contractList" [value]="c.id">
+                    {{c.number}}
+                </option>
+            </select>
+        </div>
+        <div class="col-lg-1">
+            <label for="supplier">Supplier</label>
+        </div>
+        <div class="col-lg-5">
+            <input type="text" class="form-control" id="supplier" name="supplier" [value]="" disabled>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-lg-2">
+            <label for="startdate">Start Date</label>
+        </div>
+        <div class="col-lg-4">
+            <input type="date" class="form-control" id="startDate" name="startDate" [value]="" disabled>
+        </div>
+        <div class="col-lg-2">
+            <label for="endDate">End Date</label>
+        </div>
+        <div class="col-lg-4">
+            <input type="date" class="form-control" id="endDate" name="endDate" [value]="" disabled>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-lg-2">
+            <label for="subject">Subject</label>
+        </div>
+        <div class="col-lg-6">
+            <input type="text" class="form-control" id="subject" name="subject" [value]="" disabled>
+        </div>
+    </div>
+    <br><br>
+    <p-table [value]="EquipmentInEachContract" [rows]="10" styleClass="p-datatable-responsive-demo"
+         [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" >
+        <ng-template pTemplate="header">
+            <tr style="font-size: 18px;">
+                <th>{{'equipment.upaCode'|translate}}</th>
+                <th>{{'equipment.Name'|translate}}</th>
+                <th>{{'equipment.Manufacturer'|translate}}</th>
+                <th>{{'equipment.organization'|translate}}</th>
+                <th>{{'equipment.healthDirectory'|translate}}</th>
+                <th>{{'equipment.healthDistrict'|translate}}</th>
+                <th>{{'equipment.healthCareUnit'|translate}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-eqqq>
+            <tr style="font-size: 17px;">
+                <td>{{eqqq.internalCode}}</td>
+                <td>{{translate.currentLang == "En" ? eqqq.equipmentName:eq.equipmentNameAr}}
+                </td>
+                <td>{{translate.currentLang == "En" ?
+                    eqqq.manufacturerName:eq.manufacturerNameAr}}</td>
+                    <td>{{translate.currentLang == "En" ?
+                        eqqq.organizationName:eq.organizationNameAr}}</td>
+                <td>{{translate.currentLang == "En" ?
+                    eqqq.healthDirectoryName:eqqq.healthDirectoryNameAr}}
+                </td>
+                <td>{{translate.currentLang == "En" ?
+                    eqqq.healthDistrictName:eqqq.healthDistrictNameAr}}
+                </td>
+                <td>{{translate.currentLang == "En" ?
+                    eqqq.healthCareUnitName:eqqq.healthCareUnitNameAr}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,0 +1,164 @@
+<div class="container-fluid">
+    <div class="card">
+        <p-toast posinset="top-right"></p-toast>
+
+        <div class="card-body" >
+            <div class="row">
+                <div class="col-md-11">    <h5 class="p-m-0">{{'status.Managestatus'|translate}}</h5></div>
+                <div class="col-md-1" style="text-align: right;">     
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary p-button-rounded p-mr-2"
+                    routerLink="/home/addStatus" pTooltip="edit a user" tooltipPosition="right"></button>
+                </div>
+        </div>
+          
+    
+        <div class="row">
+            <div class="col-md-12"><br/></div></div>
+    
+        <div class="row">
+                
+     
+            <div class="col-md-12"> 
+
+
+
+
+
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="statusesList" styleClass="p-datatable-responsive-demo" [rows]="10" [paginator]="true" [(selection)]="selectedStatuses"
+            [rowHover]="true" dataKey="id"  styleClass="p-datatable-striped"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true" [globalFilterFields]="['status','statusAr','code']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                
+
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" class="form-control"
+                            (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="{{'search.Search'|translate}}..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="code">{{'status.Code'|translate}} <p-sortIcon field="code"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="status">{{'status.status'|translate}} <p-sortIcon field="status"></p-sortIcon>
+                    </th>
+
+                    <th  style="width: 10%;">{{'Actions.Action'|translate}}</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'code', 'contains')"
+                            [value]="dt.filters['code']?.value" placeholder="{{'status.SearchbyCode'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value, 'status', 'contains')"
+                            [value]="dt.filters['status']?.value" placeholder="{{'status.SearchbyName'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+
+                    <th style="width: 10%;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-status>
+                <tr>
+                    <td style="text-align: inherit;">
+                    {{status.code}}
+                    </td>
+                    <td style="text-align: inherit;">
+                        {{translate.currentLang == "En" ? status.status:status.statusAr}}
+                    </td>
+                    <td style="text-align: inherit;width: 10%;">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(status)" pTooltip="edit a status" tooltipPosition="top"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(status.id)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    {{'In total there are.In total there are'| translate}} {{Statuses ? Statuses.length : 0 }} {{"Sidebar.Status" |
+                    translate}}.
+                </div>
+            </ng-template>
+        </p-table>
+    </div></div>
+    <p-dialog [(visible)]="statusDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'status.Editstatus'|translate}}</h3>
+                </div>
+            </div>
+            <form (ngSubmit)="EditStatusForm.valid && updateStatus()" #EditStatusForm="ngForm">
+                <fieldset class="tab">
+                    <div class="row">
+
+                     <div class="col-md-12">
+                            <label for="status">{{'status.Code'|translate}}</label>
+                            <input type="text" class="form-control" id="statusCode" name="statusCode" #statusCode="ngModel"
+                                pTooltip="Enter Code" tooltipPosition="bottom" [(ngModel)]="equipmentStatusObj.code"
+                                [class.is-invalid]="statusCode.touched && statusCode.errors || EditStatusForm.submitted"
+                                [class.is-valid]="statusCode.valid && EditStatusForm.submitted" required>
+                            <div *ngIf="(statusCode.touched || EditStatusForm.submitted) && statusCode.errors?.required">
+                                <span class="text-danger">
+                                     {{'status.Required'|translate}}      
+                                </span>
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-md-12">
+                            <label for="status">{{'status.status'|translate}}</label>
+                            <input type="text" class="form-control" id="Enstatus" name="Enstatus" #Enstatus="ngModel"
+                                pTooltip="Enter a Name" tooltipPosition="bottom" [(ngModel)]="equipmentStatusObj.status"
+                                [class.is-invalid]="Enstatus.touched && Enstatus.errors || EditStatusForm.submitted"
+                                [class.is-valid]="Enstatus.valid && EditStatusForm.submitted" required>
+                            <div *ngIf="(Enstatus.touched || EditStatusForm.submitted) && Enstatus.errors?.required">
+                                <span class="text-danger">
+                                    {{'status.Required'|translate}}      
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="status">{{'status.statusAr'|translate}}</label>
+                            <input type="text" class="form-control" id="Arstatus" name="Arstatus" #Arstatus="ngModel"
+                                pTooltip="Enter a Name in Arabic" tooltipPosition="bottom" [(ngModel)]="equipmentStatusObj.statusAr"
+                                [class.is-invalid]="Arstatus.touched && Arstatus.errors || EditStatusForm.submitted"
+                                [class.is-valid]="Arstatus.valid && EditStatusForm.submitted" required>
+                            <div *ngIf="(Arstatus.touched || EditStatusForm.submitted) && Arstatus.errors?.required">
+                                <span class="text-danger">
+                                    {{'status.Required'|translate}}      
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                        </div>
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                class="btn btn-info" value="save" type="submit"></button>
+                        </div>
+                    </div>
+                    <br><br>
+                </fieldset>
+            </form>
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+    </p-dialog>
+    
+</div></div></div>

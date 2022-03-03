@@ -1,0 +1,215 @@
+<!-- <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+
+          
+            </ng-template>
+        </p-toolbar> -->
+
+
+
+
+
+<div class="container-fluid">
+
+    <div class="card">
+        <p-toast posinset="top-right"></p-toast>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <h5>{{'subcategory.ManageSubCategories'|translate}}</h5>
+                </div>
+                <div class="col-md-1" style="text-align: right;">
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                        routerLink="/home/addSubCategory" pTooltip="Add a New subcategory"
+                        tooltipPosition="right"></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+                    <p-table #dt [value]="subCategoriesList"  styleClass="p-datatable-striped" [rows]="10"
+                        [paginator]="true" [(selection)]="selectedSubCategories" [rowHover]="true" dataKey="id"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [showCurrentPageReport]="true"
+                        [globalFilterFields]="['subCategoryName','subCategoryNameAr','code']">
+                        <ng-template pTemplate="caption">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+
+
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text" class="form-control"
+                                        (input)="dt.filterGlobal($event.target.value,'contains')"
+                                        placeholder="{{'search.Search'|translate}}..." />
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="code">{{'name.name'|translate}}<p-sortIcon field="code">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="subCategoryName">{{'name.name'|translate}}<p-sortIcon
+                                        field="subCategoryName">
+                                    </p-sortIcon>
+                                </th>
+
+                                <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'code', 'contains')"
+                                        [value]="dt.filters['code']?.value"
+                                        placeholder="{{'subcategory.SearchbyCode'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+
+
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'subCategoryName', 'contains')"
+                                        [value]="dt.filters['categoryName']?.value"
+                                        placeholder="{{'subcategory.SearchbyName'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+
+
+
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-subCat>
+                            <tr>
+
+                                <td  style="text-align: inherit;"> {{subCat.code}}</td>
+                                <td  style="text-align: inherit;">  {{translate.currentLang == "En" ? subCat.subCategoryName:subCat.subCategoryNameAr}}
+                                </td>
+
+                                <td  style="text-align: inherit;">
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-info edit" (click)="openNew(subCat)"
+                                        pTooltip="edit a subcategory" tooltipPosition="top"></button>
+
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                        (click)="confirmDelete(subCat.id,subCat.subCategoryName)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                {{'In total there are.In total there are'| translate}} {{SubCategories ?
+                                SubCategories.length : 0 }} {{'Sidebar.EquipmentSubCategories'| translate}}.
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="subCategoryDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'subcategory.EditsubCategory'|translate}}</h3>
+            </div>
+
+        </div>
+        <form (ngSubmit)="EditSubCategoryForm.valid && updatesubCategory()" #EditSubCategoryForm="ngForm">
+
+            <fieldset class="tab">
+
+                <div class="row">
+
+                    <div class="col-md-12 form-group">
+                        <label for="category">{{'subcategory.Category'|translate}}</label>
+                        <select class="form-control" id="category" name="category" #category="ngModel"
+                            [(ngModel)]="subCategory.equipmentCategoryId" pTooltip="select a Category"
+                            tooltipPosition="bottom"
+                            [class.is-invalid]="category.touched && category.errors || EditSubCategoryForm.submitted"
+                            [class.is-valid]="category.valid && EditSubCategoryForm.submitted" required>
+                            <option selected>--select--</option>
+                            <option *ngFor="let cat of categoriesList" [value]="cat.id" [selected]="cat.id == subCategory.equipmentCategoryId">
+                                {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                            </option>
+                        </select>
+                        <div *ngIf="(category.touched || EditSubCategoryForm.submitted) && category.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <label for="code">{{'subcategory.Code'|translate}}</label>
+                        <input type="text" class="form-control" id="code" name="code" #code="ngModel"
+                            pTooltip="Enter a Name" tooltipPosition="bottom" [(ngModel)]="subCategory.code"
+                            [class.is-invalid]="code.touched && subCategoryName.errors || EditSubCategoryForm.submitted"
+                            [class.is-valid]="code.valid && EditSubCategoryForm.submitted" required>
+                        <div *ngIf="(code.touched || EditSubCategoryForm.submitted) && code.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="subCategoryName">{{'subcategory.subCategoryName'|translate}}</label>
+                        <input type="text" class="form-control" id="subCategoryName" name="subCategoryName"
+                            #subCategoryName="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
+                            [(ngModel)]="subCategory.subCategoryName"
+                            [class.is-invalid]="subCategoryName.touched && subCategoryName.errors || EditSubCategoryForm.submitted"
+                            [class.is-valid]="subCategoryName.valid && EditSubCategoryForm.submitted" required>
+                        <div
+                            *ngIf="(subCategoryName.touched || EditSubCategoryForm.submitted) && subCategoryName.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="subCategoryNameAr">{{'subcategory.subCategoryNameAr'|translate}}</label>
+                        <input type="text" class="form-control" id="subCategoryName"
+                            [ngModelOptions]="{standalone: true}" pTooltip="Enter a Name in Arabic"
+                            tooltipPosition="bottom" [(ngModel)]="subCategory.subCategoryNameAr" name="subCategoryName"
+                            #subCategoryArName="ngModel"
+                            [class.is-invalid]="subCategoryArName.touched && subCategoryArName.errors || EditSubCategoryForm.submitted"
+                            [class.is-valid]="subCategoryArName.valid && EditSubCategoryForm.submitted" required>
+                        <div
+                            *ngIf="(subCategoryArName.touched || EditSubCategoryForm.submitted) && subCategoryArName.errors?.required">
+                            <span class="text-danger">
+                                {{'ecricodes.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><br /></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                            class="btn btn-info" (click)="hideDialog()" type="button"
+                            value="{{'Actions.Cancel'|translate}}"></button>
+                    </div>
+                    <div class="col-lg-3">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                            class="btn btn-info" value="{{'Actions.Save'|translate}}" type="submit"></button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+    {{'General.Error'|translate}}    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+</p-dialog>

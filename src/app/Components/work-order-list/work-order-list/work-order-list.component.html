@@ -1,0 +1,637 @@
+<div class="card">
+    <p-messages [value]="msgs"></p-messages>
+    <!-- <div *ngIf="currentUser.roleName == 'Admin'">
+        <p-table #dt [value]="requests" [rows]="10" [paginator]="true"
+            [globalFilterFields]="['serviceRequestTitle','serviceRequestCode','serviceRequestDate']"
+            [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="serviceRequestTitle">{{'SeviceRequest.title'|translate}} <p-sortIcon
+                            field="serviceRequestTitle">
+                        </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="serviceRequestTime">{{'SeviceRequest.serviceRequestTime'|translate}}
+                        <p-sortIcon field="serviceRequestTime">
+                        </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="serviceRequestDate">{{'SeviceRequest.serviceRequestDate'|translate}}
+                        <p-sortIcon field="serviceRequestDate">
+                        </p-sortIcon>
+                    </th>
+                    <th>{{'Actions.Action' |translate}}</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'serviceRequestTitle', 'contains')"
+                            [value]="dt.filters['serviceRequestTitle']?.value"
+                            placeholder="{{'SeviceRequest.SearchbyRequestTitle'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'serviceRequestTime', 'contains')"
+                            [value]="dt.filters['serviceRequestCode']?.value"
+                            placeholder="{{'SeviceRequest.SearchbyserviceRequestTime'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'serviceRequestDate', 'contains')"
+                            [value]="dt.filters['serviceRequestDate']?.value"
+                            placeholder="{{'SeviceRequest.searchbyRequestDate'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-req>
+                <tr>
+                    <td>{{req.serviceRequestTitle}}</td>
+                    <td>{{req.serviceRequestTime.hours}}:{{req.serviceRequestTime.minutes}}</td>
+                    <td>{{req.serviceRequestDate | date:'dd-MM-yyyy'}}</td>
+
+                    <td>
+                        <button pButton pRipple label="assign" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(req)"></button>
+                        <button *ngIf="currentUser.roleName == 'Admin'" pButton pRipple icon="pi pi-trash"
+                            class="p-button-rounded p-button-danger" (click)="deleteRequst(req.id)"></button>
+                        <button pButton pRipple label="close" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(req)"></button>
+                    </td>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    In total there are {{requests ? requests.length : 0 }} requests.
+                </div>
+            </ng-template>
+        </p-table>
+    </div> -->
+    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+    <div>
+        <p-table #dt [value]="WorkOrderList" [rows]="10" styleClass="p-datatable-responsive-demo" [paginator]="true"
+            [globalFilterFields]="['serviceRequestTitle','serviceRequestCode','serviceRequestDate']"
+            [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="EquipmentId">{{'workOrder.Equipment'|translate}} <p-sortIcon
+                            field="EquipmentId">
+                        </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="RequestStatusId">{{'workOrder.status'|translate}}
+                        <p-sortIcon field="RequestStatusId">
+                        </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="workOrderDate">{{'workOrder.Date'|translate}}
+                        <p-sortIcon field="workOrderDate">
+                        </p-sortIcon>
+                    </th>
+                    <th>{{'Actions.Action' |translate}}</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'EquipmentId', 'contains')"
+                            [value]="dt.filters['EquipmentId']?.value"
+                            placeholder="{{'SeviceRequest.SearchbyRequestTitle'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'RequestStatusId', 'contains')"
+                            [value]="dt.filters['RequestStatusId']?.value"
+                            placeholder="{{'SeviceRequest.SearchbyserviceRequestTime'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'workOrderDate', 'contains')"
+                            [value]="dt.filters['workOrderDate']?.value"
+                            placeholder="{{'SeviceRequest.searchbyRequestDate'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-wo>
+                <tr>
+                    <td>
+                        {{translate.currentLang == "En" ? wo.equipmentName:wo.equipmentNameAr}}
+                    </td>
+                    <td>
+                        <span class="material-icons" [ngStyle]="{'color': wo.color}">fiber_manual_record</span>
+                        {{translate.currentLang == "En" ? wo.statusName:wo.statusNameAr}}
+                    </td>
+                    <td>{{wo.workOrderDate | date:'dd-MM-yyyy'}}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(wo)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(wo.id)"></button>
+                        <button pButton pRipple label="{{'workOrder.close'|translate}}"
+                            class="p-button-rounded p-button-info edit" (click)="closeOrder(wo.id)"></button>
+                    </td>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    In total there are {{requests ? requests.length : 0 }} requests.
+                </div>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!--***************************************************************************-->
+    <div style="height: 50px;"></div>
+
+    <p-toolbar styleClass="p-mb-4">
+        <h6 style="color: green;">{{'workOrder.WorkOrderforpreventiveMaintenence'|translate}}</h6>
+    </p-toolbar>
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+
+            <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                routerLink="/home/AddWorkOrderWithoutRequest" pTooltip="Add a New workOrder"
+                tooltipPosition="right"></button>
+
+        </ng-template>
+    </p-toolbar>
+    <div>
+        <p-table #dt [value]="WorkOrdersWithoutRequest" styleClass="p-datatable-responsive-demo" [rows]="10"
+            [paginator]="true" [globalFilterFields]="['serviceRequestTitle','serviceRequestCode','serviceRequestDate']"
+            [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="EquipmentId">{{'workOrder.Equipment'|translate}}<p-sortIcon
+                            field="EquipmentId">
+                        </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="RequestStatusId">{{'workOrder.status'|translate}}
+                        <p-sortIcon field="RequestStatusId">
+                        </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="workOrderDate">{{'workOrder.Date'|translate}}
+                        <p-sortIcon field="workOrderDate">
+                        </p-sortIcon>
+                    </th>
+                    <th>{{'Actions.Action' |translate}}</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'EquipmentId', 'contains')"
+                            [value]="dt.filters['EquipmentId']?.value"
+                            placeholder="{{'SeviceRequest.SearchbyRequestTitle'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'RequestStatusId', 'contains')"
+                            [value]="dt.filters['RequestStatusId']?.value"
+                            placeholder="{{'SeviceRequest.SearchbyserviceRequestTime'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'workOrderDate', 'contains')"
+                            [value]="dt.filters['workOrderDate']?.value"
+                            placeholder="{{'SeviceRequest.searchbyRequestDate'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-wo1>
+                <tr>
+                    <td>
+                        {{translate.currentLang == "En" ? wo1.equipmentName:wo1.equipmentNameAr}}
+                    </td>
+                    <td> <span class="material-icons" [ngStyle]="{'color': wo1.color}">fiber_manual_record</span>
+                        {{translate.currentLang == "En" ? wo1.statusName:wo1.statusNameAr}}
+                    </td>
+
+                    <!-- <td>{{req.serviceRequestTime.hours}}:{{req.serviceRequestTime.minutes}}</td> -->
+                    <td>{{wo1.workOrderDate | date:'dd-MM-yyyy'}}</td>
+
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNewDialog(wo1)" pTooltip="edit a WorkOrder" tooltipPosition="top"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(wo1.id)"></button>
+                        <button pButton pRipple label="{{'workOrder.close'|translate}}"
+                            class="p-button-rounded p-button-info edit" (click)="closeOrder(wo1.id)"></button>
+                    </td>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    In total there are {{requests ? requests.length : 0 }} requests.
+                </div>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<p-dialog [(visible)]="workOrderDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'workOrder.EditWOrkOrder'|translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/service_request.png" class="img" [alt]="product">
+            </div>
+        </div>
+
+        <!-- <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image"> -->
+        <form>
+            <p-tabView>
+                <p-tabPanel header="{{'workOrder.Details'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Date">{{'workOrder.Date'|translate}}</label>
+                                <input type="date" pInputText id="Date" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="WorkOrder.workOrderDate" required
+                                    autofocus />
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label for="priority">{{'workOrder.Status'|translate}}</label>
+                                <div>
+                                    <div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item" *ngFor="let item of statusList">
+                                                <input type="radio" [(ngModel)]="WorkOrder.requestStatusId"
+                                                    name="status" id="status" #status="ngModel" [value]="item.id" />
+                                                {{translate.currentLang == "En" ? item.status:item.statusAr}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="priority">{{'workOrder.Priority'|translate}}</label>
+                                <div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" *ngFor="let item of priorities">
+                                            <input type="radio" [(ngModel)]="WorkOrder.priorityId" name="Priority"
+                                                id="Priority" #status="ngModel" [value]="item.id" />
+                                            {{translate.currentLang == "En" ? item.priorityLevel:item.priorityLevelAr}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="Equipment">{{'workOrder.Equipment'|translate}}</label>
+                                <select class="form-control" id="EquipmentId" name="EquipmentId" #EquipmentId="ngModel"
+                                    [(ngModel)]="WorkOrder.equipmentId">
+                                    <option selected>--select--</option>
+                                    <option *ngFor="let e of equipmentList" [value]="e.id">
+                                        {{translate.currentLang == "En" ? e.equipmentName:e.equipmentNameAr}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'workOrder.Maintenance'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="problem">{{'workOrder.Problem'|translate}}</label>
+                                <input type="text" pInputText id="problem" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="maintenance.problem" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="partCost">{{'workOrder.PartCost'|translate}}</label>
+                                <input type="text" pInputText id="partCost" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="maintenance.partCost" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="laborCost">{{'workOrder.LaborCost'|translate}}</label>
+                                <input type="text" pInputText id="laborCost" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="maintenance.laborCost" required
+                                    autofocus />
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'workOrder.SparePart'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Code">{{'workOrder.Code'|translate}}</label>
+                                <input type="text" pInputText id="Code" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="sparepart.sparePartCode" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="Name">{{'workOrder.Name'|translate}}</label>
+                                <input type="text" pInputText id="Name" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="sparepart.sparePartName" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="NameAr">{{'workOrder.NameAr'|translate}}</label>
+                                <input type="text" pInputText id="NameAr" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="sparepart.sparePartNameAr"
+                                    required autofocus />
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+
+                <p-tabPanel header="{{'workOrder.Labor'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    <input type="radio" name="Id" id="employeeId" (click)="getAllEmployees()" />
+                                    {{'workOrder.Employee'|translate}}
+                                </div>
+                                <br>
+                                <div>
+                                    <select class="form-control" id="employeeId" name="employeeId" #employeeId="ngModel"
+                                        [(ngModel)]="WorkOrder.employeeId">
+                                        <option selected>--select--</option>
+                                        <option *ngFor="let e of employees" [value]="e.id">
+                                            {{translate.currentLang == "En" ? e.employeeName:e.employeeNameAr}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <input type="radio" name="Id" id="vendorId" (click)="getAllVendors()" />
+                                    {{'workOrder.Vendor'|translate}}
+                                </div>
+                                <br>
+                                <div>
+                                    <select class="form-control" id="vendorId" name="vendorId" #vendorId="ngModel"
+                                        [(ngModel)]="WorkOrder.vendorId">
+                                        <option selected>--select--</option>
+                                        <option *ngFor="let v of vendor" [value]="v.id">
+                                            {{translate.currentLang == "En" ? v.vendorName:v.vendorNameAr}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p-fileUpload (onUpload)="upload($event)" name="demo[]"
+                                    url="http://localhost:51368/api/ImgUpload/" multiple="multiple"
+                                    accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" maxFileSize="1000000">
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+            </p-tabView>
+
+
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        {{'workOrder.Agreetotermsandconditions'|translate}}
+                    </label>
+                    <div class="invalid-feedback">
+                        {{'workOrder.Youmustagreebeforesubmitting'|translate}}.
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" class="p-button-text"
+            (click)="hideDialog()" value="cancel"></button>
+        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" class="p-button-text"
+            (click)="updateWorkOrder()" value="save"></button>
+
+
+    </ng-template>
+</p-dialog>
+
+<!--*******************************************************************************-->
+<p-dialog [(visible)]="workOrderDialogWithoutRequest" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'workOrder.EditWOrkOrderforNoRequest'|translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/service_request.png" class="img" [alt]="product">
+            </div>
+        </div>
+
+        <!-- <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image"> -->
+        <form>
+            <p-tabView>
+                <p-tabPanel header="{{'workOrder.Details'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Date">{{'workOrder.Date'|translate}}</label>
+                                <input type="date" pInputText id="Date" class="form-control"
+                                    [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="OrdersWithoutRequest.workOrderDate" required autofocus />
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label for="priority">{{'workOrder.Status'|translate}}</label>
+                                <div>
+                                    <div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item" *ngFor="let item of statusList">
+                                                <input type="radio" [(ngModel)]="OrdersWithoutRequest.requestStatusId"
+                                                    name="status" id="status" #status="ngModel" [value]="item.id" />
+                                                {{translate.currentLang == "En" ? item.status:item.statusAr}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="priority">{{'workOrder.Priority'|translate}}</label>
+                                <div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" *ngFor="let item of priorities">
+                                            <input type="radio" [(ngModel)]="OrdersWithoutRequest.priorityId"
+                                                name="Priority" id="Priority" #status="ngModel" [value]="item.id" />
+                                            {{translate.currentLang == "En" ? item.priorityLevel:item.priorityLevelAr}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="Equipment">{{'workOrder.Equipment'|translate}}</label>
+                                <select class="form-control" id="EquipmentId" name="EquipmentId" #EquipmentId="ngModel"
+                                    [(ngModel)]="OrdersWithoutRequest.equipmentId">
+                                    <option selected>--select--</option>
+                                    <option *ngFor="let e of equipmentList" [value]="e.id">
+                                        {{translate.currentLang == "En" ? e.equipmentName:e.equipmentNameAr}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'workOrder.Maintenance'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="problem">{{'workOrder.Problem'|translate}}</label>
+                                <input type="text" pInputText id="problem" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="maintenance.problem" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="partCost">{{'workOrder.PartCost'|translate}}</label>
+                                <input type="text" pInputText id="partCost" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="maintenance.partCost" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="laborCost">{{'workOrder.LaborCost'|translate}}</label>
+                                <input type="text" pInputText id="laborCost" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="maintenance.laborCost" required
+                                    autofocus />
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'workOrder.SparePart'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Code">{{'workOrder.Code'|translate}}</label>
+                                <input type="text" pInputText id="Code" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="sparepart.sparePartCode" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="Name">{{'workOrder.Name'|translate}}</label>
+                                <input type="text" pInputText id="Name" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="sparepart.sparePartName" required
+                                    autofocus />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="NameAr">{{'workOrder.NameAr'|translate}}</label>
+                                <input type="text" pInputText id="NameAr" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="sparepart.sparePartNameAr"
+                                    required autofocus />
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+
+                <p-tabPanel header="{{'workOrder.Labor'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    <input type="radio" name="Id" id="employeeId" (click)="getAllEmployees()" />
+                                    {{'workOrder.Employee'|translate}}
+                                </div>
+                                <br>
+                                <div>
+                                    <select class="form-control" id="employeeId" name="employeeId" #employeeId="ngModel"
+                                        [(ngModel)]="OrdersWithoutRequest.employeeId">
+                                        <option selected>--select--</option>
+                                        <option *ngFor="let e of employees" [value]="e.id">
+                                            {{translate.currentLang == "En" ? e.employeeName:e.employeeNameAr}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <input type="radio" name="Id" id="vendorId" (click)="getAllVendors()" />
+                                    {{'workOrder.Vendor'|translate}}
+                                </div>
+                                <br>
+                                <div>
+                                    <select class="form-control" id="vendorId" name="vendorId" #vendorId="ngModel"
+                                        [(ngModel)]="OrdersWithoutRequest.vendorId">
+                                        <option selected>--select--</option>
+                                        <option *ngFor="let v of vendor" [value]="v.id">
+                                            {{translate.currentLang == "En" ? v.vendorName:v.vendorNameAr}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p-fileUpload (onUpload)="upload($event)" name="demo[]"
+                                    url="http://localhost:51368/api/ImgUpload/" multiple="multiple"
+                                    accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" maxFileSize="1000000">
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+            </p-tabView>
+
+
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        {{'workOrder.Agreetotermsandconditions'|translate}}
+                    </label>
+                    <div class="invalid-feedback">
+                        {{'workOrder.Youmustagreebeforesubmitting'|translate}}.
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" class="p-button-text"
+            (click)="hideDialogWithoutRequest()" value="cancel"></button>
+        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" class="p-button-text"
+            (click)="updateWorkOrderWithoutRequest()" value="save"></button>
+
+
+    </ng-template>
+</p-dialog>

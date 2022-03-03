@@ -1,0 +1,198 @@
+<p-dialog [(visible)]="requestDialog" [style]="{width: '700px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'SeviceRequest.MakeARequest' |translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/service_request.png" class="img" [alt]="product">
+            </div>
+        </div>
+
+        <!-- <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image"> -->
+        <form (ngSubmit)="AddRequestForm.valid && saveProduct()" #AddRequestForm="ngForm">
+            <fieldset>
+                <legend>{{'SeviceRequest.RequestDetails' |translate}}</legend>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="equipmentName">{{'SeviceRequest.EquipmentName' |translate}}</label>
+
+                        <select class="form-control" id="equipmentName" name="equipmentName" 
+                            #equipmentName="ngModel"
+                            [(ngModel)]="requestObj.equipmentId" (change)="onselectEquipment(requestObj.equipmentId)"
+                            [class.is-invalid]="equipmentName.touched && equipmentName.errors" 
+                            [class.is-valid]="equipmentName.valid" required
+                            pTooltip="select an Equipment" tooltipPosition="bottom"
+                            >
+                            <option selected >--select--</option>
+
+                            <option *ngFor="let e of equipmentList" [value]="e.id">
+                                {{e.equipmentName}}
+                            </option>
+                        </select>
+                        <div *ngIf="(equipmentName.touched || AddRequestForm.submitted) && equipmentName.errors?.required">
+                            <span class="text-danger">        
+                                Equipment name is required                               
+                            </span>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="serviceRequestCode">{{'SeviceRequest.serviceRequestCode' |translate}}</label>
+                        <input type="text" pInputText id="serviceRequestCode" class="form-control"
+                            name="code" #code="ngModel"
+                            [(ngModel)]="requestObj.ServiceRequestCode" required
+                            [class.is-invalid]="code.touched && code.errors || AddRequestForm.submitted" 
+                            [class.is-valid]="code.valid && AddRequestForm.submitted"
+                            pTooltip="enter a RequestCode" tooltipPosition="bottom"/>
+                        <div *ngIf="(code.touched || AddRequestForm.submitted) && code.errors?.required">
+                            <span class="text-danger">        
+                                code is required                               
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="serviceRequestTitle">{{'SeviceRequest.serviceRequestTitle'|translate}}</label>
+                        <input type="text" pInputText id="serviceRequestTitle" class="form-control"
+                            name="serviceEnRequestTitle" #titleEn="ngModel"
+                            [(ngModel)]="requestObj.ServiceRequestTitle" required
+                            [class.is-invalid]="titleEn.touched && titleEn.errors || AddRequestForm.submitted" 
+                            [class.is-valid]="titleEn.valid && AddRequestForm.submitted"
+                            pTooltip="Enter A title" tooltipPosition="bottom"/>
+                        <div *ngIf="(titleEn.touched || AddRequestForm.submitted) && titleEn.errors?.required">
+                            <span class="text-danger">        
+                                English title is required                               
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="serviceRequestTitle">{{'SeviceRequest.serviceRequestTitleAr'|translate}}</label>
+                        <input type="text" pInputText id="serviceRequestTitle" class="form-control"
+                            name="serviceArRequestTitle" [(ngModel)]="requestObj.ServiceRequestTitleAr" required
+                            [class.is-invalid]="artitle.touched && artitle.errors || AddRequestForm.submitted" #artitle="ngModel"
+                            [class.is-valid]="artitle.valid && AddRequestForm.submitted"
+                            pTooltip="Enter a title in arabic" tooltipPosition="bottom"/>
+                        <div *ngIf="(artitle.touched|| AddRequestForm.submitted) && artitle.errors?.required">
+                            <span class="text-danger">        
+                                Arabic title is required                               
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="requestType">{{'SeviceRequest.requestType'|translate}}</label>
+
+                        <input type="text" pInputText id="requestType" class="form-control"
+                            name="requestType" [(ngModel)]="requestObj.requestType" required
+                            [class.is-invalid]="type.touched && type.errors || AddRequestForm.submitted" #type="ngModel"
+                            [class.is-valid]="type.valid && AddRequestForm.submitted"
+                            pTooltip="enter A request type" tooltipPosition="bottom"/>
+                        <div *ngIf="(type.touched || AddRequestForm.submitted) && type.errors?.required">
+                            <span class="text-danger">        
+                                Type is required                               
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="problemDescription">{{'SeviceRequest.problemDescription'|translate}}</label>
+                        <input type="text" pInputText id="problemDescription" class="form-control"
+                            [ngModelOptions]="{standalone: true}"
+                            pTooltip="Enter A Description" tooltipPosition="bottom"
+                            [(ngModel)]="requestObj.problemDescription"/>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="problemDescription">{{'SeviceRequest.problemDescriptionAr'|translate}}</label>
+
+                        <input type="text" pInputText id="problemDescription" class="form-control"
+                            [ngModelOptions]="{standalone: true}" 
+                            pTooltip="enter a Description in Arabic" tooltipPosition="bottom"
+                            [(ngModel)]="requestObj.problemDescriptionAr"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="serviceRequestDate">{{'SeviceRequest.serviceRequestDate'|translate}}</label>
+                        <input type="date"  pInputText id="serviceRequestDate" class="form-control" disabled
+                        name="serviceRequestDate" [(ngModel)]="s"
+                        />
+                        <!-- <p-calendar class="date" inputId="basic" [(ngModel)]="s" disabled="true"></p-calendar> -->
+                    </div>
+                    <div class="col-md-6">
+                        <label for="serviceRequestTime">{{'SeviceRequest.serviceRequestTime'|translate}}</label>
+                        <input type="text" pInputText id="serviceRequestTime" class="form-control"
+                           name="serviceRequestTime" [ngModelOptions]="{standalone: true}" [(ngModel)]="requestObj.serviceRequestTime"/>
+                    </div>
+                 
+                    <div class="col-md-6">
+                        <label for="priority">{{'SeviceRequest.RequestMode'|translate}}</label>
+
+                        <div>
+                            <ul class="list-group"
+                            pTooltip="select a mode" tooltipPosition="bottom"
+                            >
+                                <li class="list-group-item" *ngFor="let item of modesList">
+                                    <input type="radio"
+                                     [(ngModel)]="requestObj.ModeId" name="mode"
+                                        id="mode" #mode="ngModel" [value]="item.id" />
+                                        
+                                        {{translate.currentLang == "En" ? item.requestMode:item.requestModeAr}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="priority">{{'SeviceRequest.RequestPriority'|translate}}</label>
+
+                        <div>
+                            <ul class="list-group" pTooltip="select an priority" tooltipPosition="bottom"
+                            >
+                                <li class="list-group-item" *ngFor="let item of priorityList">
+                                    <input type="radio" 
+                                    pTooltip="select an priority" tooltipPosition="bottom"
+                                    [(ngModel)]="requestObj.PriorityId" name="priority"
+                                        id="priority" #priority="ngModel" [value]="item.id" />
+                                    {{translate.currentLang == "En" ? item.priorityLevel:item.priorityLevelAr}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+            <br />
+
+            <fieldset>
+                <legend>{{'Actions.Attachments' |translate}}</legend>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p-fileUpload   (onUpload)="upload($event)"  name="demo[]" url="http://localhost:51368/api/ImgUpload/"
+                        multiple="multiple"accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" maxFileSize="1000000">
+                        </p-fileUpload>
+                        
+                    </div>
+                </div>
+            </fieldset>
+            <br />
+
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        {{'SeviceRequest.Agreetotermsandconditions'|translate}}
+                    </label>
+                    <div class="invalid-feedback">
+                        {{'SeviceRequest.Youmustagreebeforesubmitting'|translate}}.
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-lg-3">
+                    <button pButton pRipple label="{{'Actions.Cancel' |translate}}" icon="pi pi-times" class="btn btn-info" 
+                    (click)="hideDialog()" value="cancel" type="button"></button>                          
+              </div>
+              <div class="col-lg-3">
+                <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" class="btn btn-info"
+                value="save" type="submit"></button>
+              </div>
+            </div>
+        </form>
+
+    </ng-template>
+</p-dialog>

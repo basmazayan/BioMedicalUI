@@ -1,0 +1,29 @@
+.download{
+    height:30px;
+}
+p{
+    margin-left: 15px;
+    color: #495057;
+
+}
+.btnNext{
+    float: right;
+}
+.btn{
+    width:100px;
+    margin-right: 1px;
+}
+.btns{
+position: relative;
+left:10px;
+}
+.spare{
+    position: relative;
+    top:40px
+}
+.ng-valid[required] {
+    border: 1px solid silver;
+    border-left: 5px solid #42A948; /* green */
+    background-image: none;
+    padding-right: 0%;
+  }

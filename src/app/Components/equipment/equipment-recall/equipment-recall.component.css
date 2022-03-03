@@ -1,0 +1,59 @@
+.img{
+  
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left:280px;
+    top:-50px
+  }
+
+  label {
+    display: inline-block;
+    width: 110px;
+    text-align: left;
+    /* margin-right:5px ; */
+  }
+  .desc{
+    width:68%;
+  }
+  .new{
+    height: 1.5em;
+  }
+  .download{
+    height:2em;
+  }
+  .version{
+    width: 70px;
+  }
+  .desc-text{
+    position: relative;
+    top:-30px;
+  }
+  .li{
+    width: 300px;
+  }
+  ul{
+    display: inline-block;
+    margin-left: 100px;;
+    position: relative;
+    top: -30px;
+  }
+  .frmcontrol{
+    display: inline-block;
+    width: 200px;;
+    /* color: #0c0c0c;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #0c0c0c;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
+  }
+  .decreasewidth{
+    width:150px
+  }
+  .sub-equipment{
+    width: 70%;
+  }
+  .recalledEq{
+    display: block;
+  }

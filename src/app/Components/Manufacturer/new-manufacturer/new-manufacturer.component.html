@@ -1,0 +1,86 @@
+<div>
+    <p-dialog [(visible)]="manufacturerDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid"  (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'Manufacturer.AddNewmanufacturer'|translate}}</h3>
+                </div>
+
+            </div>
+            <!-- <span class="text-danger error">{{error}}</span> -->
+            <form (ngSubmit)="AddManufacturerForm.valid && saveManufacturer()" #AddManufacturerForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+
+                        
+                        <div class="col-md-12">
+                            <label for="departmentCode">{{'Manufacturer.manufacturerCode'|translate}}</label>
+                            <input type="text" class="form-control" id="brandCode" name="brandCode"
+                                #brandCode="ngModel" placeholder="{{'Manufacturer.manufacturerCode'|translate}}"
+                                [(ngModel)]="manufacturer.code"
+                                [class.is-invalid]="brandCode.touched && brandCode.errors || AddManufacturerForm.submitted"
+                                [class.is-valid]="brandCode.valid && AddManufacturerForm.submitted" required
+                                pTooltip="Please, enter code" tooltipPosition="bottom">
+                            <div
+                                *ngIf="(brandCode.touched || AddManufacturerForm.submitted) && brandCode.errors?.required">
+                                <span class="text-danger">
+                                    {{'Manufacturer.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <label for="manufacturerName">{{'Manufacturer.manufacturerName'|translate}}</label>
+                            <input type="text" class="form-control" id="manufacturerName" name="manufacturerEnName"
+                            pTooltip="Enter a Name"tooltipPosition="bottom"   placeholder="{{'Manufacturer.manufacturerName'|translate}}"
+                             #manufacturerEnName="ngModel"
+                                [(ngModel)]="manufacturer.manufacturerName" 
+
+                                [class.is-invalid]="manufacturerEnName.touched && manufacturerEnName.errors || AddManufacturerForm.submitted" 
+                                [class.is-valid]="manufacturerEnName.valid && AddManufacturerForm.submitted" required>
+                                <div *ngIf="(manufacturerEnName.touched || AddManufacturerForm.submitted) && manufacturerEnName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'Manufacturer.Required'|translate}}                       
+                                    </span>
+                               </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="manufacturerNameAr">{{'Manufacturer.manufacturerNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="manufacturerName" name="manufacturerArName"
+                            pTooltip="Enter a Name in Arabic"tooltipPosition="bottom"  placeholder="{{'Manufacturer.manufacturerNameAr'|translate}}"
+                                [(ngModel)]="manufacturer.manufacturerNameAr" #manufacturerArName="ngModel"
+                                [class.is-invalid]="manufacturerArName.touched && manufacturerArName.errors || AddManufacturerForm.submitted" 
+                                [class.is-valid]="manufacturerArName.valid && AddManufacturerForm.submitted" required>
+                                <div *ngIf="(manufacturerArName.touched || AddManufacturerForm.submitted) && manufacturerArName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'Manufacturer.Required'|translate}}         
+                                    </span>
+                               </div>
+                        </div>
+                    </div>
+                    <br><Br>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" 
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                      </div>
+                      <div class="col-lg-3">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" 
+                        class="btn btn-info" value="save" type="submit"></button>
+                      </div>
+                    </div>
+                    <br><Br>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+    </p-dialog>
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '300px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+    </p-dialog>
+</div>

@@ -1,0 +1,193 @@
+<div class="container-fluid">
+
+    <div class="card">
+        <p-toast posinset="top-right"></p-toast>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <h5>{{"department.Managedepartments"|translate}}</h5>
+                </div>
+                <div class="col-md-1" style="text-align: right;">
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary p-button-rounded p-mr-2"
+                        routerLink="/home/addDepartment" pTooltip="add a department" tooltipPosition="right"></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+                    <p-table #dt [value]="departmentsList" [rows]="10" [paginator]="true"
+                        styleClass="p-datatable-responsive-demo" [(selection)]="selectedDepartments" [rowHover]="true"
+                        dataKey="id" styleClass="p-datatable-striped"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [showCurrentPageReport]="true"
+                        [globalFilterFields]="['departmentName','departmentNameAr','departmentCode']">
+                        <ng-template pTemplate="caption">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                <!-- <h5 class="p-m-0">{{'department.Managedepartments'|translate}}</h5> -->
+
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text" class="form-control"
+                                        (input)="dt.filterGlobal($event.target.value,'contains')"
+                                        placeholder="{{'search.Search'|translate}}..." />
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+
+                                <th style="text-align: inherit;" pSortableColumn="departmentCode">
+                                    {{'department.Code'|translate}} <p-sortIcon field="departmentCode">
+                                    </p-sortIcon>
+                                </th>
+                                <th style="text-align: inherit;" pSortableColumn="departmentName">
+                                    {{'department.DepartmentName'|translate}} <p-sortIcon field="departmentName">
+                                    </p-sortIcon>
+                                </th>
+
+                                <th style="text-align: inherit; width: 10%;">{{'Actions.Action'|translate}}</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: inherit;">
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'departmentCode', 'contains')"
+                                        [value]="dt.filters['departmentCode']?.value"
+                                        placeholder="{{'department.SearchbyCode'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <input pInputText type="text" *ngIf="translate.currentLang==='En'"
+                                        (input)="dt.filter($event.target.value, 'departmentName', 'contains')"
+                                        [value]="dt.filters['departmentName']?.value"
+                                        placeholder="{{'department.SearchbyName'|translate}}"
+                                        class="p-column-filter form-control">
+
+                                    <input pInputText type="text" *ngIf="translate.currentLang==='Ar'"
+                                        (input)="dt.filter($event.target.value, 'departmentNameAr', 'contains')"
+                                        [value]="dt.filters['departmentNameAr']?.value"
+                                        placeholder="{{'department.SearchbyName'|translate}}"
+                                        class="p-column-filter form-control">
+
+                                </th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-dept>
+                            <tr>
+                                <td style="text-align: inherit;">{{dept.departmentCode}}</td>
+                                <td style="text-align: inherit;">
+                                    {{translate.currentLang == "En" ? dept.departmentName:dept.departmentNameAr}}
+                                </td>
+                                <td style="text-align: inherit;">
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-info edit" (click)="openNew(dept)"
+                                        pTooltip="edit a department" tooltipPosition="top"></button>
+
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                        (click)="confirmDelete(dept.id)" pTooltip="delete a department"
+                                        tooltipPosition="top"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                {{'In total there are.In total there are'|translate}} {{Departments ? Departments.length
+                                : 0 }} {{"Sidebar.Departments"|
+                                translate}}.
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="departmentDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'department.EditDepartment'|translate}}</h3>
+            </div>
+        </div>
+        <form (ngSubmit)="EditDepartmentForm.valid && updateDepartment()" #EditDepartmentForm="ngForm">
+            <fieldset class="tab">
+                <div class="row">
+                    <input type="hidden" [(ngModel)]="departmentObj.id" [ngModelOptions]="{standalone: true}" />
+
+                    <div class="col-md-12">
+                        <label for="departmentCode">{{'department.Code'|translate}}</label>
+                        <input type="text" class="form-control" id="departmentCode" name="departmentCode"
+                            #departmentCode="ngModel" placeholder="{{'department.Code'|translate}}"
+                            [(ngModel)]="departmentObj.departmentCode"
+                            [class.is-invalid]="departmentCode.touched && departmentCode.errors || EditDepartmentForm.submitted"
+                            [class.is-valid]="departmentCode.valid && EditDepartmentForm.submitted" required
+                            pTooltip="Please,Enter A departmentCode" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(departmentCode.touched || EditDepartmentForm.submitted) && departmentCode.errors?.required">
+                            <span class="text-danger">
+                                {{'department.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="col-md-12">
+                        <label for="departmentName">{{'department.DepartmentName'|translate}}</label>
+                        <input type="text" class="form-control" id="departmentName" name="departmentEnName"
+                            #departmentEnName="ngModel" placeholder="{{'department.DepartmentName'|translate}}"
+                            [(ngModel)]="departmentObj.departmentName"
+                            [class.is-invalid]="departmentEnName.touched && departmentEnName.errors || EditDepartmentForm.submitted"
+                            [class.is-valid]="departmentEnName.valid && EditDepartmentForm.submitted" required
+                            pTooltip="Please,Enter A DepartmentName in English" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(departmentEnName.touched || EditDepartmentForm.submitted) && departmentEnName.errors?.required">
+                            <span class="text-danger">
+                                {{'department.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="departmentName">{{'department.DepartmentNameAr'|translate}}</label>
+                        <input type="text" class="form-control" id="departmentName" name="departmentArName"
+                            #departmentArName="ngModel" placeholder="{{'department.DepartmentNameAr'|translate}}"
+                            [(ngModel)]="departmentObj.departmentNameAr"
+                            [class.is-invalid]="departmentArName.touched && departmentArName.errors || EditDepartmentForm.submitted"
+                            [class.is-valid]="departmentArName.valid && EditDepartmentForm.submitted" required
+                            pTooltip="Please,Enter A DepartmentName in Arabic" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(departmentArName.touched || EditDepartmentForm.submitted) && departmentArName.errors?.required">
+                            <span class="text-danger">
+                                {{'department.Required'|translate}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><br /></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                    </div>
+                    <div class="col-md-6">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                            class="btn btn-info" value="save" type="submit"></button>
+                    </div>
+                </div>
+                <br><br>
+            </fieldset>
+        </form>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+    <p-header style="color: rgb(181, 4, 4);"> {{'General.Error'|translate}} </p-header>
+    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{errorMessage}}</span>
+</p-dialog>

@@ -1,0 +1,8 @@
+<div class="container">
+    <h1>QRCODE GENERATOR</h1>
+    <input [(ngModel)]="value">
+    <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="value"
+        class="coolQRCode"></ngx-qrcode>
+    <button (click)="upload(value)">generate QRCode</button>
+  
+</div>

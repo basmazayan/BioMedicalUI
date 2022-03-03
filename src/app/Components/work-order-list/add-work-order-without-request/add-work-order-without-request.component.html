@@ -1,0 +1,284 @@
+<p-dialog [(visible)]="WrokOrderDialog" [style]="{width: '900px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'workOrder.AddWorkOrder'|translate}}</h3>
+            </div>
+            <div>
+            </div>
+        </div>
+        <form (ngSubmit)="AddWorkOrderForPreventiveForm.valid && saveWorkOrder(workOrder)" #AddWorkOrderForPreventiveForm="ngForm">
+            <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                <p-tabPanel header="{{'workOrder.Details'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Date">{{'workOrder.Date'|translate}}</label>
+                                <input type="date" pInputText id="Date" class="form-control" name="Date"
+                                    #date="ngModel" [(ngModel)]="maintenance.workOrderDate" 
+                                    [class.is-invalid]="date.touched && date.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="date.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(date.touched || AddWorkOrderForPreventiveForm.submitted) && date.errors?.required">
+                                        <span class="text-danger">        
+                                            Date is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                        
+                            <div class="col-md-3 form-group">
+                                <label for="priority">{{'workOrder.Status'|translate}}</label>   
+                                <div>
+                                    <div>
+                                        <ul class="list-group" pTooltip="select an status" tooltipPosition="bottom">
+                                            
+                                            <li class="list-group-item" *ngFor="let item of statusList">
+                                                <input type="radio" [(ngModel)]="workOrder.RequestStatusId"
+                                                    name="status" id="status" #status="ngModel" [value]="item.id" 
+                                                    [class.is-invalid]="status.touched && status.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                                    [class.is-valid]="status.valid && AddWorkOrderForPreventiveForm.submitted " required/>
+                                                {{translate.currentLang == "En" ? item.status:item.statusAr}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>                            
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="priority">{{'workOrder.Priority'|translate}}</label>
+                                <div>
+                                    <ul class="list-group"  pTooltip="select a Priority" tooltipPosition="bottom">
+                                        <li class="list-group-item" *ngFor="let item of priorityList">
+                                            <input type="radio" [(ngModel)]="workOrder.priorityId"
+                                                name="Priority" id="Priority" #Priority="ngModel" [value]="item.id" 
+                                                [class.is-invalid]="Priority.touched && Priority.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                                [class.is-valid]="Priority.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                            {{translate.currentLang == "En" ? item.priorityLevel:item.priorityLevelAr}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">   
+                                <label for="Equipment">{{'workOrder.Equipment'|translate}}</label>                                  
+                                <select class="form-control" id="EquipmentId" name="Equipment" #Equipment="ngModel"
+                                    [(ngModel)]="workOrder.equipmentId" 
+                                    pTooltip="select an equipment" tooltipPosition="bottom"
+                                    [class.is-invalid]="Equipment.touched && Equipment.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="Equipment.valid && AddWorkOrderForPreventiveForm.submitted" required>
+                                    <option selected disabled>--select--</option>
+                                    <option *ngFor="let e of equipmentList" [value]="e.id">                                        
+                                        {{translate.currentLang == "En" ? e.equipmentName:e.equipmentNameAr}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(Equipment.touched || AddWorkOrderForPreventiveForm.submitted) && Equipment.errors?.required">
+                                    <span class="text-danger">        
+                                        Equipment is required                               
+                                    </span>
+                               </div>
+                            </div>
+                        </div>
+                        <br>
+                            <button type="button" class="btn btn-info btnNext " (click)="Next()" [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()" [hidden]="isPrevvalid">previous</button>
+                            
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+                
+                <p-tabPanel header="{{'workOrder.Maintenance'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Problem">{{'workOrder.Problem'|translate}}</label>
+                                <input type="text" pInputText id="Problem" class="form-control" name="Problem"
+                                     #problem="ngModel" [(ngModel)]="maintenance.Problem"
+                                     pTooltip="enter the problem" tooltipPosition="bottom"
+                                    [class.is-invalid]="problem.touched && problem.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="problem.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(problem.touched || AddWorkOrderForPreventiveForm.submitted) && problem.errors?.required">
+                                        <span class="text-danger">        
+                                            problem is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="PartCost">{{'workOrder.PartCost'|translate}}</label>
+                                <input type="text" pInputText id="PartCost" class="form-control" name="PartCost"
+                                    #PartCost="ngModel" [(ngModel)]="maintenance.PartCost"
+                                    pTooltip="enter a partcost" tooltipPosition="bottom"
+                                    [class.is-invalid]="PartCost.touched && PartCost.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="PartCost.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(PartCost.touched || AddWorkOrderForPreventiveForm.submitted) && PartCost.errors?.required">
+                                        <span class="text-danger">        
+                                            PartCost is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="LaborCost">{{'workOrder.LaborCost'|translate}}</label>
+                                <input type="text" pInputText id="LaborCost" class="form-control" name="LaborCost"
+                                    #LaborCost="ngModel" [(ngModel)]="maintenance.LaborCost"
+                                    pTooltip="enter a LaborCost" tooltipPosition="bottom"
+                                    [class.is-invalid]="LaborCost.touched && LaborCost.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="LaborCost.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(LaborCost.touched || AddWorkOrderForPreventiveForm.submitted) && LaborCost.errors?.required">
+                                        <span class="text-danger">        
+                                            LaborCost is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'workOrder.SparePart'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="Code">{{'workOrder.Code'|translate}}</label>
+                                <input type="text" pInputText id="Code" class="form-control" name="Code"
+                                    #Code="ngModel" [(ngModel)]="sparepart.SparePartCode"
+                                    pTooltip="enter a SparePartCode" tooltipPosition="bottom"
+                                    [class.is-invalid]="Code.touched && Code.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="Code.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(Code.touched || AddWorkOrderForPreventiveForm.submitted) && Code.errors?.required">
+                                        <span class="text-danger">        
+                                            Code is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="Name">{{'workOrder.Name'|translate}}</label>
+                                <input type="text" pInputText id="Name" class="form-control" name="Name"
+                                    #sparePartName="ngModel" [(ngModel)]="sparepart.SparePartName"
+                                    pTooltip="select an sparePartName" tooltipPosition="bottom"
+                                    [class.is-invalid]="sparePartName.touched && sparePartName.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="sparePartName.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(sparePartName.touched || AddWorkOrderForPreventiveForm.submitted) && sparePartName.errors?.required">
+                                        <span class="text-danger">        
+                                            English Name is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="NameAr">{{'workOrder.NameAr'|translate}}</label>
+                                <input type="text" pInputText id="NameAr" class="form-control" name="NameAr"
+                                    #NameAr="ngModel" [(ngModel)]="sparepart.SparePartNameAr"
+                                    pTooltip="enter a sparePartName in arabic" tooltipPosition="bottom"
+                                    [class.is-invalid]="NameAr.touched && NameAr.errors || AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="NameAr.valid && AddWorkOrderForPreventiveForm.submitted" required/>
+                                    <div *ngIf="(NameAr.touched || AddWorkOrderForPreventiveForm.submitted) && NameAr.errors?.required">
+                                        <span class="text-danger">        
+                                            Arabic Name is required                               
+                                        </span>
+                                   </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+
+                
+                <p-tabPanel header="{{'workOrder.Labor'|translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    <input type="radio" name="Id" id="EmployeeId" (click)="getAllEmployees()"/>
+                                    {{'workOrder.Employee'|translate}}
+                                </div>
+                                <br>
+                                <div>                                     
+                                    <select class="form-control" id="EmployeeId" name="EmployeeId" 
+                                    [(ngModel)]="workOrder.EmployeeId" #EmployeeName="ngModel"
+                                    [class.is-invalid]="(EmployeeName.touched && EmployeeName.errors)
+                                                        &&(VendorName.touched && VendorName.errors) 
+                                                        || AddWorkOrderForPreventiveForm.submitted" 
+                                                        pTooltip="select an employee" tooltipPosition="bottom"
+                                    [class.is-valid]="(EmployeeName.valid || VendorName.valid)&& AddWorkOrderForPreventiveForm.submitted" required>
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let e of employees" [value]="e.id">                                        
+                                        {{translate.currentLang == "En" ? e.employeeName:e.employeeNameAr}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(EmployeeName.touched || AddWorkOrderForPreventiveForm.submitted) && EmployeeName.errors?.required">
+                                        <span class="text-danger">        
+                                            Employee Name is required                               
+                                        </span>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <input type="radio" name="Id" id="VendorId" (click)="getAllVendors()"/>
+                                    {{'workOrder.Vendor'|translate}}
+                                </div>
+                                <br>
+                                <div>                                     
+                                    <select class="form-control" id="VendorId" name="VendorId" 
+                                    [(ngModel)]="workOrder.VendorId" #VendorName="ngModel"
+                                    >
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let v of vendor" [value]="v.id">                                         
+                                        {{translate.currentLang == "En" ? v.vendorName:v.vendorNameAr}}
+                                        </option>
+                                    </select>
+                                    <!-- [class.is-invalid]="(VendorName.touched && VendorName.errors) 
+                                                        && (EmployeeName.touched && EmployeeName.errors) 
+                                                        && AddWorkOrderForPreventiveForm.submitted" 
+                                    [class.is-valid]="(VendorName.valid || EmployeeName.valid) " required -->
+                                    <!-- <div *ngIf="(VendorName.touched || AddWorkOrderForPreventiveForm.submitted 
+                                                && (EmployeeName.touched || AddWorkOrderForPreventiveForm.submitted)) 
+                                                && (VendorName.errors && EmployeeName.errors) ?.required">
+                                        <span class="text-danger">        
+                                            Vendor Name is required                               
+                                        </span>
+                                   </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()" >Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p-fileUpload (onUpload)="upload($event)" name="demo[]"
+                                    url="http://localhost:51368/api/ImgUpload/" multiple="multiple"
+                                    accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf" maxFileSize="1000000">                                                                      
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" 
+                                class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                            </div>
+                            <div class="col-lg-2">
+                                <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check" 
+                                class="btn btn-info" value="save" type="submit"></button>
+                            </div>
+                      </div>
+                      <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()" [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()" [hidden]="isPrevvalid">previous</button>
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+            </p-tabView>
+        </form>
+    </ng-template>
+</p-dialog> 
+

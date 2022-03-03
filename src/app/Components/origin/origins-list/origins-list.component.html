@@ -1,0 +1,143 @@
+
+<div class="container-fluid">
+    <div class="card">
+        <p-toast posinset="top-right"></p-toast>
+
+          
+        <div class="card-body" >
+            <div class="row">
+                <div class="col-md-11"><h5 class="p-m-0">{{'origin.ManageOrigins'|translate}}</h5></div>
+                <div class="col-md-1" style="text-align: right;">     
+                    <button pButton pRipple  icon="pi pi-plus" class="p-button-primary p-button-rounded p-mr-2"
+                    routerLink="/home/addOrigin" pTooltip="Add a New Origin" tooltipPosition="right"></button>
+                </div>
+        </div>
+          
+    
+        <div class="row">
+            <div class="col-md-12"><br/></div></div>
+    
+        <div class="row">
+                
+     
+            <div class="col-md-12"> 
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="originsList" styleClass="p-datatable-responsive-demo"[rows]="10" [paginator]="true" [(selection)]="selectedOrigins"
+            [rowHover]="true" dataKey="id" styleClass="p-datatable-striped"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+            [globalFilterFields]="['originCode','englishName','arabicName']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+            
+
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" class="form-control" (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="{{'search.Search'|translate}}..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header" >
+                <tr >
+
+                    <th pSortableColumn="originCode">{{'origin.OriginCode'|translate}} <p-sortIcon field="originCode"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="englishName">{{'origin.englishName'|translate}} <p-sortIcon field="englishName"></p-sortIcon>
+                    </th>
+                    <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'originCode', 'contains')"
+                            [value]="dt.filters['originCode']?.value" placeholder="{{'origin.SearchbyCode'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'englishName', 'contains')"
+                            [value]="dt.filters['englishName']?.value" placeholder="{{'origin.SearchbyName'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+
+                    <th></th>
+                </tr>
+            </ng-template>
+
+
+            
+            <ng-template pTemplate="body" let-origin>
+                <tr>
+                    <td  style="text-align: inherit;">{{origin.originCode}}</td>
+                    <td  style="text-align: inherit;">{{translate.currentLang == "En" ?origin.englishName :origin.arabicName}}</td>
+                    <td  style="text-align: inherit;">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(origin)" pTooltip="edit an origin" tooltipPosition="top"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(origin.id)"></button>
+                    </td>
+                </tr>
+   
+
+
+
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    {{'In total there are.In total there are'| translate}} {{originsList ? originsList.length : 0 }} origins.
+                </div>
+            </ng-template>
+        </p-table>
+    </div>
+</div></div></div></div>
+    <p-dialog [(visible)]="originDialog" [style]="{width: '800px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'origin.EditOrigin'|translate}}</h3>
+                </div>
+               
+            </div>
+            <form>
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="originCode">{{'origin.OriginCode'|translate}}</label>
+                            <input type="text" class="form-control" id="originCode" [ngModelOptions]="{standalone: true}"
+                                placeholder="{{'origin.OriginCode'|translate}}" [(ngModel)]="origin.originCode" autofocus>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="englishName">{{'origin.englishName'|translate}}</label>
+                            <input type="text" class="form-control" id="englishName" [ngModelOptions]="{standalone: true}"
+                                placeholder="{{'origin.englishName'|translate}}" [(ngModel)]="origin.englishName" autofocus>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="arabicName">{{'origin.arabicName'|translate}}</label>
+                            <input type="text" class="form-control" id="arabicName" [ngModelOptions]="{standalone: true}"
+                                placeholder="{{'origin.arabicName'|translate}}" [(ngModel)]="origin.arabicName" autofocus>
+                        </div>
+                    </div>
+
+                </fieldset>
+                <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
+                    <p-header style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+                    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+                </p-dialog>
+            </form>
+
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"
+                value="cancel"></button>
+            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" class="p-button-text" (click)="updateOrigin()"
+                value="save"></button>
+
+
+        </ng-template>
+    </p-dialog>
+   

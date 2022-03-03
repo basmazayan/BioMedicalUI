@@ -1,0 +1,624 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 headstyle">
+                    <img src="./../assets/images/biologo.png" class="img">
+                </div>
+            </div>
+            <br>
+            <!--------------------------------Filtering----------------------------->
+            <div class="row">
+                <div class="colwidth">
+                    <!-- <i class="pi pi-filter"></i>&nbsp;<button>Name</button> -->
+                    <i class="pi pi-filter"></i>&nbsp;<a role="button">{{'equipmentElements.Name'|translate}}</a>
+                    <br>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="equipments"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                        optionValue="equipmentName" [showClear]="true" #equipName
+                        (onChange)="filterByName(equipName.value)" styleClass="ui-column-filter" class="filterDropdwon"
+                        id="name">
+                    </p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="equipments"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                        optionValue="equipmentNameAr" [showClear]="true" #equipNameAr
+                        (onChange)="filterByName(equipNameAr.value)" styleClass="ui-column-filter">
+                    </p-dropdown>
+                </div>
+                <div class="colwidth">
+                    <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle1,'black': !toggle1}"
+                        role="button">{{'equipmentElements.Brand' |translate}}</a>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                        optionValue="manufacturerName" [showClear]="true" #equipBrandName
+                        (onChange)="filterByBrand(equipBrandName.value)" styleClass="ui-column-filter"
+                        class="filterDropdwon"></p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                        optionValue="manufacturerNameAr" [showClear]="true" #equipBrandNameAr
+                        (onChange)="filterByBrand(equipBrandNameAr.value)" styleClass="ui-column-filter">
+                    </p-dropdown>
+                </div>
+                <div class="colwidth">
+                    <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle2,'black': !toggle2}"
+                        role="button">{{'equipmentElements.Governorate'| translate}}</a>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthDirectoriesList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryName"
+                        optionValue="healthDirectoryName" [showClear]="true" #equipBrandGov
+                        (onChange)="filterByGov(equipBrandGov.value);fillDistrict($event.value)"
+                        styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthDirectoriesList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryNameAr"
+                        optionValue="healthDirectoryNameAr" [showClear]="true" #equipBrandGovar
+                        (onChange)="filterByGov(equipBrandGovar.value);fillDistrict($event.value)"
+                        styleClass="ui-column-filter">
+                    </p-dropdown>
+                </div>
+                <div class="colwidth">
+                    <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle3,'black': !toggle3}"
+                        role="button">{{'equipmentElements.City'|translate}}</a>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="HealthDistrictsList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictName"
+                        optionValue="healthDistrictName" [showClear]="true" #equipCity
+                        (onChange)="filterByCity(equipCity.value); fillHospital($event.value)"
+                        styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="HealthDistrictsList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictNameAr"
+                        optionValue="healthDistrictNameAr" [showClear]="true" #equipCityAr
+                        (onChange)="filterByCity(equipCityAr.value); fillHospital($event.value)"
+                        styleClass="ui-column-filter">
+                    </p-dropdown>
+                </div>
+                <div class="colwidth">
+                    <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle4,'black': !toggle4}"
+                        role="button">{{'equipmentElements.Hospital'|translate}}</a>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthCareUnits"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitName"
+                        optionValue="healthCareUnitName" [showClear]="true" #equiHos
+                        (onChange)="filterByHos(equiHos.value)" styleClass="ui-column-filter" class="filterDropdwon">
+                    </p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthCareUnits"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitNameAr"
+                        optionValue="healthCareUnitNameAr" [showClear]="true" #equipHosAr
+                        (onChange)="filterByHos(equipHosAr.value)" styleClass="ui-column-filter">
+                    </p-dropdown>
+                </div>
+                <div class="colwidth">
+                    <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle4,'black': !toggle4}"
+                        role="button">{{'equipmentElements.Supplier'|translate}}</a>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="suppliersList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="supplierName"
+                        optionValue="supplierName" [showClear]="true" #equiSupplier
+                        (onChange)="filterBySupplier(equiSupplier.value)" styleClass="ui-column-filter"
+                        class="filterDropdwon"></p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="suppliersList"
+                        placeholder="{{'search.Search'|translate}}" optionLabel="supplierNameAr"
+                        optionValue="supplierNameAr" [showClear]="true" #equiSupplierAr
+                        (onChange)="filterBySupplier(equiSupplierAr.value)" styleClass="ui-column-filter">
+                    </p-dropdown>
+                </div>
+                <div class="colwidth">
+                    <a [ngClass]="{'blue' : toggle4,'black': !toggle4}"
+                        role="button">{{'equipmentElements.PurchaseDate'|translate}}</a>
+                    <input type="date" class="form-control" id="installationDate" name="installationDate"
+                        #equiPurchaseDate placeholder="Installation Date" 
+                        (change)="filterByPurchaseDate(equiPurchaseDate.value)">
+                        <i class="form-control-clear pi pi-times" id="clcbtn" (click)="checkValue()"></i>
+                </div>
+                <div class="colwidth">
+                    <span style="margin: 0px 20px;padding: 0px 10px;">
+                        <select class="form-control" #selectedLang (change)="switchLang(selectedLang.value)">
+                            <option *ngFor="let language of translate.getLangs()" [value]="language"
+                                [selected]="language === translate.currentLang">
+                                {{language}}
+                            </option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <hr style="height: 5px;">
+            <!--------------------------Grouping && Exporting-------------------------------->
+            <div class="row">
+                <div class="col-lg-2" *ngIf="translate.currentLang=='En'">                  
+                    <select class="form-control" #equipElement (change)="selectElement(equipElement.value)"
+                     placeholder="{{'search.Search'|translate}}" id="equipElementtt">
+                        <option selected disabled *ngIf="this.selectedElement == null">-- select --</option>
+                        <option *ngFor="let equipElement of equipmentElements" [value]="equipElement" >
+                            {{equipElement}}
+                        </option>                        
+                    </select>
+                  
+                </div>
+                <i class="form-control-clear pi pi-times" id="clcgroupingbtn" (click)="checkGroupingValue()"></i>
+
+                <div class="col-lg-2" *ngIf="translate.currentLang=='Ar'">
+                    <select class="form-control" #equipElement (change)="selectElement(equipElement.value)">
+                        <option selected disabled>-- select --</option>
+                        <option *ngFor="let equipElement of equipmentElementsAr" [value]="equipElement">
+                            {{equipElement}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" pButton pRipple icon="pi pi-file-pdf" id="btnExport"
+                        class="p-button-warning download" pTooltip="PDF" tooltipPosition="bottom" (click)="exportPdf()">
+                    </button>
+                </div>
+            </div>
+            <br><br>
+            <!---------------------------------------All Data------------------------------------------------------>
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement==null">
+                <div class="col-md-12">
+                    <p-table #dt [value]="equipments" [rows]="10" styleClass="p-datatable-responsive-demo"
+                        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [showCurrentPageReport]="true"
+                        [globalFilterFields]="['equipmentName','department','manufacturer','supplier']" class="rowtbl"
+                        *ngIf="selectedElement==null">
+                        <ng-template pTemplate="header">
+                            <tr style="font-size: 18px;">
+                                <th pSortableColumn="equipmentName" style="width:7%;"><strong>{{'equipment.equimentName' | translate}}</strong>
+                                    <p-sortIcon field="equipmentName">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="manufacturerName" style="width:10%;"><strong>{{'equipment.Manufacturer' | translate}}</strong>
+                                    <p-sortIcon field="manufacturerName">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="healthCareUnitName" style="width:10%;"><strong>{{'equipment.governorate' | translate}}</strong>
+                                    <p-sortIcon field="healthCareUnitName">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="healthDistrictName" style="width:12%;"><strong>{{'equipment.district' |translate}}</strong>
+                                    <p-sortIcon field="healthDistrictName">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="healthCareUnitName"><strong>{{'equipment.healthCareUnit' | translate}}</strong>
+                                    <p-sortIcon field="healthCareUnitName">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="supplierName"><strong>{{'equipment.Supplier' | translate}}</strong>
+                                    <p-sortIcon field="supplierName">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="purchaseDate" style="width:12%;"><strong>{{'equipment.PurchaseDate' | translate}}</strong>
+                                    <p-sortIcon field="purchaseDate">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="organizationName"><strong>{{'equipment.organization' | translate}}</strong>
+                                    <p-sortIcon field="organizationName">
+                                    </p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-eq>
+                            <tr style="font-size: 17px;">
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.equipmentName:eq.equipmentNameAr}}</strong></td>
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                </td>
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                </td>
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                </td>
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.supplierName:eq.supplierNameAr}}</strong>
+                                </td>
+                                <td><strong>{{eq.purchaseDate | date:'shortDate'}}</strong>
+                                </td>
+                                <td><strong>{{translate.currentLang == "En" ?
+                                        eq.organizationName:eq.organizationNameAr}}</strong>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+            <!---------------------------------------Grouping by brand--------------------------------------------->
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement=='Brand' || selectedElement=='الصانع'">
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let item of lstBrandEquipment">
+                        <div class="col-lg-12" *ngIf="item.listEquipment.length>0">
+                            <br><br>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='En'">{{item.brandName}}</a>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='Ar'">{{item.brandNameAr}}</a>
+                            <div id="{{item.id}}" class="panel-collapse collapse" style="width: 100%;">
+                                <p-table #dt [value]="item.listEquipment" [rows]="10"
+                                    styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                    [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [showCurrentPageReport]="true"
+                                    [globalFilterFields]="['equipmentName','department','manufacturer','supplier']"
+                                    class="rowtbl" *ngIf="selectedElement!=null">
+                                    <ng-template pTemplate="header">
+                                        <tr style="font-size: 18px;">
+                                            <th><strong>{{'equipment.equimentName' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Manufacturer' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.governorate' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.district' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.healthCareUnit' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Supplier' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.PurchaseDate' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.organization' | translate}}</strong></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-eq>
+                                        <tr style="font-size: 17px;">
+                                            <td><strong>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.supplierName:eq.supplierNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{eq.purchaseDate | date:'shortDate'}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.organizationName:eq.organizationNameAr}}</strong>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-------------------------------------Grouping by hospital-------------------------------------------->
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement=='Hospital' || selectedElement=='الوحده الصحيه'">
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let item of EquipmentHospitalList">
+                        <div class="col-lg-12" *ngIf="item.listEquipment.length>0">
+                            <br><br>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='En'">{{item.name}}</a>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='Ar'">{{item.nameAr}}</a>
+                            <div id="{{item.id}}" class="panel-collapse collapse" style="width: 100%;">
+                                <p-table #dt [value]="item.listEquipment" [rows]="10"
+                                    styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                    [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [showCurrentPageReport]="true"
+                                    [globalFilterFields]="['equipmentName','department','manufacturer','supplier']"
+                                    class="rowtbl" *ngIf="selectedElement!=null">
+                                    <ng-template pTemplate="header">
+                                        <tr style="font-size: 18px;">
+                                            <th><strong>{{'equipment.equimentName' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Manufacturer' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.governorate' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.district' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.healthCareUnit' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Supplier' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.PurchaseDate' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.organization' | translate}}</strong></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-eq>
+                                        <tr style="font-size: 17px;">
+                                            <td><strong>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.supplierName:eq.supplierNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{eq.purchaseDate| date:'shortDate'}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.organizationName:eq.organizationNameAr}}</strong>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--------------------------------------Groubing By Governorate----------------------------------------->
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement=='Governorate' || selectedElement=='المحافظه'">
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let item of EquipmentGovList">
+                        <div class="col-lg-12" *ngIf="item.listEquipment.length>0">
+                            <br><br>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='En'">{{item.name}}</a>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='Ar'">{{item.nameAr}}</a>
+                            <div id="{{item.id}}" class="panel-collapse collapse" style="width: 100%;">
+                                <p-table #dt [value]="item.listEquipment" [rows]="10"
+                                    styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                    [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [showCurrentPageReport]="true"
+                                    [globalFilterFields]="['equipmentName','department','manufacturer','supplier']"
+                                    class="rowtbl" *ngIf="selectedElement!=null">
+                                    <ng-template pTemplate="header">
+                                        <tr style="font-size: 18px;">
+                                            <th><strong>{{'equipment.equimentName' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Manufacturer' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.governorate' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.district' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.healthCareUnit' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Supplier' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.PurchaseDate' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.organization' | translate}}</strong></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-eq>
+                                        <tr style="font-size: 17px;">
+                                            <td><strong>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.supplierName:eq.supplierNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{eq.purchaseDate| date:'shortDate'}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.organizationName:eq.organizationNameAr}}</strong>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--------------------------------------Groubing By City----------------------------------------->
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement=='District' || selectedElement=='المدينه' ">
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let item of EquipmentCityList">
+                        <div class="col-lg-12" *ngIf="item.listEquipment.length>0">
+                            <br><br>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='En'">{{item.name}}</a>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='Ar'">{{item.nameAr}}</a>
+                            <div id="{{item.id}}" class="panel-collapse collapse" style="width: 100%;">
+                                <p-table #dt [value]="item.listEquipment" [rows]="10"
+                                    styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                    [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [showCurrentPageReport]="true"
+                                    [globalFilterFields]="['equipmentName','department','manufacturer','supplier']"
+                                    class="rowtbl" *ngIf="selectedElement!=null">
+                                    <ng-template pTemplate="header">
+                                        <tr style="font-size: 18px;">
+                                            <th><strong>{{'equipment.equimentName' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Manufacturer' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.governorate' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.district' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.healthCareUnit' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Supplier' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.PurchaseDate' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.organization' | translate}}</strong></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-eq>
+                                        <tr style="font-size: 17px;">
+                                            <td><strong>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.supplierName:eq.supplierNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{eq.purchaseDate| date:'shortDate'}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.organizationName:eq.organizationNameAr}}</strong>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--------------------------------------Groubing By Organization----------------------------------------->
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement=='Organization' || selectedElement=='المنظمه'">
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let item of EquipmentOrgList">
+                        <div class="col-lg-12" *ngIf="item.listEquipment.length>0">
+                            <br><br>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='En'">{{item.name}}</a>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='Ar'">{{item.nameAr}}</a>
+                            <div id="{{item.id}}" class="panel-collapse collapse" style="width: 100%;">
+                                <p-table #dt [value]="item.listEquipment" [rows]="10"
+                                    styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                    [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [showCurrentPageReport]="true"
+                                    [globalFilterFields]="['equipmentName','department','manufacturer','supplier']"
+                                    class="rowtbl" *ngIf="selectedElement!=null">
+                                    <ng-template pTemplate="header">
+                                        <tr style="font-size: 18px;">
+                                            <th><strong>{{'equipment.equimentName' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Manufacturer' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.governorate' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.district' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.healthCareUnit' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Supplier' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.PurchaseDate' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.organization' | translate}}</strong></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-eq>
+                                        <tr style="font-size: 17px;">
+                                            <td><strong>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.supplierName:eq.supplierNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{eq.purchaseDate| date:'shortDate'}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.organizationName:eq.organizationNameAr}}</strong>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--------------------------------------Groubing By Supplier----------------------------------------->
+            <div class="row tblstyle" id="pdfTable" #pdfTable *ngIf="selectedElement=='Supplier' ||selectedElement=='المورد'">
+                <div class="col-md-12">
+                    <div class="row" *ngFor="let item of EquipmentSupplierList">
+                        <div class="col-lg-12" *ngIf="item.listEquipment.length>0">
+                            <br><br>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='En'">{{item.name}}</a>
+                            <a data-toggle="collapse"
+                                class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                href="#{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample"
+                                *ngIf="translate.currentLang=='Ar'">{{item.nameAr}}</a>
+                            <div id="{{item.id}}" class="panel-collapse collapse" style="width: 100%;">
+                                <p-table #dt [value]="item.listEquipment" [rows]="10"
+                                    styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                    [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [showCurrentPageReport]="true"
+                                    [globalFilterFields]="['equipmentName','department','manufacturer','supplier']"
+                                    class="rowtbl" *ngIf="selectedElement!=null">
+                                    <ng-template pTemplate="header">
+                                        <tr style="font-size: 18px;">
+                                            <th><strong>{{'equipment.equimentName' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Manufacturer' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.governorate' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.district' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.healthCareUnit' |translate}}</strong></th>
+                                            <th><strong>{{'equipment.Supplier' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.PurchaseDate' | translate}}</strong></th>
+                                            <th><strong>{{'equipment.organization' | translate}}</strong></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-eq>
+                                        <tr style="font-size: 17px;">
+                                            <td><strong>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.manufacturerName:eq.manufacturerNameAr}}</strong></td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDirectoryName:eq.healthDirectoryNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthDistrictName:eq.healthDistrictNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.healthCareUnitName:eq.healthCareUnitNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.supplierName:eq.supplierNameAr}}</strong>
+                                            </td>
+                                            <td><strong>{{eq.purchaseDate| date:'shortDate'}}</strong>
+                                            </td>
+                                            <td><strong>{{translate.currentLang == "En" ?
+                                                    eq.organizationName:eq.organizationNameAr}}</strong>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

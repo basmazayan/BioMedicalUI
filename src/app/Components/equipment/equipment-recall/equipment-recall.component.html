@@ -1,0 +1,382 @@
+<div>
+    <div class="header">
+        <h3 class="title">{{'equipment.equipmentRecall' | translate}}</h3>
+    </div>
+    <div>
+        <img src="./../assets/images/ecg.png" class="img">
+    </div>
+    <p-toast posinset="top-right"></p-toast>
+</div>
+<div *ngIf="currentUser.roleName==='Supplier'">
+    <form (ngSubmit)="AddEquipmentForm.valid && saveProduct(AddEquipmentForm)" #AddEquipmentForm="ngForm">
+        <div class="container">
+
+            <fieldset class="tab">
+                <!-- <legend>{{'equipment.IndustryDetails' | translate}}</legend> -->
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label for="recallNo">{{'equipmentRecall.recall-number'| translate}}</label>
+                        <input type="text" class="form-control frmcontrol" id="recallNo" autofocus
+                            pTooltip="Enter A recall #" tooltipPosition="bottom" #recallNo="ngModel"
+                            [(ngModel)]="recallObj.recallNumber" [ngModelOptions]="{standalone: true}" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="recalldate">{{'equipmentRecall.Recall-date'| translate}}</label>
+                        <input type="date" class="form-control frmcontrol" #recalldate="ngModel"
+                            [(ngModel)]="recallObj.recallDate" [ngModelOptions]="{standalone: true}" id="recalldate"
+                            pTooltip="Enter A weight" tooltipPosition="bottom" />
+
+                    </div>
+                    <br>
+                    <br>
+                    <div class="col-md-12">
+                        <label for="recallSubject">{{'equipmentRecall.Recall-Subject'| translate}}</label>
+                        <input type="text" class="form-control frmcontrol sub-equipment" id="recallSubject"
+                            pTooltip="Enter A length" tooltipPosition="bottom" #recallSubject="ngModel"
+                            [(ngModel)]="recallObj.recallSubject" [ngModelOptions]="{standalone: true}" />
+                    </div>
+                    <br>
+                    <br>
+                    <div class="col-md-12">
+                        <label for="equipment">{{'equipmentRecall.equipment'| translate}}</label>
+                        <select name="masterequipmentName" #masterequipmentName="ngModel"
+                            [(ngModel)]="recallObj.masterEquipmentId" [ngModelOptions]="{standalone: true}"
+                            class="desc form-control frmcontrol sub-equipment"
+                            (change)="getEquipments(recallObj.masterEquipmentId)" pTooltip="Please,Select An Equipment"
+                            tooltipPosition="bottom">
+                            <option selected disabled>--select--</option>
+                            <option *ngFor="let s of masterEquipment" [value]="s.id">
+                                {{s.name}}
+                            </option>
+                        </select>
+
+
+                    </div>
+                    <br>
+                    <br>
+                    <!-- <div class="col-md-12">
+                        <label for="supplier">{{'equipmentRecall.supplier'| translate}}</label>
+                        <select name="supplierName" #supplierName="ngModel"
+                            [(ngModel)]="recallObj.supplierId"
+                            [ngModelOptions]="{standalone: true}"
+                             class="desc form-control frmcontrol sub-equipment"                       
+                             pTooltip="Please,Select An Equipment"
+                            tooltipPosition="bottom">
+                            <option selected disabled>--select--</option>
+                            <option *ngFor="let s of suppliersList" [value]="s.id">
+                                {{s.supplierName}}
+                            </option>
+                        </select>
+
+
+                    </div>
+                    <br>
+                    <br> -->
+                    <div class="col-md-6">
+                        <label for="ModelNumber">{{'equipmentRecall.Model-number'| translate}}</label>
+                        <input type="number" class="form-control frmcontrol" #ModelNumber="ngModel"
+                            [(ngModel)]="recallObj.modelNumber" [ngModelOptions]="{standalone: true}" id="ModelNumber"
+                            autofocus pTooltip="Enter the Model-number" tooltipPosition="bottom" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="version" for="version-number">{{'equipmentRecall.version-number'|
+                            translate}}</label>
+                        <input type="number" class="form-control frmcontrol" id="version-number" name="VersionNumber"
+                            #VersionNumber="ngModel" [(ngModel)]="recallObj.versionNumber"
+                            [ngModelOptions]="{standalone: true}" pTooltip="Enter the version-number"
+                            tooltipPosition="bottom" />
+
+                    </div>
+                    <br>
+                    <br>
+                    <div class="col-md-12">
+                        <label class="desc-text" for="description">{{'equipmentRecall.Description'| translate}}</label>
+                        <textarea id="description" class="form-control frmcontrol sub-equipment"
+                            pTooltip="enter A Description" tooltipPosition="bottom" rows="3" #description="ngModel"
+                            name="description" [(ngModel)]="recallObj.description"
+                            [ngModelOptions]="{standalone: true}"></textarea>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="recalledEq" for="role">{{'equipmentRecall.Recalled-eq' |translate}}</label>
+
+                        <ul class="list-group" tooltipPosition="bottom" pTooltip="select an equipment">
+
+                            <li class="list-group-item form-control" *ngFor="let item of supequipments">
+                                <!-- <input type="checkbox" name="recalledeq" id="recalledeq" [value]="item.id"
+                                [(ngModel)]="recallObj.equipmentsIDs" name="recalledeq" 
+                                (onChange)="checkCheckBoxvalue($event)"
+                                /> -->
+                                
+                                <p-checkbox name="groupname" [value]="item.id" [(ngModel)]="recallObj.equipmentsIDs">
+                                </p-checkbox>
+                              <span> {{item.serialNumber}}</span> 
+                               
+                            </li><br><br><br>
+                     
+                        </ul>
+
+                        <!-- <p-multiSelect [options]="supequipments" (onChange)="checkCheckBoxvalue($event)"
+                        defaultLabel="Select employee" optionLabel="serialNumber" 
+                        pTooltip="Please,Select one or more employee" tooltipPosition="bottom" required>
+                    </p-multiSelect> -->
+                    </div>
+                </div>
+
+
+                <br>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                            (click)="hideDialog()" type="button" value="cancel" class="btn btn-info"></button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check" value="save"
+                            type="submit" class="btn btn-info"></button>
+                    </div>
+                </div>
+                <br><br><br>
+            </fieldset>
+
+        </div>
+    </form>
+</div>
+<div
+    *ngIf="currentUser.roleName==='Admin' || currentUser.roleName==='HeadQuarter'|| currentUser.roleName==='Hospital' || currentUser.roleName==='Organization'">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="row">
+                <div class="col-md-11">
+                   
+                </div>
+                <div class="col-md-1" style="text-align: right;">               
+                    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                        class="p-button-warning download" pTooltip="PDF" tooltipPosition="bottom"></button>
+                </div>
+            </div>
+            <!-- <p-messages [value]="msgs"></p-messages> -->
+            <p-toast posinset="top-right"></p-toast>
+            <div class="card-body">
+           
+                <div class="row">
+                    <div class="col-md-12"><br /></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+                        <p-table #dt [value]="equipments" [rows]="10" styleClass="p-datatable-responsive-demo"
+                            [paginator]="true" [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [showCurrentPageReport]="true"
+                            [globalFilterFields]="['equipmentName','department','manufacturer','supplier']">
+                            <ng-template pTemplate="caption">
+                                <div class="p-d-flex p-ai-center p-jc-between">
+
+
+                                    <span class="p-input-icon-right">
+                                        <i class="pi pi-search"></i>
+                                        <input pInputText class="form-control" type="text"
+                                            (input)="dt.filterGlobal($event.target.value,'contains')"
+                                            placeholder="{{'search.Search'|translate}}..." />
+                                    </span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <!----------------------------Admin View-------------------->
+                                <tr
+                                    *ngIf="currentUser.roleName==='Admin'|| currentUser.roleName==='HeadQuarter'|| currentUser.roleName==='Hospital' || currentUser.roleName==='Organization'">
+                                    <th pSortableColumn="supplierName">{{'equipment.supplier' | translate}} <p-sortIcon
+                                            field="supplierName">
+                                        </p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="recallNumber">{{'equipmentRecall.recall-number' | translate}}
+                                        <p-sortIcon field="recallNumber">
+                                        </p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="recallDate">{{'equipmentRecall.Recall-date' | translate}}
+                                        <p-sortIcon field="recallDate">
+                                        </p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="manufacturer">{{'equipment.Manufacturer' | translate}}
+                                        <p-sortIcon field="manufacturer"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                            field="equipmentName"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="modelNumber">{{'equipment.modelNumber' | translate}}
+                                        <p-sortIcon field="modelNumber"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="versionNumber">{{'equipment.versionNumber' | translate}}
+                                        <p-sortIcon field="versionNumber"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="serialNumber">{{'equipment.serialNumber' | translate}}
+                                        <p-sortIcon field="serialNumber"></p-sortIcon>
+                                    </th>
+                                    <th *ngIf="currentUser.roleName==='Admin' || currentUser.roleName==='Organization'"
+                                        pSortableColumn="healthCareUnitName">{{'equipment.healthCareUnit' | translate}}
+                                        <p-sortIcon field="healthCareUnitName"></p-sortIcon>
+                                    </th>
+                                    <th *ngIf="currentUser.roleName==='Admin'" pSortableColumn="organizationName">
+                                        {{'equipment.organization' | translate}}
+                                        <p-sortIcon field="organizationName"></p-sortIcon>
+                                    </th>
+                                    <!-- <th>{{'Actions.Action' | translate}}</th> -->
+                                </tr>
+
+
+                                <!----------------------------Admin View-------------------->
+                                <tr
+                                    *ngIf="currentUser.roleName==='Admin'|| currentUser.roleName==='HeadQuarter'|| currentUser.roleName==='Hospital' || currentUser.roleName==='Organization'">
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'supplierName', 'contains')"
+                                            [value]="dt.filters['supplierName']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'recallNumber', 'contains')"
+                                            [value]="dt.filters['recallNumber']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'recallDate', 'contains')"
+                                            [value]="dt.filters['recallDate']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                                            optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'manufacturerName','equals')"
+                                            [filterBy]="dt.filters['manufacturerName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                                            optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'manufacturerNameAr','equals')"
+                                            [filterBy]="dt.filters['manufacturerNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="equipments"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                            optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'equipmentName','equals')"
+                                            [filterBy]="dt.filters['equipmentName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="equipments"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                            optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'equipmentNameAr','equals')"
+                                            [filterBy]="dt.filters['equipmentNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'modelNumber', 'contains')"
+                                            [value]="dt.filters['modelNumber']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'versionNumber', 'contains')"
+                                            [value]="dt.filters['versionNumber']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'serialNumber', 'contains')"
+                                            [value]="dt.filters['serialNumber']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th *ngIf="currentUser.roleName==='Admin' || currentUser.roleName==='Organization'">
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthCareUnitsList"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitName"
+                                            optionValue="healthCareUnitName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthCareUnitName','equals')"
+                                            [filterBy]="dt.filters['healthCareUnitName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthCareUnitsList"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            optionLabel="healthCareUnitNameAr" optionValue="healthCareUnitNameAr"
+                                            [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthCareUnitNameAr','equals')"
+                                            [filterBy]="dt.filters['healthCareUnitNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th *ngIf="currentUser.roleName==='Admin'">
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="organizations"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="Name"
+                                            optionValue="Name" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'Name','equals')"
+                                            [filterBy]="dt.filters['Name']?.value" styleClass="ui-column-filter"
+                                            class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="organizations"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="NameAr"
+                                            optionValue="NameAr" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'NameAr','equals')"
+                                            [filterBy]="dt.filters['NameAr']?.value" styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <!-- <th></th> -->
+                                </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="body" let-eq>
+                                <!----------------------------Admin View-------------------->
+
+                                <tr
+                                    *ngIf="currentUser.roleName==='Admin' || currentUser.roleName==='HeadQuarter'|| currentUser.roleName==='Hospital' || currentUser.roleName==='Organization'">
+                                    <td>{{eq.supplierName}}</td>
+                                    <td>{{eq.recallNumber}}</td>
+                                    <td>{{eq.recallDate}}</td>
+                                    <td>{{translate.currentLang == "En" ? eq.manufacturerName:eq.manufacturerNameAr}}
+                                    </td>
+                                    <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                                    <td>{{eq.modelNumber}}</td>
+                                    <td>{{eq.versionNumber}} </td>
+                                    <td>{{eq.serialNumber}} </td>
+                                    <td *ngIf="currentUser.roleName==='Organization'|| currentUser.roleName==='Admin'">
+                                        {{translate.currentLang == "En" ?
+                                        eq.healthCareUnitName:eq.healthCareUnitNameAr}}</td>
+                                    <td *ngIf="currentUser.roleName==='Admin'">{{translate.currentLang == "En" ?
+                                        eq.organizationName:eq.organizationNameAr}}</td>
+                                </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="summary">
+                                <div class="p-d-flex p-ai-center p-jc-between">
+                                    {{'In total there are.In total there are'| translate}} {{equipments ?
+                                    equipments.length
+                                    : 0 }}
+                                    {{'Sidebar.equipments'| translate}}.
+                                </div>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div
+    *ngIf="currentUser.roleName==='Technician' || currentUser.roleName==='City' || currentUser.roleName==='Governorate' || currentUser.roleName==='DataEntry'">
+    <h2>please,Contact organization for more details</h2>
+</div>

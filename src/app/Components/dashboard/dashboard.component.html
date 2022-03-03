@@ -1,0 +1,140 @@
+<br>
+
+
+<!-- <div class="row">
+    <div class="col-3">
+
+      <p-card [style]="{'background-color': 'darkkhaki'}">
+        <h2 style="font-size: 20px;">Equipments</h2>
+        <h3>{{healthUnitsno}}</h3>
+      </p-card>
+    </div>
+
+
+    <div class="col-3">
+
+      <p-card [style]="{'background-color': 'rgb(80, 255, 168)'}">
+        <h2 style="font-size: 20px;">Health Care Units</h2>
+        <h3>{{healthUnitsno}}</h3>
+      </p-card>
+    </div>
+
+    <div class="col-3">
+
+      <p-card [style]="{'background-color': 'lightskyblue'}">
+        <h2 style="font-size: 20px;">Suppliers</h2>
+        <h3>{{healthUnitsno}}</h3>
+      </p-card>
+    </div>
+    <div class="col-3">
+
+      <p-card [style]="{'background-color': 'rgb(243, 41, 5'}">
+        <h2 style="font-size: 20px;">Manfacturers</h2>
+        <h3>{{healthUnitsno}}</h3>
+      </p-card>
+    </div>
+  </div> -->
+
+<div class="dashboard">
+
+  <div class="row">
+
+
+    <div class="col">
+      <p-card header="Equipments" [style]="{'background-color': '#cfeafe','height':'150px'  ,'border-radius':'15px'}"
+        width="20vw">
+        <div class="row">
+
+          <div class="col">
+            <img src="../../../assets/images/ecg.png" class="img equipment">
+          </div>
+          <div class="col">
+            <p>capacity</p>
+            <p>{{equs}}</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col">
+      <p-card header="Manufacturers" [style]="{'background-color': '#fee3cf','height':'150px','border-radius':'15px'}"
+        width="20vw">
+        <div class="row">
+
+          <div class="col">
+            <img src="../../../assets/images/production.png" class="img prod">
+          </div>
+          <div class="col">
+            <p>capacity</p>
+            <p>{{manufacturersNo}}</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col">
+      <p-card header="Hospitals" [style]="{'background-color': '#dcf0e2','height':'150px','border-radius':'15px'}"
+        width="20vw">
+
+        <div class="row">
+
+          <div class="col">
+            <img src="../../../assets/images/hospital.png" class="img hospital">
+          </div>
+          <div class="col">
+            <p>capacity</p>
+            <p>{{healthUnitsno}}</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col">
+      <p-card header="Suppliers" [style]="{'background-color': '#fbf2d4','height':'150px','border-radius':'15px'}"
+        width="20vw">
+        <div class="row">
+
+          <div class="col">
+            <img src="../../../assets/images/hotel-supplier.png" class="img Suppliers">
+          </div>
+          <div class="col">
+            <p>capacity</p>
+            <p>{{supliersNo}}</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+
+  </div>
+
+
+
+
+
+
+
+  <div class="row">
+    <div class="col">
+
+      <p-chart type="line" [data]="basicData" width="75vw" height="50vh"></p-chart>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col">
+      <p-chart type="bar" [data]="basicData" width="20vw" height="50vh" class="bar"></p-chart>
+    </div>
+
+    <div class="col">
+      <p-chart type="doughnut" [data]="data" width="20vw" height="50vh" class="doughnut1"></p-chart>
+    </div>
+
+    <div class="col">
+      <p-chart type="polarArea" [data]="polar" width="20vw" height="50vh" class="polar"></p-chart>
+    </div>
+
+  </div>
+
+
+</div>

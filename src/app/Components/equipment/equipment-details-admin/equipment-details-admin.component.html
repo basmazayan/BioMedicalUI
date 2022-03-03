@@ -1,0 +1,255 @@
+<p-dialog [(visible)]="equipmentDialog" [style]="{width: '70vw'}" [modal]="true" styleClass="p-fluid"
+    (onHide)="hideDialog()">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'equipment.Details' | translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/ecg.png" class="img" [alt]="product">
+            </div>
+        </div>
+        <form>
+            <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                <p-tabPanel header="{{'equipment.Details' | translate}}">
+                    <fieldset class="tab">
+                        <legend>{{'equipment.Details'| translate}}</legend>
+                        <div class="row">
+                            <div class="col-md-3 form-group" *ngIf="translate.currentLang == 'En'">
+                                <label for="name">{{"equipment.Name"| translate}}</label>
+                                <input type="text" pInputText id="equipmentName" class="form-control" name="name"
+                                    [(ngModel)]="equipmentObj.equipmentName" disabled />
+                            </div>
+
+                            <div class="col-md-3 form-group" *ngIf="translate.currentLang == 'Ar'">
+                                <label for="namear">{{"equipment.NameAr"| translate}}</label>
+                                <input type="text" pInputText id="equipmentNamear" class="form-control" name="namear"
+                                    [(ngModel)]="equipmentObj.equipmentNameAr" disabled />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="internalCode">{{'equipment.barcode'| translate}}</label>
+                                <input type="text" pInputText id="barcode" class="form-control" name="barcode"
+                                    [(ngModel)]="equipmentObj.barcode" tooltipPosition="bottom" disabled />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="status">{{'equipment.EquipmentStatus'|translate}}</label>
+                                <div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <input type="radio" name="status" id="status" disabled selected />
+                                            {{translate.currentLang == "En"
+                                            ?equipmentObj.statusName:equipmentObj.statusNameAr}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12 " *ngIf="translate.currentLang == 'En'">
+
+                                <label for="Description">{{'equipment.Description'| translate}}</label>
+                                <textarea class="form-control" id="Description" type="text"
+                                    [(ngModel)]="equipmentObj.equipmentDescription"
+                                    [ngModelOptions]="{standalone: true}"
+                                    pTooltip="Please,Select An equipmentDescription" tooltipPosition="bottom"
+                                    disabled></textarea>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" *ngIf="translate.currentLang == 'Ar'">
+
+
+
+                                <label for="Description">{{'equipment.DescriptionAr'| translate}}</label>
+                                <textarea class="form-control" id="Description" type="text"
+                                    [(ngModel)]="equipmentObj.equipmentDescriptionAr"
+                                    [ngModelOptions]="{standalone: true}"
+                                    pTooltip="Please,Select An equipmentDescription"
+                                    tooltipPosition="bottom"></textarea>
+                            </div>
+                        </div>
+                        <br>
+
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()"
+                            [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                            [hidden]="isPrevvalid">previous</button>
+
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'equipment.IndustryDetails' | translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="color">{{'equipment.Color'| translate}}</label>
+                                <input type="text" pInputText id="Color" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.color" disabled />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="weight">{{'equipment.weight'| translate}}</label>
+                                <input type="number" pInputText id="weight" [ngModelOptions]="{standalone: true}"
+                                    class="form-control" [(ngModel)]="equipmentObj.weight" disabled />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="length">{{'equipment.length'| translate}}</label>
+                                <input type="number" pInputText id="length" [ngModelOptions]="{standalone: true}"
+                                    class="form-control" [(ngModel)]="equipmentObj.length" disabled />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="height">{{'equipment.height'| translate}}</label>
+                                <input type="number" pInputText id="height" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.height" disabled />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="serialNumber">{{'equipment.serialNumber'| translate}}</label>
+                                <input type="text" pInputText id="serialNumber" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.serialNumber"
+                                    disabled />
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+                <p-tabPanel header="{{'equipment.Location' |translate}}">
+
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="healthName">{{'equipment.healthCareUnit'|translate}}</label>
+                                <select class="form-control" id="healthName" name="healthName" #healthName="ngModel"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.healthCareUnitId"
+                                    disabled>
+                                    <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
+                                        {{translate.currentLang == "En" ?
+                                        h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="Department">{{'equipment.Department' |translate}}</label>
+                                <select type="text" id="Department" class="form-control" #department="ngModel"
+                                    name="department" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="equipmentObj.departmentId" disabled>
+                                    <option selected disabled>--select--</option>
+                                    <option *ngFor="let d of departmentsList" [value]="d.id">
+                                        {{translate.currentLang == "En" ? d.departmentName:d.departmentNameAr}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Employee">{{'equipment.Employee' |translate}}</label>
+                                <p-multiSelect [options]="users" (onChange)="checkCheckBoxvalue($event)"
+                                    defaultLabel="Select employee" optionLabel="userName">
+                                    <ng-template let-selectedEmployees pTemplate="selectedItems">
+                                        <ng-container *ngFor="let selectedLayer of selectedEmployees;">
+                                            {{selectedLayer.employeeName}} ,
+                                        </ng-container>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="Floor">{{'equipment.Floor' | translate}}</label>
+                                <input type="number" id="Floor" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.floor" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="Room">{{'equipment.Room' | translate}}</label>
+                                <input type="number" id="Room" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.room" disabled />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="internalCode">{{'equipment.internalCode' |translate}}</label>
+                                <input type="text" pInputText id="internalCode" class="form-control"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.internalCode"
+                                    disabled />
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="{{'equipment.PurchasingDetails'|translate}}">
+
+                    <fieldset class="tab">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <label for="date">{{'equipment.InstallationDate'|translate}}</label>
+                                <input type="date" class="form-control" id="installationDate" name="installationDate"
+                                    value="{{InstallationDate}}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="purchasedate">{{'equipment.PurchaseDate'|translate}}</label>
+                                <input type="date" class="form-control" id="purchasedate" name="purchasedate"
+                                    value="{{purchaseDat}}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="supplier">{{'equipment.Supplier'|translate}}</label>
+                                <select type="text" id="supplier" class="form-control" name="supplier"
+                                    [(ngModel)]="equipmentObj.supplierId" #supplierName="ngModel" disabled>
+                                    <option *ngFor="let s of suppliersList" [value]="s.id">
+                                        {{translate.currentLang == "En" ? s.supplierName:s.supplierNameAr}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="price">{{'equipment.Price' |translate}}</label>
+                                <input type="text" pInputText id="price" class="form-control" name="price"
+                                    [(ngModel)]="equipmentObj.price" #price="ngModel" disabled />
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                            [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" [hidden]="isPrevvalid"
+                            (click)="Previous()">previous</button>
+
+                        <br><br><br>
+
+                    </fieldset>
+
+                </p-tabPanel>
+                <p-tabPanel header="{{'equipment.QrCode' |translate}}">
+
+                    <fieldset class="tab">
+                        <legend>{{'equipment.QrCode' |translate}}</legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                              
+                                <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel"
+                                [value]="equipmentObj.qrImgPath" class="coolQRCode"></ngx-qrcode>
+                               
+                            </div>
+                            <!-- <div *ngIf="equipmentObj.qrImgPath == null">
+                                <p>No QrCode for this equipment</p>
+                            </div> -->
+                        </div>
+                  
+                        <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+            </p-tabView>
+        </form>
+    </ng-template>
+</p-dialog>

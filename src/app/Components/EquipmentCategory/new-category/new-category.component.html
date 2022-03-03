@@ -1,0 +1,119 @@
+<div>
+    <p-dialog [(visible)]="categoryDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'equipmentcategory.AddNewCategory'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddEquipmentCategoryForm.valid && saveEquepmentCat()" #AddEquipmentCategoryForm="ngForm">
+                <fieldset class="tab">
+                    <div class="row">
+
+                        
+                        <div class="col-md-12 form-group">
+                            <label for="categoryCode">{{'equipmentcategory.CategoryCode'|translate}}</label>
+                            <input type="text" class="form-control" id="categoryCode"
+                                name="categoryCode" placeholder="{{'equipmentcategory.CategoryCode'|translate}}"
+                                [(ngModel)]="category.categoryCode" #Code="ngModel"
+                                [class.is-invalid]="Code.touched && Code.errors || AddEquipmentCategoryForm.submitted" 
+                                [class.is-valid]="Code.valid && AddEquipmentCategoryForm.submitted" required
+                                pTooltip="Enter A categoryCode" tooltipPosition="bottom">
+                                <div *ngIf="(Code.touched || AddEquipmentCategoryForm.submitted) && Code.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'ecricodes.Required'|translate}}                    
+                                    </span>
+                               </div>
+                        </div>
+
+
+
+
+                        <div class="col-md-12">
+                            <label for="name">{{'equipmentcategory.CategoryName'|translate}}</label>
+                            <input type="text" class="form-control" id="name" name="enname"
+                               [(ngModel)]="category.categoryName"
+                                #EnName="ngModel"
+                                [class.is-invalid]="EnName.touched && EnName.errors || AddEquipmentCategoryForm.submitted" 
+                                [class.is-valid]="EnName.valid && AddEquipmentCategoryForm.submitted" required
+                                pTooltip="Enter A name in English" tooltipPosition="bottom">
+                                <div *ngIf="(EnName.touched || AddEquipmentCategoryForm.submitted) && EnName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'ecricodes.Required'|translate}}                             
+                                    </span>
+                               </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="name">{{'equipmentcategory.CategoryNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="name" name="arname"
+                                 [(ngModel)]="category.categoryNameAr"
+                                #ArName="ngModel"
+                                [class.is-invalid]="ArName.touched && ArName.errors || AddEquipmentCategoryForm.submitted" 
+                                [class.is-valid]="ArName.valid && AddEquipmentCategoryForm.submitted" required
+                                pTooltip="Enter A name in arabic" tooltipPosition="bottom">
+                                <div *ngIf="(ArName.touched || AddEquipmentCategoryForm.submitted) && ArName.errors?.required">
+                                    <span class="text-danger">        
+                                        {{'ecricodes.Required'|translate}}                          
+                                    </span>
+                               </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label for="categoryDescription">{{'equipmentcategory.CategoryDescription'|translate}}</label>
+                            <input type="text" class="form-control" id="categoryDescription" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="category.categoryDescription" autofocus 
+                                 pTooltip="Enter Description in English" tooltipPosition="bottom">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="categoryDescription">{{'equipmentcategory.CategoryDescriptionAr'|translate}}</label>
+                            <input type="text" class="form-control" id="categoryDescription" [ngModelOptions]="{standalone: true}"  
+                                pTooltip="Enter Description in arabic" tooltipPosition="bottom"
+                                 [(ngModel)]="category.categoryDescriptionAr" autofocus>
+                        </div>
+                        <!-- <div class="col-md-3 form-group">
+                            <label for="healthName">{{'equipmentcategory.HealthCareUnit'|translate}}</label>
+                            <select class="form-control" id="healthName" name="healthName"
+                                [(ngModel)]="category.HealthCareUnitId"
+                                [class.is-invalid]="healthName.touched && healthName.errors || AddEquipmentCategoryForm.submitted"
+                                [class.is-valid]="healthName.valid && AddEquipmentCategoryForm.submitted"
+                                 #healthName="ngModel" required [value]="0"                                 
+                                 pTooltip="Please,Enter A healthCareUnit" tooltipPosition="bottom">
+                                <option value="0">--select--</option>
+                                <option *ngFor="let h of healthCareUnitsList" [value]="h.id">         
+                                    {{translate.currentLang == "En" ? h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                </option>
+                            </select>
+                            <div
+                            *ngIf="(healthName.touched || AddEquipmentCategoryForm.submitted) && healthName.errors?.required">
+                            <span class="text-danger">
+                                health CareUnit is required
+                            </span>
+                        </div> 
+                        </div>-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" 
+                                    class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>                         
+                      </div>
+                      <div class="col-md-6">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" 
+                                    class="btn btn-info" value="save" type="submit"></button>
+                      </div>
+                    </div>
+                </fieldset>
+                <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
+                    <p-header style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+                    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+                </p-dialog>
+            </form>
+
+        </ng-template>
+    </p-dialog>
+
+    <!-- <p-dialog [(visible)]="deleteDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid" (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+        </ng-template>
+    </p-dialog> -->
+</div>

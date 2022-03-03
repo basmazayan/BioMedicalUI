@@ -1,0 +1,1097 @@
+<!--------------------------------Hospital UI------------------------------------->
+<form *ngIf="currentUser.roleName==='Hospital'">
+    <div class="container">
+        <div class="header">
+            <h3 class="title" style="text-align: center;">{{'ContractRequest.MaintenanceContractRequest'|translate}}
+            </h3>
+        </div>
+        <p-toast posinset="top-right" life="2000"></p-toast>
+        <hr style="width: 50%;">
+        <br>
+        <button class="btn btn-primary" routerLink="/home/ContractRequest">
+            <i class="fa fa-arrow-left"></i></button>
+            <br><br><br>
+        <div class="row" *ngIf="vewid==undefined">
+            <div class="col-lg-2" *ngIf="RequestObj.status==0">
+                <input type="submit" (click)="onSave('sent')" value="{{'ContractRequest.SendToOrganizatopn'|translate}}"
+                    class="btnSubmit btn btn-info">
+            </div>
+            <div class="col-lg-2">
+                <input type="submit" (click)="onSave('save')" value="{{'ContractRequest.Save'|translate}}"
+                    class="btnSubmit btn btn-info">
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-lg-2">
+                <label>{{'ContractRequest.RequestNumber' |translate}}</label>
+            </div>
+            <div class="col-lg-4">
+                <input type="number" pInputText id="requestNumber" class="form-control" name="requestNumber"
+                    [(ngModel)]="RequestObj.number" required #barCode="ngModel" disabled />
+            </div>
+            <div class="col-lg-1">
+                <label for="date">{{'ContractRequest.Date'|translate}}</label>
+            </div>
+            <div class="col-lg-5">
+                <input type="date" class="form-control" id="Date" name="Date" placeholder="Date"
+                    [(ngModel)]="hospitalRequestdate" disabled>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-lg-2">
+                <label for="Description">{{'ContractRequest.Comment'|translate}}</label>
+            </div>
+            <div class="col-lg-10" *ngIf="vewid==undefined">
+                <textarea class="form-control" id="Description" type="text" [(ngModel)]="RequestObj.comments"
+                    [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+            <div class="col-lg-10" *ngIf="vewid!=undefined">
+                <textarea class="form-control" id="Description" type="text" [(ngModel)]="RequestObj.comments"
+                    [ngModelOptions]="{standalone: true}" [disabled]="true"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <label>
+                    <h5>{{'ContractRequest.EquipmentList'|translate}}</h5>
+                </label>
+            </div>
+        </div>
+        <br><br>
+        <div>
+            <h5 style="color: blue;">{{MSG}}</h5>
+        </div>
+
+        <div class="row" *ngIf="MSG==undefined ||''">
+
+            <div class="col-lg-5">
+
+                <!--------------------------------All For Add New-------------------->
+                <p-table #dt [value]="EquipmentList" [rows]="10" styleClass="p-datatable-responsive-demo"
+                    [paginator]="true" [rowHover]="true" dataKey="id"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [showCurrentPageReport]="true" *ngIf="RequestID== undefined || RequestID==null">
+                    <h2>fggggggg</h2>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="Code">{{'equipment.internalCode' | translate}} <p-sortIcon
+                                    field="Code">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="upaCode">{{'equipment.upaCode' | translate}} <p-sortIcon
+                                    field="upaCode">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                    field="equipmentName"></p-sortIcon>
+                            </th>
+                            <th>{{'equipment.select'|translate}}</th>
+                            <!-- <th>{{'equipment.Status'|translate}}</th> -->
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt.filter($event.target.value, 'internalCode', 'contains')"
+                                    [value]="dt.filters['internalCode']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt.filter($event.target.value, 'upaCode', 'contains')"
+                                    [value]="dt.filters['upaCode']?.value" placeholder="{{'search.Search'|translate}}"
+                                    class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <p-dropdown *ngIf="translate.currentLang==='En'" [options]="EquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                    optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                    (onChange)="dt.filter($event.value,'equipmentName','equals')"
+                                    [filterBy]="dt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                                    class="filterDropdwon"></p-dropdown>
+                                <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="EquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                    optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                    (onChange)="dt.filter($event.value,'equipmentNameAr','equals')"
+                                    [filterBy]="dt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                                </p-dropdown>
+                            </th>
+                            <th></th>
+                            <!-- <th></th> -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-eq>
+                        <tr>
+                            <td>{{eq.internalCode}}</td>
+                            <td>{{eq.upaCode}}</td>
+                            <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                            <td *ngIf="eq.contractRequestId==null">
+                                <p-checkbox name="group1" [value]="eq.id" [(ngModel)]="EquipmentIDs"></p-checkbox>
+                            </td>
+                            <td *ngIf="eq.contractRequestId!=null && RequestID!=undefined">
+                                <p-checkbox name="{{eq.id}}" [value]="eq.id" id="{{eq.id}}" [(ngModel)]="EquipmentIDs"
+                                    binary="true"></p-checkbox>
+                            </td>
+                            <td *ngIf="eq.contractRequestId!=null && RequestID==undefined">
+                                <p-checkbox name="group3" [(ngModel)]="EquipmentIDs" binary="true" [disabled]="true">
+                                </p-checkbox>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <!--------------------------------All Edit-------------------->
+
+                <p-table #dt [value]="EquipmentListToEdit" [rows]="10" styleClass="p-datatable-responsive-demo"
+                    [paginator]="true" [rowHover]="true" dataKey="id"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [showCurrentPageReport]="true" *ngIf="RequestID!=undefined && vewid==undefined">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <!-- <th>lllllll</th> -->
+                            <th pSortableColumn="Code">{{'equipment.internalCode' | translate}} <p-sortIcon
+                                    field="Code">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="upaCode">{{'equipment.upaCode' | translate}} <p-sortIcon
+                                    field="upaCode">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                    field="equipmentName"></p-sortIcon>
+                            </th>
+                            <th>{{'equipment.select'|translate}}</th>
+                            <!-- <th>{{'equipment.Status'|translate}}</th> -->
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt.filter($event.target.value, 'internalCode', 'contains')"
+                                    [value]="dt.filters['internalCode']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dt.filter($event.target.value, 'upaCode', 'contains')"
+                                    [value]="dt.filters['upaCode']?.value" placeholder="{{'search.Search'|translate}}"
+                                    class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <p-dropdown *ngIf="translate.currentLang==='En'" [options]="EquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                    optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                    (onChange)="dt.filter($event.value,'equipmentName','equals')"
+                                    [filterBy]="dt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                                    class="filterDropdwon"></p-dropdown>
+                                <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="EquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                    optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                    (onChange)="dt.filter($event.value,'equipmentNameAr','equals')"
+                                    [filterBy]="dt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                                </p-dropdown>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-eq>
+                        <tr>
+                            <td>{{eq.internalCode}}</td>
+                            <td>{{eq.upaCode}}</td>
+                            <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                            <td *ngIf="eq.contractRequestId==null">
+                                <p-checkbox name="group1" [value]="eq.id" [(ngModel)]="EquipmentIDs"></p-checkbox>
+                            </td>
+                            <td *ngIf="eq.contractRequestId!=null && RequestID!=undefined">
+                                <p-checkbox name="{{eq.id}}" [value]="eq.id" id="{{eq.id}}" [(ngModel)]="EquipmentIDs"
+                                    binary="true"></p-checkbox>
+                            </td>
+                            <td *ngIf="eq.contractRequestId!=null && RequestID==undefined">
+                                <p-checkbox name="group3" [(ngModel)]="EquipmentIDs" binary="true" [disabled]="true">
+                                </p-checkbox>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <!-- <div> -->
+            <div class="col-lg-2 btns" *ngIf="translate.currentLang==='En' && vewid==undefined">
+                <div class="row">
+                    <button class="btnIn btn btn-info" (click)="selectEquipment()">
+                        <i class="fa fa-arrow-right"></i></button>
+                </div>
+                <br>
+                <div class="row">
+                    <button class="btnIn btn btn-info" (click)="outEquipment()">
+                        <i class="fa fa-arrow-left"></i></button>
+                </div>
+            </div>
+            <div class="col-lg-2 btnsAr" *ngIf="translate.currentLang==='Ar' && vewid==undefined">
+                <div class="row">
+                    <button class="btnIn btn btn-info" (click)="selectEquipment()">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                </div>
+                <br>
+                <div class="row">
+                    <button class="btnIn btn btn-info" (click)="outEquipment()">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- </div> -->
+            <div class="col-lg-5">
+                <!-----------------------------Add New------------------------>
+                <p-table #dtt [value]="SelectedEquipmentList" [rows]="10" styleClass="p-datatable-responsive-demo"
+                    [paginator]="true" [rowHover]="true" dataKey="id" [showCurrentPageReport]="true"
+                    selectionMode="single" *ngIf="RequestID==undefined">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="Code">{{'equipment.internalCode' | translate}} <p-sortIcon
+                                    field="Code">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="upaCode">{{'equipment.upaCode' | translate}} <p-sortIcon
+                                    field="upaCode">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                    field="equipmentName"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="manufacturer">{{'equipment.Manufacturer' | translate}} <p-sortIcon
+                                    field="manufacturer"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="serialNumber">{{'equipment.modelNumber' | translate}} <p-sortIcon
+                                    field="serialNumber"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="serialNumber">{{'equipment.serialNumber' | translate}} <p-sortIcon
+                                    field="serialNumber"></p-sortIcon>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'internalCode', 'contains')"
+                                    [value]="dtt.filters['internalCode']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'upaCode', 'contains')"
+                                    [value]="dtt.filters['upaCode']?.value" placeholder="{{'search.Search'|translate}}"
+                                    class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <p-dropdown *ngIf="translate.currentLang==='En'" [options]="SelectedEquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                    optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'equipmentName','equals')"
+                                    [filterBy]="dtt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                                    class="filterDropdwon"></p-dropdown>
+                                <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="SelectedEquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                    optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'equipmentNameAr','equals')"
+                                    [filterBy]="dtt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                                </p-dropdown>
+                            </th>
+                            <th>
+                                <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                                    optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'manufacturerName','equals')"
+                                    [filterBy]="dtt.filters['manufacturerName']?.value" styleClass="ui-column-filter"
+                                    class="filterDropdwon"></p-dropdown>
+                                <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                                    optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'manufacturerNameAr','equals')"
+                                    [filterBy]="dtt.filters['manufacturerNameAr']?.value" styleClass="ui-column-filter">
+                                </p-dropdown>
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'modelNumber', 'contains')"
+                                    [value]="dtt.filters['modelNumber']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'serialNumber', 'contains')"
+                                    [value]="dtt.filters['serialNumber']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-eq>
+                        <tr id="{{eq.id}}" (click)="selectEquipmentToOut(eq.id)">
+                            <td>{{eq.internalCode}}</td>
+                            <td>{{eq.upaCode}}</td>
+                            <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                            <td>{{translate.currentLang == "En" ? eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                            <td>{{eq.modelNumber}}</td>
+                            <td>{{eq.serialNumber}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <!-----------------------------Edit------------------------>
+                <p-table #dtt [value]="RequestObj.equipments" [rows]="10" styleClass="p-datatable-responsive-demo"
+                    [paginator]="true" [rowHover]="true" dataKey="id" [showCurrentPageReport]="true"
+                    selectionMode="single" *ngIf="RequestID!=undefined && vewid==undefined">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="Code">{{'equipment.internalCode' | translate}} <p-sortIcon
+                                    field="Code">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="upaCode">{{'equipment.upaCode' | translate}} <p-sortIcon
+                                    field="upaCode">
+                                </p-sortIcon>
+                            </th>
+                            <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                    field="equipmentName"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="manufacturer">{{'equipment.Manufacturer' | translate}} <p-sortIcon
+                                    field="manufacturer"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="serialNumber">{{'equipment.modelNumber' | translate}} <p-sortIcon
+                                    field="serialNumber"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="serialNumber">{{'equipment.serialNumber' | translate}} <p-sortIcon
+                                    field="serialNumber"></p-sortIcon>
+                            </th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'internalCode', 'contains')"
+                                    [value]="dtt.filters['internalCode']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'upaCode', 'contains')"
+                                    [value]="dtt.filters['upaCode']?.value" placeholder="{{'search.Search'|translate}}"
+                                    class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <p-dropdown *ngIf="translate.currentLang==='En'" [options]="SelectedEquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                    optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'equipmentName','equals')"
+                                    [filterBy]="dtt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                                    class="filterDropdwon"></p-dropdown>
+                                <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="SelectedEquipmentList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                    optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'equipmentNameAr','equals')"
+                                    [filterBy]="dtt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                                </p-dropdown>
+                            </th>
+                            <th>
+                                <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                                    optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'manufacturerName','equals')"
+                                    [filterBy]="dtt.filters['manufacturerName']?.value" styleClass="ui-column-filter"
+                                    class="filterDropdwon"></p-dropdown>
+                                <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                                    placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                                    optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                                    (onChange)="dtt.filter($event.value,'manufacturerNameAr','equals')"
+                                    [filterBy]="dtt.filters['manufacturerNameAr']?.value" styleClass="ui-column-filter">
+                                </p-dropdown>
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'modelNumber', 'contains')"
+                                    [value]="dtt.filters['modelNumber']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                            <th>
+                                <input pInputText type="text"
+                                    (input)="dtt.filter($event.target.value, 'serialNumber', 'contains')"
+                                    [value]="dtt.filters['serialNumber']?.value"
+                                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-eq>
+                        <!--  -->
+                        <tr id="{{eq.id}}" (click)="selectEquipmentToOut(eq.id)">
+                            <!-- (click)="outEquipment(eq.id)" -->
+                            <td>{{eq.internalCode}}</td>
+                            <td>{{eq.upaCode}}</td>
+                            <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                            <td>{{translate.currentLang == "En" ? eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                            <td>{{eq.modelNumber}}</td>
+                            <td>{{eq.serialNumber}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+            </div>
+        </div>
+        <!----------------------------------View--------------------------->
+        <p-table #dtt [value]="RequestObj.equipments" [rows]="10" styleClass="p-datatable-responsive-demo"
+            [paginator]="true" [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" selectionMode="single"
+            *ngIf="vewid!=undefined">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th >{{'equipment.internalCode' | translate}}
+                    </th>
+                    <th >{{'equipment.upaCode' | translate}}
+                    </th>
+                    <th >{{'equipment.Name' | translate}} 
+                    </th>
+                    <th>{{'equipment.Manufacturer' | translate}} 
+                    </th>
+                    <th>{{'equipment.modelNumber' | translate}} 
+                    </th>
+                    <th>{{'equipment.serialNumber' | translate}}
+                    </th>
+                    <!-- <th></th> -->
+                </tr>
+                <tr>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dtt.filter($event.target.value, 'internalCode', 'contains')"
+                            [value]="dtt.filters['internalCode']?.value" placeholder="{{'search.Search'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text" (input)="dtt.filter($event.target.value, 'upaCode', 'contains')"
+                            [value]="dtt.filters['upaCode']?.value" placeholder="{{'search.Search'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="SelectedEquipmentList"
+                            placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                            optionValue="equipmentName" [showClear]="true" appendTo="body"
+                            (onChange)="dtt.filter($event.value,'equipmentName','equals')"
+                            [filterBy]="dtt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                            class="filterDropdwon"></p-dropdown>
+                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="SelectedEquipmentList"
+                            placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                            optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                            (onChange)="dtt.filter($event.value,'equipmentNameAr','equals')"
+                            [filterBy]="dtt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                        </p-dropdown>
+                    </th>
+                    <th>
+                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                            placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                            optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                            (onChange)="dtt.filter($event.value,'manufacturerName','equals')"
+                            [filterBy]="dtt.filters['manufacturerName']?.value" styleClass="ui-column-filter"
+                            class="filterDropdwon"></p-dropdown>
+                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                            placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                            optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                            (onChange)="dtt.filter($event.value,'manufacturerNameAr','equals')"
+                            [filterBy]="dtt.filters['manufacturerNameAr']?.value" styleClass="ui-column-filter">
+                        </p-dropdown>
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dtt.filter($event.target.value, 'modelNumber', 'contains')"
+                            [value]="dtt.filters['modelNumber']?.value" placeholder="{{'search.Search'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dtt.filter($event.target.value, 'serialNumber', 'contains')"
+                            [value]="dtt.filters['serialNumber']?.value" placeholder="{{'search.Search'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-eq>
+                <!--  -->
+                <tr id="{{eq.id}}" (click)="selectEquipmentToOut(eq.id)">
+                    <!-- (click)="outEquipment(eq.id)" -->
+                    <td>{{eq.internalCode}}</td>
+                    <td>{{eq.upaCode}}</td>
+                    <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                    <td>{{translate.currentLang == "En" ? eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                    <td>{{eq.modelNumber}}</td>
+                    <td>{{eq.serialNumber}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+</form>
+
+<!--------------------------------Organization UI------------------------------------->
+<form *ngIf="currentUser.roleName==='Organization'">
+    <div class="container">
+        <div class="header">
+            <h3 class="title" style="text-align: center;">{{'ContractRequest.SendMaintenanceContractRequest'|translate}}
+            </h3>
+        </div>
+        <p-toast posinset="top-right" life="3000"></p-toast>
+        <hr style="width: 50%;">
+        <br>
+        <div class="row">
+            <input type="submit" (click)="onOrgRequestSave()" value="{{'ContractRequest.SendToUPA'|translate}}"
+                class="btnSubmit btn btn-info">
+        </div>
+        <br><br>
+        <!-- <div class="row"> -->
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- <div class="col-lg-1"> -->
+                <label>{{'ContractRequest.RequestNumber' |translate}}</label>
+                <!-- </div> -->
+                <!-- <div class="col-lg-4"> -->
+                <input type="number" pInputText id="requestNumber" class="form-control" name="requestNumber"
+                    [(ngModel)]="RequestObj.number" required #barCode="ngModel" disabled />
+                <!-- </div> -->
+                <!-- <div class="col-lg-1"> -->
+                <label for="date">{{'ContractRequest.Date'|translate}}</label>
+                <!-- </div> -->
+                <!-- /<div class="col-lg-5"> -->
+                <input type="date" class="form-control" id="Date" name="Date" placeholder="Date"
+                    [(ngModel)]="organizationRequestdate" disabled>
+                <!-- </div> -->
+            </div>
+            <!----------------------------------Search From To Date---------------------->
+            <div class="col-lg-6">
+                <!-- <div class="col-lg-1"> -->
+                <label>{{'ContractRequest.From'|translate}}</label>
+                <!-- </div> -->
+                <!-- <div class="col-lg-4"> -->
+                <input type="date" placeholder="{{'search.Search'|translate}}" #reqDate name="requestDate" id="FromDate"
+                    (change)="filterFromDate()" class="form-control">
+                <i *ngIf="translate.currentLang=='En'" class="form-control-clear pi pi-times" (click)="ClearFromDate()"
+                    id="filterBetweenFromDateIdEn" [hidden]="visibleFrom"></i>
+                <i *ngIf="translate.currentLang=='Ar'" class="form-control-clear pi pi-times" (click)="ClearFromDate()"
+                    id="filterBetweenFromDateIdAr" [hidden]="visibleFrom"></i>
+                <!-- </div> -->
+                <!-- <div class="col-lg-1"> -->
+                <label>{{'ContractRequest.To'|translate}}</label>
+                <!-- </div> -->
+                <!-- <div class="col-lg-4"> -->
+                <input type="date" placeholder="{{'search.Search'|translate}}" #reqDate name="requestDate" id="ToDate"
+                    (change)="filterToDate()" class="form-control">
+                <i *ngIf="translate.currentLang=='En'" class="form-control-clear pi pi-times" (click)="ClearToDate()"
+                    id="filterBetweenToDateIdEn" [hidden]="visibleTo"></i>
+                <i *ngIf="translate.currentLang=='Ar'" class="form-control-clear pi pi-times" (click)="ClearToDate()"
+                    id="filterBetweenToDateIdAr" [hidden]="visibleTo"></i>
+                <!-- </div> -->
+            </div>
+        </div>
+
+        <!-- </div> -->
+
+        <br><br>
+        <h5 style="color:red">{{nullablMSG}}</h5><br>
+        <div *ngFor="let request of hospitalWithRequestList" style="width: 900px">
+
+            <p-accordion>
+                <p-accordionTab header="{{translate.currentLang == 'En' ? request.hospitalName:request.hospitalNameAr}}"
+                    [selected]="true">
+                    <p-table #dt [value]="request.contractRequests" [rows]="10" styleClass="p-datatable-responsive-demo"
+                        [paginator]="true" [rowHover]="true" dataKey="id" [showCurrentPageReport]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="Number">{{'ContractRequest.RequestNumber'|translate}}
+                                    <p-sortIcon field="Number">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="Date">{{'ContractRequest.Date'|translate}} <p-sortIcon
+                                        field="Date">
+                                    </p-sortIcon>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'number', 'contains')"
+                                        [value]="dt.filters['number']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+
+                                </th>
+                                <th>
+                                    <input pInputText type="date"
+                                        (input)="dt.filter($event.target.value, 'date', 'contains')"
+                                        [value]="dt.filters['date']?.value" placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control" #reqDate id="{{request.id}}"
+                                        name="requestDate" (change)="OnchangDate(request.id,request.hospitalName)">
+                                    <i class="form-control-clear pi pi-times" id="{{request.hospitalName}}"
+                                        (click)="FilterByDate(request.hospitalName)" style="display: none;"></i>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-req>
+                            <tr>
+                                <a data-toggle="collapse"
+                                    class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                    href="#{{req.id}}" aria-expanded="false" aria-controls="collapseExample">
+                                    <td>
+                                        {{req.number}}
+                                    </td>
+                                </a>
+                                <td>{{req.date |date:'medium'}}</td>
+                            </tr>
+
+                            <tr>
+                                <div id="{{req.id}}" class="panel-collapse collapse" style="width: 850px">
+                                    <p-table class="col-md-9" #dt [value]="req.equipments" [rows]="10"
+                                        styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                        [rowHover]="true" dataKey="id" [showCurrentPageReport]="true">
+                                        <ng-template pTemplate="header">
+                            <tr style="font-size: 18px;">
+                                <th>{{'equipment.upaCode'|translate}}</th>
+                                <th>{{'equipment.Name'|translate}}</th>
+                                <th>{{'equipment.Manufacturer'|translate}}</th>
+                                <th>{{'equipment.serialNumber'|translate}}</th>
+                                <th>{{'equipment.Department'|translate}}
+
+                                </th>
+                                <th pSortableColumn="purchaseDate">{{'equipment.PurchaseDate'|translate}}</th>
+                                <th>{{'equipment.select'|translate}}</th>
+                                <th>status</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-eq>
+                            <tr style="font-size: 17px;">
+                                <td>{{eq.internalCode}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}
+                                </td>
+                                <td>{{translate.currentLang == "En" ?
+                                    eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                                <td>{{eq.serialNumber}}
+                                </td>
+                                <td>{{translate.currentLang == "En" ?
+                                    eq.departmentName:eq.departmentNameAr}}
+                                </td>
+                                <td>{{eq.purchaseDate | date:'shortDate'}}
+                                </td>
+                                <td *ngIf="eq.organizationRequestId==null">
+                                    <p-checkbox name="group1" [value]="eq.id" [(ngModel)]="OrganizationEquipmentIDs">
+                                    </p-checkbox>
+                                </td>
+                                <td *ngIf="eq.organizationRequestId!=null">
+                                    <p-checkbox name="group2" [(ngModel)]="OrganizationEquipmentIDs" binary="true"
+                                        [disabled]="true"></p-checkbox>
+                                </td>
+                                <td *ngIf="eq.organizationRequestId!=null">
+                                    sent to UPA
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+        </div>
+        </tr>
+        </ng-template>
+        </p-table>
+        </p-accordionTab>
+        </p-accordion>
+
+    </div>
+    </div>
+</form>
+
+<!------------------------------------UPA UI------------------------------------------->
+<div class="card" style="padding: 2%;" *ngIf=" currentUser.roleName==='Admin' ">
+    <p-toast></p-toast>
+    <p-steps [model]="items" [(activeIndex)]="activeIndex" *ngIf="currentUser.roleName==='Admin'"
+        [readonly]="true">
+    </p-steps>
+</div>
+<br><br>
+<p-card *ngIf="currentUser.roleName==='Admin'">
+    <div [ngSwitch]="activeIndex" *ngIf="currentUser.roleName==='Admin'">
+        <div *ngSwitchCase="pageNames.page1">
+            <p-toast posinset="top-right"></p-toast>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="header">
+                        <h4 class="title">{{'ContractRequest.PrepareMiantenanaceContractRequest'|translate}}</h4>
+                        <hr *ngIf="translate.currentLang=='En'" style="width: 50%; float: left;">
+                        <hr *ngIf="translate.currentLang=='Ar'" style="width: 50%; float: right;">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <input type="button" (click)="InformHospital()"
+                        value="{{'ContractRequest.InformHospital'|translate}}" class="btnSubmit btn btn-info">
+                </div>
+            </div>
+            <br><br>
+            <h5 style="color:red">{{nullablMSG}}</h5><br>
+            <div *ngFor="let request of orgRequestList" style="width: 850px">
+                <p-accordion>
+                    <p-accordionTab
+                        header="{{translate.currentLang == 'En' ? request.organizationName:request.organizationNameAr}}"
+                        [selected]="true">
+                        <p-table #dt [value]="request.orgRequests" [rows]="10" styleClass="p-datatable-responsive-demo"
+                            [paginator]="true" [rowHover]="true" dataKey="id" [showCurrentPageReport]="true">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="Number">{{'ContractRequest.RequestNumber'|translate}}
+                                        <p-sortIcon field="Number">
+                                        </p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="Date">{{'ContractRequest.Date'|translate}} <p-sortIcon
+                                            field="Date">
+                                        </p-sortIcon>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'number', 'contains')"
+                                            [value]="dt.filters['number']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input pInputText type="date"
+                                            (input)="dt.filter($event.target.value, 'date', 'contains')"
+                                            [value]="dt.filters['date']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control" #reqDate id="{{request.id}}"
+                                            name="requestDate"
+                                            (change)="OnchangDateInOrg(request.id,request.organizationName)">
+                                        <i class="form-control-clear pi pi-times" id="{{request.organizationName}}"
+                                            (click)="FilterByDateInOrg(request.organizationName)"
+                                            style="display: none;"></i>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-req>
+                                <tr>
+                                    <a data-toggle="collapse"
+                                        class="list-group-item list-group-item-action   dropdown-toggle sidetoggle groupLabel"
+                                        href="#{{req.id}}" role="button" aria-expanded="false"
+                                        aria-controls="collapseExample">
+                                        <td>
+                                            {{req.number}}
+                                        </td>
+                                    </a>
+                                    <td>{{req.date}}</td>
+                                </tr>
+
+                                <tr>
+                                    <div id="{{req.id}}" class="panel-collapse collapse" style="width: 830px">
+                                        <p-table #dt [value]="req.equipments" [rows]="10"
+                                            styleClass="p-datatable-responsive-demo" [(selection)]="selectedProducts"
+                                            [rowHover]="true" dataKey="id" [showCurrentPageReport]="true"
+                                            class="rowtbl">
+                                            <ng-template pTemplate="header">
+                                <tr style="font-size: 18px;">
+                                    <th>{{'equipment.internalCode'|translate}}</th>
+                                    <th>{{'equipment.upaCode'|translate}}</th>
+                                    <th>{{'equipment.Name'|translate}}</th>
+                                    <th>{{'equipment.Manufacturer'|translate}}</th>
+                                    <th>{{'equipment.healthDirectory'|translate}}</th>
+                                    <th>{{'equipment.healthDistrict'|translate}}</th>
+                                    <th>{{'equipment.healthCareUnit'|translate}}</th>
+                                    <th>{{'equipment.select'|translate}}</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'internalCode', 'contains')"
+                                            [value]="dt.filters['internalCode']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input pInputText type="text"
+                                            (input)="dt.filter($event.target.value, 'upaCode', 'contains')"
+                                            [value]="dt.filters['upaCode']?.value"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            class="p-column-filter form-control">
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="req.equipments"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                            optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'equipmentName','equals')"
+                                            [filterBy]="dt.filters['equipmentName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="req.equipments"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                            optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'equipmentNameAr','equals')"
+                                            [filterBy]="dt.filters['equipmentNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                                            optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'manufacturerName','equals')"
+                                            [filterBy]="dt.filters['manufacturerName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                                            optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'manufacturerNameAr','equals')"
+                                            [filterBy]="dt.filters['manufacturerNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'"
+                                            [options]="healthDirectoriesList"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            optionLabel="healthDirectoryName" optionValue="healthDirectoryName"
+                                            [showClear]="true" appendTo="body" optionKey="id" filterBy="label"
+                                            (onChange)="dt.filter($event.value,'healthDirectoryName','equals') ;fillDistrict($event.value)"
+                                            [filterBy]="dt.filters['healthDirectoryName']" styleClass="ui-column-filter"
+                                            class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'"
+                                            [options]="healthDirectoriesList"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            optionLabel="healthDirectoryNameAr" optionValue="healthDirectoryNameAr"
+                                            [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthDirectoryNameAr','contains') ;fillDistrict($event.value)"
+                                            [filterBy]="dt.filters['healthDirectoryNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="HealthDistrictsList"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictName"
+                                            optionValue="healthDistrictName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthDistrictName','contains') ; fillHospital($event.value)"
+                                            [filterBy]="dt.filters['healthDistrictName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="HealthDistrictsList"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            optionLabel="healthDistrictNameAr" optionValue="healthDistrictNameAr"
+                                            [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthDistrictNameAr','contains'); fillHospital($event.value)"
+                                            [filterBy]="dt.filters['healthDistrictNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th>
+                                        <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthCareUnits"
+                                            placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitName"
+                                            optionValue="healthCareUnitName" [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthCareUnitName','equals')"
+                                            [filterBy]="dt.filters['healthCareUnitName']?.value"
+                                            styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                        <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthCareUnits"
+                                            placeholder="{{'search.Search'|translate}}"
+                                            optionLabel="healthCareUnitNameAr" optionValue="healthCareUnitNameAr"
+                                            [showClear]="true" appendTo="body"
+                                            (onChange)="dt.filter($event.value,'healthCareUnitNameAr','equals')"
+                                            [filterBy]="dt.filters['healthCareUnitNameAr']?.value"
+                                            styleClass="ui-column-filter">
+                                        </p-dropdown>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-eq>
+                                <tr style="font-size: 17px;">
+                                    <td>{{eq.internalCode}}</td>
+                                    <td>{{eq.upaCode}}</td>
+                                    <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}
+                                    </td>
+                                    <td>{{translate.currentLang == "En" ?
+                                        eq.manufacturerName:eq.manufacturerNameAr}}
+                                    </td>
+                                    <td>{{translate.currentLang == "En" ?
+                                        eq.healthDirectoryName:eq.healthDirectoryNameAr}}
+                                    </td>
+                                    <td>{{translate.currentLang == "En" ?
+                                        eq.healthDistrictName:eq.healthDistrictNameAr}}
+                                    </td>
+                                    <td>{{translate.currentLang == "En" ?
+                                        eq.healthCareUnitName:eq.healthCareUnitNameAr}}
+                                    </td>
+                                    <td *ngIf="eq.contractId==null">
+                                        <p-checkbox name="group1" [value]="eq.id" [(ngModel)]="UPAEquipmentIDs">
+                                        </p-checkbox>
+                                    </td>
+                                    <td *ngIf="eq.contractId!=null">
+                                        <p-checkbox name="group1" [value]="eq.id" [(ngModel)]="UPAEquipmentIDs"
+                                            binary="true" [disabled]="true"></p-checkbox>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+            </div>
+            </tr>
+            </ng-template>
+            </p-table>
+            </p-accordionTab>
+            </p-accordion>
+            <br><br>
+        </div>
+        <div *ngIf="translate.currentLang=='En'" class="p-grid p-nogutter p-justify-end btnSubmit"
+            style="float: right; margin-top: -5%;">
+            <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+        </div>
+        <div *ngIf="translate.currentLang=='Ar'" class="p-grid p-nogutter p-justify-end btnSubmit"
+            style="float: right; margin-top: -3%;">
+            <p-button label="التالي" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+        </div>
+    </div>
+    <div *ngSwitchCase="pageNames.page2">
+        <div class="header">
+            <h3 class="title" style="text-align: center;">{{'ContractRequest.CreateMaintenanceContract'|translate}}
+            </h3>
+        </div>
+        <p-toast posinset="top-right"></p-toast>
+        <hr style="width: 50%;">
+        <br><br>
+        <form (ngSubmit)="AddContract.valid && CreateContract(AddContract)" #AddContract="ngForm">
+
+            <!-- <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check" value="save" type="submit"
+                class="btn btn-info"></button> -->
+
+
+            <div class="row">
+                <div class="col-lg-1">
+                    <label>{{'ContractRequest.ContractNumber'|translate}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <input type="number" pInputText id="requestNumber" class="form-control"
+                        [(ngModel)]="contractObj.number" [ngModelOptions]="{standalone: true}" disabled />
+                </div>
+                <div class="col-lg-1">
+                    <label>{{'ContractRequest.Supplier'|translate}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <select class="form-control" #supplierName="ngModel" [(ngModel)]="contractObj.supplierId"
+                        [ngModelOptions]="{standalone: true}"
+                        [class.is-invalid]="supplierName.touched && supplierName.errors || AddContract.submitted"
+                        [class.is-valid]="supplierName.valid && AddContract.submitted" required>
+
+                        <option selected disabled>--select--</option>
+                        <option *ngFor="let s of suppliersList" [value]="s.id">
+                            {{translate.currentLang == "En" ? s.supplierName:s.supplierNameAr}}
+                        </option>
+                    </select>
+                    <div *ngIf="(supplierName.touched || AddContract.submitted) && supplierName.errors?.required">
+                        <span class="text-danger">
+                            supplier Name is required
+                        </span>
+                    </div>
+                </div>
+            </div><br><br>
+            <div class="row">
+                <div class="col-lg-1">
+                    <label>{{'ContractRequest.StartDate'|translate}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <input type="date" #fDate="ngModel" id="FromDate" (change)="filterBetweenDate()"
+                        class="form-control" [(ngModel)]="contractObj.startDate" [ngModelOptions]="{standalone: true}"
+                        [class.is-invalid]="fDate.touched && fDate.errors || AddContract.submitted"
+                        [class.is-valid]="fDate.valid && AddContract.submitted" required>
+                    <i class="form-control-clear pi pi-times" style="display: none;"></i>
+                    <div *ngIf="(fDate.touched || AddContract.submitted) && fDate.errors?.required">
+                        <span class="text-danger">
+                            From Date is required
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <label>{{'ContractRequest.EndDate'|translate}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <input type="date" #tDate="ngModel" id="ToDate" (change)="filterBetweenDate()" class="form-control"
+                        [(ngModel)]="contractObj.endDate" [ngModelOptions]="{standalone: true}"
+                        [class.is-invalid]="tDate.touched && tDate.errors || AddContract.submitted"
+                        [class.is-valid]="tDate.valid && AddContract.submitted" required>
+                    <i class="form-control-clear pi pi-times" style="display: none;"></i>
+                    <div *ngIf="(tDate.touched || AddContract.submitted) && tDate.errors?.required">
+                        <span class="text-danger">
+                            End Date is required
+                        </span>
+                    </div>
+                </div>
+            </div><br><br>
+            <div class="row">
+                <div class="col-lg-1">
+                    <label>{{'ContractRequest.Subject'|translate}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <input type="text" #subject="ngModel" id="requestSubject" class="form-control" name="reqsub"
+                        [(ngModel)]="contractObj.subject"
+                        [class.is-invalid]="subject.touched && subject.errors || AddContract.submitted"
+                        [class.is-valid]="subject.valid && AddContract.submitted" required>
+                    <div *ngIf="(subject.touched || AddContract.submitted)  && subject.errors?.required">
+                        <span class="text-danger">
+                            subject is required
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <label>{{'ContractRequest.Content'|translate}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <textarea class="form-control" [(ngModel)]="contractObj.contents"
+                        [ngModelOptions]="{standalone: true}"> </textarea>
+                </div>
+            </div><br><br>
+
+            <p-table #dt [value]="contractEquipment" [rows]="10" styleClass="p-datatable-responsive-demo"
+                [rowHover]="true" dataKey="id" [showCurrentPageReport]="true" class="rowtbl">
+                <ng-template pTemplate="header">
+                    <tr style="font-size: 18px;">
+                        <th>{{'equipment.upaCode'|translate}}</th>
+                        <th>{{'equipment.Name'|translate}}</th>
+                        <th>{{'equipment.Manufacturer'|translate}}</th>
+                        <th>{{'equipment.serialNumber'|translate}}</th>
+                        <th>{{'equipment.Department'|translate}}</th>
+                        <th>{{'equipment.PurchaseDate'|translate}}</th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-eq>
+                    <tr style="font-size: 17px;">
+                        <td>{{eq.internalCode}}</td>
+                        <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}
+                        </td>
+                        <td>{{translate.currentLang == "En" ?
+                            eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                        <td>{{eq.serialNumber}}
+                        </td>
+                        <td>{{translate.currentLang == "En" ?
+                            eq.departmentName:eq.departmentNameAr}}
+                        </td>
+                        <td>{{eq.purchaseDate | date:'shortDate'}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <br>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="p-grid p-nogutter p-justify-between btnSubmit">
+                        <p-button label="{{'ContractRequest.Back'|translate}}" (onClick)="prevPage()"
+                            icon="pi pi-angle-left"></p-button>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+
+                    <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check" value="save"
+                        type="submit" class="btn btn-info"></button>
+                    <!-- <input type="submit" value="Save" class="btnSubmit btn btn-primary"
+                        style="float: right;width: 70px;"> -->
+
+                </div>
+            </div>
+
+
+        </form>
+        <br>
+
+    </div>
+    </div>
+</p-card>

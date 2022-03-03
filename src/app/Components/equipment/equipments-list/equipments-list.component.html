@@ -1,0 +1,877 @@
+<!-- <p-messages [value]="msgs"></p-messages>
+        <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+                <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                    routerLink="/home/addEquipment" pTooltip="Add a New Equipment" tooltipPosition="right"></button>
+
+                 <button pButton pRipple label="{{'Actions.Scan' | translate}}" class="p-button-info p-mr-2 info" routerLink="/home/qrcode"></button>
+
+            </ng-template>
+        </p-toolbar> -->
+
+<div class="container-fluid">
+
+    <div class="card">
+
+        <!-- <p-messages [value]="msgs"></p-messages> -->
+        <p-toast posinset="top-right"></p-toast>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <h5>{{'Dashboard.ManageEquipments' | translate}}</h5>
+                </div>
+                <div class="col-md-1" style="text-align: right;">
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                        routerLink="/home/addEquipment" pTooltip="Add a New Equipment" tooltipPosition="right"></button>
+                    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openLink()"
+                        class="p-button-warning download" pTooltip="PDF" tooltipPosition="bottom"></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+                    <p-table #dt [value]="equipments" [rows]="10" styleClass="p-datatable-responsive-demo"
+                        [paginator]="true" [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [showCurrentPageReport]="true"
+                        [rowsPerPageOptions]="[5,10,15,20]"
+                        [totalRecords]="{count}"
+                        [globalFilterFields]="['equipmentName','department','manufacturer','supplier']" >
+                        <ng-template pTemplate="caption">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                <span class="p-input-icon-right">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText class="form-control" type="text"
+                                        (input)="dt.filterGlobal($event.target.value,'contains')"
+                                        placeholder="{{'search.Search'|translate}}..." />
+                                </span>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <!----------------------------Admin View-------------------->
+                            <tr *ngIf="currentUser.roleName==='Admin'|| currentUser.roleName==='HeadQuarter'">
+                                <th pSortableColumn="Code">{{'equipment.internalCode' | translate}}
+                                    <p-sortIcon field="Code">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="upaCode">{{'equipment.upaCode' | translate}} <p-sortIcon
+                                        field="upaCode">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                        field="equipmentName"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="manufacturer">{{'equipment.Manufacturer' | translate}} <p-sortIcon
+                                        field="manufacturer"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="healthDirectoryName">{{'equipment.governorate' | translate}}
+                                    <p-sortIcon field="healthDirectoryName"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="healthDistrictName">{{'equipment.district' | translate}}
+                                    <p-sortIcon field="healthDistrictName"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="healthCareUnitName">{{'equipment.healthCareUnit' | translate}}
+                                    <p-sortIcon field="healthCareUnitName"></p-sortIcon>
+                                </th>
+                                <th>{{'Actions.Action' | translate}}</th>
+                            </tr>
+                            <!----------------------------Hospital View-------------------->
+                            <tr
+                                *ngIf="currentUser.roleName==='Hospital'||currentUser.roleName==='Governorate' ||currentUser.roleName==='City' ||currentUser.roleName==='Technician'">
+                                <th pSortableColumn="Code">{{'equipment.internalCode' | translate}} <p-sortIcon
+                                        field="Code">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="upaCode">{{'equipment.upaCode' | translate}} <p-sortIcon
+                                        field="upaCode">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="equipmentName">{{'equipment.Name' | translate}} <p-sortIcon
+                                        field="equipmentName"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="manufacturer">{{'equipment.Manufacturer' | translate}} <p-sortIcon
+                                        field="manufacturer"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="serialNumber">{{'equipment.serialNumber' | translate}} <p-sortIcon
+                                        field="serialNumber"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="Department">{{'equipment.Department' | translate}} <p-sortIcon
+                                        field="Department"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="supplier">{{'equipment.Supplier' | translate}} <p-sortIcon
+                                        field="supplier">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="purchaseDate">{{'equipment.PurchaseDate' | translate}} <p-sortIcon
+                                        field="purchaseDate"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="installationDate">{{'equipment.InstallationDate' | translate}}
+                                    <p-sortIcon field="installationDate"></p-sortIcon>
+                                </th>
+                                <th>{{'Actions.Action' | translate}}</th>
+                            </tr>
+                            <!----------------------------Admin View-------------------->
+                            <tr *ngIf="currentUser.roleName==='Admin'|| currentUser.roleName==='HeadQuarter'">
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'internalCode', 'contains')"
+                                        [value]="dt.filters['internalCode']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'upaCode', 'contains')"
+                                        [value]="dt.filters['upaCode']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="equipments"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                        optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'equipmentName','equals')"
+                                        [filterBy]="dt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="equipments"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                        optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'equipmentNameAr','equals')"
+                                        [filterBy]="dt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                                        optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'manufacturerName','equals')"
+                                        [filterBy]="dt.filters['manufacturerName']?.value" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                                        optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'manufacturerNameAr','equals')"
+                                        [filterBy]="dt.filters['manufacturerNameAr']?.value"
+                                        styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthDirectoriesList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryName"
+                                        optionValue="healthDirectoryName" [showClear]="true" appendTo="body"
+                                        optionKey="id" filterBy="label"
+                                        (onChange)="dt.filter($event.value,'healthDirectoryName','equals') ;fillDistrict($event.value)"
+                                        [filterBy]="dt.filters['healthDirectoryName']" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthDirectoriesList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryNameAr"
+                                        optionValue="healthDirectoryNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'healthDirectoryNameAr','contains') ;fillDistrict($event.value)"
+                                        [filterBy]="dt.filters['healthDirectoryNameAr']?.value"
+                                        styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="HealthDistrictsList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictName"
+                                        optionValue="healthDistrictName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'healthDistrictName','contains') ; fillHospital($event.value)"
+                                        [filterBy]="dt.filters['healthDistrictName']?.value"
+                                        styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="HealthDistrictsList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictNameAr"
+                                        optionValue="healthDistrictNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'healthDistrictNameAr','contains'); fillHospital($event.value)"
+                                        [filterBy]="dt.filters['healthDistrictNameAr']?.value"
+                                        styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthCareUnits"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitName"
+                                        optionValue="healthCareUnitName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'healthCareUnitName','equals')"
+                                        [filterBy]="dt.filters['healthCareUnitName']?.value"
+                                        styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthCareUnits"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitNameAr"
+                                        optionValue="healthCareUnitNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'healthCareUnitNameAr','equals')"
+                                        [filterBy]="dt.filters['healthCareUnitNameAr']?.value"
+                                        styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th></th>
+                            </tr>
+                            <!----------------------------Hospital View-------------------->
+                            <tr
+                                *ngIf="currentUser.roleName==='Hospital'||currentUser.roleName==='Governorate' ||currentUser.roleName==='City' ||currentUser.roleName==='Technician' ">
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'internalCode', 'contains')"
+                                        [value]="dt.filters['internalCode']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'upaCode', 'contains')"
+                                        [value]="dt.filters['upaCode']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="equipments"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="equipmentName"
+                                        optionValue="equipmentName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'equipmentName','equals')"
+                                        [filterBy]="dt.filters['equipmentName']?.value" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="equipments"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="equipmentNameAr"
+                                        optionValue="equipmentNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'equipmentNameAr','equals')"
+                                        [filterBy]="dt.filters['equipmentNameAr']?.value" styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
+                                        optionValue="manufacturerName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'manufacturerName','equals')"
+                                        [filterBy]="dt.filters['manufacturerName']?.value" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
+                                        optionValue="manufacturerNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'manufacturerNameAr','equals')"
+                                        [filterBy]="dt.filters['manufacturerNameAr']?.value"
+                                        styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <input pInputText type="text"
+                                        (input)="dt.filter($event.target.value, 'serialNumber', 'contains')"
+                                        [value]="dt.filters['serialNumber']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="departmentsList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="departmentName"
+                                        optionValue="departmentName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'departmentName','contains') ; fillHospital($event.value)"
+                                        [filterBy]="dt.filters['departmentName']?.value" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="departmentsList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="departmentNameAr"
+                                        optionValue="departmentNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'departmentNameAr','contains'); fillHospital($event.value)"
+                                        [filterBy]="dt.filters['departmentNameAr']?.value"
+                                        styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="suppliersList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="supplierName"
+                                        optionValue="supplierName" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'supplierName','equals')"
+                                        [filterBy]="dt.filters['supplierName']?.value" styleClass="ui-column-filter"
+                                        class="filterDropdwon"></p-dropdown>
+                                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="suppliersList"
+                                        placeholder="{{'search.Search'|translate}}" optionLabel="supplierNameAr"
+                                        optionValue="supplierNameAr" [showClear]="true" appendTo="body"
+                                        (onChange)="dt.filter($event.value,'supplierNameAr','equals')"
+                                        [filterBy]="dt.filters['supplierNameAr']?.value" styleClass="ui-column-filter">
+                                    </p-dropdown>
+                                </th>
+                                <th>
+                                    <input pInputText type="date"
+                                        (input)="dt.filter($event.target.value, 'purchaseDate', 'contains')"
+                                        [value]="dt.filters['purchaseDate']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th>
+                                    <input pInputText type="date"
+                                        (input)="dt.filter($event.target.value, 'installationDate', 'contains')"
+                                        [value]="dt.filters['installationDate']?.value"
+                                        placeholder="{{'search.Search'|translate}}"
+                                        class="p-column-filter form-control">
+                                </th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-eq>
+                            <!----------------------------Admin View-------------------->
+
+                            <tr *ngIf="currentUser.roleName==='Admin' || currentUser.roleName==='HeadQuarter'">
+                                <td>{{eq.internalCode}}</td>
+                                <td>{{eq.upaCode}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.healthDirectoryName:eq.healthDirectoryNameAr}}
+                                </td>
+                                <td>{{translate.currentLang == "En" ? eq.healthDistrictName:eq.healthDistrictNameAr}}
+                                </td>
+                                <td>{{translate.currentLang == "En" ? eq.healthCareUnitName:eq.healthCareUnitNameAr}}
+                                </td>
+
+                                <td>
+                                    <button pButton pRipple pTooltip="view this Equipment" tooltipPosition="top"
+                                        icon="pi pi-align-justify" (click)="getDetails(eq.id)"
+                                        class="p-button-rounded p-button-info edit"></button>
+
+                                    <!-- <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                          routerLink="/home/addEquipment" pTooltip="Add a New Equipment" tooltipPosition="right"></button> -->
+                                </td>
+                            </tr>
+                            <!----------------------------Hospital View-------------------->
+                            <tr
+                                *ngIf="currentUser.roleName==='Organization'||currentUser.roleName==='Hospital'||currentUser.roleName==='Governorate' ||currentUser.roleName==='City' ||currentUser.roleName==='Technician' ">
+                                <td>{{eq.internalCode}}</td>
+                                <td>{{eq.upaCode}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.equipmentName:eq.equipmentNameAr}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.manufacturerName:eq.manufacturerNameAr}}</td>
+                                <td>{{eq.serialNumber}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.departmentName:eq.departmentNameAr}}</td>
+                                <td>{{translate.currentLang == "En" ? eq.supplierName:eq.supplierNameAr}}</td>
+                                <td>{{eq.purchaseDate}}</td>
+                                <td>{{eq.installationDate}}</td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-pencil"
+                                        class="p-button-rounded p-button-info edit" (click)="openNew(eq)"></button>
+
+                                    <button pButton pRipple (click)="confirmDelete(eq.id,eq.equipmentName)"
+                                        pTooltip="delete an Equipment" tooltipPosition="top" icon="pi pi-trash"
+                                        class="p-button-rounded p-button-danger edit"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                                {{'In total there are.In total there are'| translate}} {{equipments ? equipments.length
+                                : 0 }}
+                                {{'Sidebar.equipments'| translate}}.
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="equipmentDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <p-messages severity="error" [value]="msgs"></p-messages>
+
+                <h3 class="title">{{'equipment.EditEquipment'|translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/medical-equipment-icon.jpg" class="img" [alt]="product">
+            </div>
+        </div>
+
+        <form (ngSubmit)="EditEquipmentForm.valid && updateProduct()" #EditEquipmentForm="ngForm">
+            <div class="container">
+                <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                    <p-tabPanel header="{{'equipment.Details' | translate}}">
+                        <fieldset class="tab">
+                            <legend>{{'equipment.Details'| translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-3 form-group" *ngIf="translate.currentLang == 'En'">
+                                    <label for="name">{{"equipment.Name"| translate}}</label>
+                                    <select class="form-control" name="masterequipmentName"
+                                        [class.is-invalid]="masterequipmentName.touched && masterequipmentName.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="masterequipmentName.valid && EditEquipmentForm.submitted"
+                                        #masterequipmentName="ngModel" [(ngModel)]="equipmentObj.masterEquipmentId"
+                                        pTooltip="Please,Select An Equipment" tooltipPosition="bottom" required>
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let s of masterEquipment" [value]="s.id">
+                                            {{s.name}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(masterequipmentName.touched || EditEquipmentForm.submitted) && masterequipmentName.errors?.required">
+                                        <span class="text-danger">
+                                            English name is required
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 form-group" *ngIf="translate.currentLang == 'Ar'">
+                                    <label for="name">{{"equipment.NameAr"| translate}}</label>
+                                    <select class="form-control" id="masterequipmentNameAr" name="masterequipmentNameAr"
+                                        #masterequipmentNameAr="ngModel"
+                                        [class.is-invalid]="masterequipmentNameAr.touched && masterequipmentNameAr.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="masterequipmentNameAr.valid && EditEquipmentForm.submitted"
+                                        [(ngModel)]="equipmentObj.equipmentNameAr" required>
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let s of masterEquipment" [value]="s.nameAr">
+                                            {{s.nameAr}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(masterequipmentNameAr.touched || EditEquipmentForm.submitted) && masterequipmentNameAr.errors?.required">
+                                        <span class="text-danger">
+                                            Arabic name is required
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label for="internalCode">{{'equipment.barcode'| translate}}</label>
+                                    <input type="text" pInputText id="barcode" class="form-control" name="barcode"
+                                        [(ngModel)]="equipmentObj.barcode" required #barCode="ngModel"
+                                        [class.is-invalid]="barCode.touched && barCode.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="barCode.valid && EditEquipmentForm.submitted"
+                                        pTooltip="Please,Enter A barCode" tooltipPosition="bottom" />
+                                    <span class="text-danger"
+                                        *ngIf="(barCode.touched || EditEquipmentForm.submitted) && barCode.errors?.required">
+                                        Code is required
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="status">{{'equipment.EquipmentStatus'|translate}}</label>
+                                    <div>
+                                        <ul class="list-group" pTooltip="Select A status" tooltipPosition="bottom">
+                                            <li class="list-group-item" *ngFor="let item of statusList">
+                                                <input type="radio" [(ngModel)]="equipmentObj.equipmentStatuSId"
+                                                    name="status" id="status" #status="ngModel" [value]="item.id" />
+                                                {{translate.currentLang == "En" ?item.status:item.status}}
+                                            </li>
+                                        </ul>
+                                        <div *ngIf="!equipmentObj.equipmentStatuSId">
+                                            <span class="text-danger">
+                                                Status is required
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-12 " *ngIf="translate.currentLang == 'En'">
+
+                                    <label for="Description">{{'equipment.Description'| translate}}</label>
+                                    <textarea class="form-control" id="Description" type="text"
+                                        [(ngModel)]="equipmentObj.equipmentDescription"
+                                        [ngModelOptions]="{standalone: true}"
+                                        pTooltip="Please,Select An equipmentDescription"
+                                        tooltipPosition="bottom"></textarea>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" *ngIf="translate.currentLang == 'Ar'">
+
+
+
+                                    <label for="Description">{{'equipment.DescriptionAr'| translate}}</label>
+                                    <textarea class="form-control" id="Description" type="text"
+                                        [(ngModel)]="equipmentObj.equipmentDescriptionAr"
+                                        [ngModelOptions]="{standalone: true}"
+                                        pTooltip="Please,Select An equipmentDescription"
+                                        tooltipPosition="bottom"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
+                                    
+                                </div> -->
+                            <br>
+
+                            <button type="button" class="btn btn-info btnNext " (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'equipment.IndustryDetails' | translate}}">
+                        <fieldset class="tab">
+                            <legend>{{'equipment.IndustryDetails' | translate}}</legend>
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <label for="color">{{'equipment.Color'| translate}}</label>
+                                    <input type="text" pInputText id="Color" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.color" autofocus
+                                        pTooltip="Enter A Color" tooltipPosition="bottom" />
+                                </div>
+                                <!-- <div class="col-md-3">
+                                        <label for="Color">{{'equipment.ColorAr'| translate}}</label>
+                                        <input type="text" pInputText id="Color" class="form-control"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.colorAr"/>
+                                    </div> -->
+                                <div class="col-md-3">
+                                    <label for="weight">{{'equipment.weight'| translate}}</label>
+                                    <input type="number" pInputText id="weight" [ngModelOptions]="{standalone: true}"
+                                        class="form-control" [(ngModel)]="equipmentObj.weight" pTooltip="Enter A weight"
+                                        tooltipPosition="bottom" />
+                                    <small class="p-error" *ngIf="submitted && !equipmentObj.weight">weight is
+                                        required.</small>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="length">{{'equipment.length'| translate}}</label>
+                                    <input type="number" pInputText id="length" [ngModelOptions]="{standalone: true}"
+                                        class="form-control" [(ngModel)]="equipmentObj.length" pTooltip="Enter A length"
+                                        tooltipPosition="bottom" />
+                                    <small class="p-error" *ngIf="submitted && !equipmentObj.length">length is
+                                        required.</small>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="height">{{'equipment.height'| translate}}</label>
+                                    <input type="number" pInputText id="height" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.height"
+                                        pTooltip="Enter A height" tooltipPosition="bottom" />
+                                    <small class="p-error" *ngIf="submitted && !equipmentObj.height">height is
+                                        required.</small>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="serialNumber">{{'equipment.serialNumber'| translate}}</label>
+                                    <input type="text" pInputText id="serialNumber" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.serialNumber"
+                                        pTooltip="Enter A serialNumber" tooltipPosition="bottom" />
+                                </div>
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'equipment.Location' |translate}}">
+
+                        <fieldset class="tab">
+                            <legend>{{'equipment.Location' |translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label for="healthName">{{'equipment.healthCareUnit'|translate}}</label>
+                                    <select class="form-control" id="healthName" name="healthName" #healthName="ngModel"
+                                        [class.is-invalid]="healthName.touched && healthName.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="healthName.valid && EditEquipmentForm.submitted"
+                                        [(ngModel)]="equipmentObj.HealthCareUnitId" required
+                                        pTooltip="Select A HealthCareUnit" tooltipPosition="bottom">
+                                        <option >--select--</option>
+                                        <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
+                                            {{translate.currentLang == "En" ?
+                                            h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(healthName.touched|| EditEquipmentForm.submitted) && healthName.errors?.required">
+                                        <span class="text-danger">
+                                            health CareUnit is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-3">
+    
+                                        <label for="healthDirectory">{{'equipment.healthDirectory' |translate}}</label>
+    
+                                        <select class="form-control" id="healthDirectory" name="healthDirectory"
+                                            #healthDirectory="ngModel"
+                                            [(ngModel)]="equipmentObj.HealthDirectoryId" (change)="fillDistrict(equipmentObj.HealthDirectoryId)"
+                                            [class.is-invalid]="healthDirectory.touched && healthDirectory.errors || EditEquipmentForm.submitted" 
+                                            [class.is-valid]="healthDirectory.valid && EditEquipmentForm.submitted" required>
+                                            <option selected>--select--</option>
+                                            <option *ngFor="let hd of healthDirectoriesList" [value]="hd.id">
+                                                {{translate.currentLang == "En" ?
+                                                hd.healthDirectoryName:hd.healthDirectoryNameAr}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(healthDirectory.touched || EditEquipmentForm.submitted) && healthDirectory.errors?.required">
+                                            <span class="text-danger">        
+                                                health Directory is required                               
+                                            </span>
+                                        </div>
+                                    </div> -->
+
+
+                                <!-- <div class="col-md-3">
+                                        <label for="healthDistrict">{{'equipment.healthDistrict'|translate}}</label>
+                                        <select class="form-control" id="healthDistrict" name="healthDistrict"
+                                            #healthDistrict="ngModel"
+                                            [(ngModel)]="equipmentObj.HealthDistrictId"
+                                            [class.is-invalid]="healthDistrict.touched && healthDistrict.errors || EditEquipmentForm.submitted" 
+                                            [class.is-valid]="healthDistrict.valid && EditEquipmentForm.submitted" required>
+                                            <option selected disabled>--select--</option>
+                                            <option *ngFor="let hd of HealthDistrictsList" [value]="hd.id">
+                                                {{translate.currentLang == "En" ?
+                                                hd.healthDistrictName:hd.healthDistrictNameAr}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(healthDistrict.touched|| EditEquipmentForm.submitted) && healthDistrict.errors?.required">
+                                            <span class="text-danger">        
+                                                health district is required                               
+                                            </span>
+                                        </div>
+                                    </div> -->
+                                <div class="col-md-3">
+                                    <label for="Department">{{'equipment.Department' |translate}}</label>
+                                    <select type="text" id="Department" class="form-control" #department="ngModel"
+                                        name="department" [(ngModel)]="equipmentObj.departmentId"
+                                        [class.is-invalid]="department.touched && department.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="department.valid && EditEquipmentForm.submitted" required
+                                        pTooltip="Select A Department" tooltipPosition="bottom">
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let d of departmentsList" [value]="d.id">
+                                            {{translate.currentLang == "En" ? d.departmentName:d.departmentNameAr}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(department.touched || EditEquipmentForm.submitted) && department.errors?.required">
+                                        <span class="text-danger">
+                                            department is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="Employee">{{'equipment.Employee' |translate}}</label>
+                                    <!-- <p-multiSelect [options]="users" (onChange)="checkCheckBoxvalue($event)"
+                                        defaultLabel="Select employee" optionLabel="userName" name="userName"
+                                        pTooltip="Please,Select one or more employee" tooltipPosition="bottom"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedEmployees"
+                                        selectedItemsLabel="{{selectedItemsLabel}} columns selected"
+                                       >
+                                        <ng-template let-selectedEmployees pTemplate="selectedItems" >
+                                          
+                                            <ng-container *ngFor="let selectedLayer of selectedEmployees;">
+                                                {{selectedLayer.userName}} ,
+
+                                            </ng-container>
+                                          
+                                        </ng-template>
+                                    </p-multiSelect> -->
+
+                                    <!-- <select class="select" multiple>
+                                        <option [value]="user.id" *ngFor="let user of users">{{user.userName}}</option>
+                                       
+                                      </select> -->
+
+                                    <ng-multiselect-dropdown 
+                                    [placeholder]="'select an Employee'"                                            
+                                    [settings]="dropdownSettings" 
+                                    [data]="users"         
+                                    [(ngModel)]="selectedEmployees"
+                                    name="userName"
+                                    pTooltip="Please,Select one or more employee"
+                                    tooltipPosition="bottom" 
+                                    [ngModelOptions]="{standalone: true}"
+                                    (onSelect)="onItemSelect($event)" 
+                                    (onDeSelect)="onItemDeSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)">
+                                    </ng-multiselect-dropdown>
+
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="Floor">{{'equipment.Floor' | translate}}</label>
+                                    <input type="number" id="Floor" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.floor"
+                                        pTooltip="Select A Floor" tooltipPosition="bottom" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="Room">{{'equipment.Room' | translate}}</label>
+                                    <input type="number" id="Room" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.room"
+                                        pTooltip="Select A Room" tooltipPosition="bottom" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="internalCode">{{'equipment.internalCode' |translate}}</label>
+                                    <input type="text" pInputText id="internalCode" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.internalCode"
+                                        pTooltip="Please,Select An InternalCode" tooltipPosition="bottom" />
+                                </div>
+
+
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'equipment.PurchasingDetails'|translate}}">
+
+                        <fieldset class="tab">
+                            <legend>{{'equipment.PurchasingDetails'|translate}}</legend>
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <label for="date">{{'equipment.InstallationDate'|translate}}</label>
+                                    <input type="date" class="form-control" id="installationDate"
+                                        name="installationDate" placeholder="Installation Date"
+                                        [(ngModel)]="equipmentObj.installationDate" #installationDate="ngModel"
+                                        [class.is-invalid]="installationDate.touched && installationDate.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="installationDate.valid && EditEquipmentForm.submitted"
+                                        required pTooltip="Please,Enter An InstallationDate" tooltipPosition="bottom">
+                                    <div
+                                        *ngIf="(installationDate.touched || EditEquipmentForm.submitted) && installationDate.errors?.required">
+                                        <span class="text-danger">
+                                            Installation Date is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="purchasedate">{{'equipment.PurchaseDate'|translate}}</label>
+                                    <input type="date" class="form-control" id="purchasedate" name="purchasedate"
+                                        placeholder="purchase Date" [(ngModel)]="equipmentObj.purchaseDate"
+                                        #PurchaseDate="ngModel"
+                                        [class.is-invalid]="PurchaseDate.touched && PurchaseDate.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="PurchaseDate.valid && EditEquipmentForm.submitted" required
+                                        pTooltip="Please,Enter An PurchaseDate" tooltipPosition="bottom">
+                                    <div
+                                        *ngIf="(PurchaseDate.touched || EditEquipmentForm.submitted) && PurchaseDate.errors?.required">
+                                        <span class="text-danger">
+                                            Purchase Date is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="supplier">{{'equipment.Supplier'|translate}}</label>
+                                    <select type="text" id="supplier" class="form-control" name="supplier"
+                                        [(ngModel)]="equipmentObj.supplierId" #supplierName="ngModel"
+                                        [class.is-invalid]="supplierName.touched && supplierName.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="supplierName.valid && EditEquipmentForm.submitted" required
+                                        pTooltip="Please,Select supplierName" tooltipPosition="bottom">
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let s of suppliersList" [value]="s.id">
+                                            {{translate.currentLang == "En" ? s.supplierName:s.supplierNameAr}}
+                                            <!-- {{s.supplierName}} -->
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(supplierName.touched || EditEquipmentForm.submitted) && supplierName.errors?.required">
+                                        <span class="text-danger">
+                                            supplier is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="price">{{'equipment.Price' |translate}}</label>
+                                    <input type="text" pInputText id="price" class="form-control" name="price"
+                                        [(ngModel)]="equipmentObj.price" #price="ngModel"
+                                        [class.is-invalid]="price.touched && price.errors || EditEquipmentForm.submitted"
+                                        [class.is-valid]="price.valid && EditEquipmentForm.submitted" required
+                                        pTooltip="Please,Enter the Price" tooltipPosition="bottom" />
+                                    <div
+                                        *ngIf="(price.touched || EditEquipmentForm.submitted) && price.errors?.required">
+                                        <span class="text-danger">
+                                            price is required
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'Actions.Attachments' |translate}}">
+
+                        <fieldset class="tab">
+                            <legend>{{'Actions.Attachments' |translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p-fileUpload
+                                        url="http://biomedicalupd-001-site1.itempurl.com/api/EquipmentAttachments/upload/"
+                                        multiple="multiple"
+                                        accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                        maxFileSize="1000000000" value="{Attachs}">
+                                    </p-fileUpload>
+                                    <ul class="ulStyle">
+                                        <div *ngFor="let file of Attachs">
+                                            <li *ngIf="(file.fileName).includes('svg')||(file.fileName).includes('png')||
+                                                                           (file.fileName).includes('jpg')">
+                                                <span><img
+                                                        src="http://biomedicalupd-001-site1.itempurl.com/{{file.fileName}}"
+                                                        class="ng-star-inserted" width="50" [hidden]="isvisible"></span>
+                                                &nbsp; &nbsp; &nbsp;
+                                                <button icon="pi pi-times" pbutton="" type="button"
+                                                    ng-reflect-icon="pi pi-times"
+                                                    class="p-button p-component p-button-icon-only"
+                                                    (click)="RemoveAttach(file.id)" [hidden]="isbtnvisible">
+                                                    <span class="p-button-icon pi pi-times" aria-hidden="true"></span>
+                                                    <span aria-hidden="true" class="p-button-label">&nbsp;&nbsp;</span>
+                                                </button>
+                                            </li>
+                                            <li
+                                                *ngIf="(file.fileName).includes('xls')||(file.fileName).includes('xlsx')||
+                                                                        (file.fileName).includes('doc')||(file.fileName).includes('docx')||
+                                                                        (file.fileName).includes('ppt')||(file.fileName).includes('pptx')||
+                                                                        (file.fileName).includes('txt')||(file.fileName).includes('pdf')">
+                                                <span class="ng-star-inserted" [hidden]="isvisible">
+                                                    {{file.fileName.substring(17)}}
+                                                </span>
+                                                &nbsp; &nbsp;
+                                                <button icon="pi pi-times" pbutton="" type="button"
+                                                    ng-reflect-icon="pi pi-times"
+                                                    class="p-button p-component p-button-icon-only"
+                                                    (click)="RemoveAttach(file.id)" [hidden]="isbtnvisible">
+                                                    <span class="p-button-icon pi pi-times" aria-hidden="true"></span>
+                                                    <span aria-hidden="true" class="p-button-label">&amp;nbsp;</span>
+                                                </button>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                        (click)="hideDialog()" type="button" value="cancel"
+                                        class="btn btn-info"></button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                        value="save" type="submit" class="btn btn-info"></button>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+                    </p-tabPanel>
+
+                </p-tabView>
+            </div>
+
+        </form>
+    </ng-template>
+    <!-- <ng-template pTemplate="footer">
+            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"
+                value="cancel"></button>
+            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check" class="p-button-text" (click)="updateProduct()"
+                value="save"></button>
+
+        </ng-template> -->
+</p-dialog>

@@ -1,0 +1,186 @@
+
+        <!-- <p-messages [value]="msgs"></p-messages> -->
+        <!-- <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+
+             
+            </ng-template>
+        </p-toolbar> -->
+                
+<div class="container-fluid">
+
+    <div class="card">
+        <!-- <p-messages [value]="msgs"></p-messages> -->
+        <p-toast posinset="top-right"></p-toast>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <h5>{{'subOrganization.ManagesubOrganizations'|translate}}</h5>
+
+
+                </div>
+                <div class="col-md-1" style="text-align: right;">
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                    routerLink="/home/AddSubOrganization" pTooltip="Add a New subcategory" tooltipPosition="right"></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br /></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="SubOrganizationsList" styleClass="p-datatable-striped" [rows]="10" [paginator]="true"
+         [(selection)]="selectedSubOrganizations"
+            [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true" [globalFilterFields]="['name','nameAr']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" class="form-control"
+                            (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="{{'search.Search'|translate}}..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+
+                    <th pSortableColumn="name">{{'subOrganization.Name'|translate}}<p-sortIcon field="name">
+                        </p-sortIcon>
+                    </th>
+
+                    <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+                </tr>
+                <tr>
+
+                    <th>
+                        <input pInputText type="text"   *ngIf="translate.currentLang==='En'" 
+                            (input)="dt.filter($event.target.value, 'name', 'contains')"
+                            [value]="dt.filters['name']?.value"
+                            placeholder="{{'search.SearchbysubOrganizationName'|translate}}"
+                            class="p-column-filter form-control">
+
+   <input pInputText type="text"   *ngIf="translate.currentLang==='Ar'" 
+                            (input)="dt.filter($event.target.value, 'nameAr', 'contains')"
+                            [value]="dt.filters['nameAr']?.value"
+                            placeholder="{{'search.SearchbysubOrganizationName'|translate}}"
+                            class="p-column-filter form-control">
+                            
+                    </th>
+
+
+
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-subOrg>
+                <tr>
+                    <td> {{translate.currentLang == "En" ? subOrg.name:subOrg.nameAr}}</td>
+
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(subOrg)" pTooltip="edit a subOrganization" tooltipPosition="top"></button>
+
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(subOrg.id,subOrg.name)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    {{'In total there are.In total there are'| translate}} {{subOrganizations ? subOrganizations.length : 0 }} {{'Sidebar.subOrganizations'| translate}}.
+                </div>
+            </ng-template>
+        </p-table>
+    </div></div></div></div>
+    <p-dialog [(visible)]="subOrganizationDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'subOrganization.EditSubOrganization'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="EditSubOrganizationForm.valid && updatesubIOrg()" #EditSubOrganizationForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="subOrganizationName">{{'subOrganization.Name'|translate}}</label>
+                            <input type="text" class="form-control" id="subOrganizationName" name="subOrganizationName"
+                                #subOrganizationName="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
+                                [(ngModel)]="subOrganization.name"
+                                [class.is-invalid]="subOrganizationName.touched && subOrganizationName.errors || EditSubOrganizationForm.submitted"
+                                [class.is-valid]="subOrganizationName.valid && EditSubOrganizationForm.submitted" required>
+                            <div
+                                *ngIf="(subOrganizationName.touched || EditSubOrganizationForm.submitted) && subOrganizationName.errors?.required">
+                                <span class="text-danger">
+                                    English name is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="subOrganizationNameAr">{{'subOrganization.NameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="subOrganizationNameAr"
+                                [ngModelOptions]="{standalone: true}" pTooltip="Enter a Name in Arabic"
+                                tooltipPosition="bottom" [(ngModel)]="subOrganization.nameAr"
+                                name="subOrganizationName" #subOrganizationNameAr="ngModel"
+                                [class.is-invalid]="subOrganizationNameAr.touched && subOrganizationNameAr.errors || EditSubOrganizationForm.submitted"
+                                [class.is-valid]="subOrganizationNameAr.valid && EditSubOrganizationForm.submitted" required>
+                            <div
+                                *ngIf="(subOrganizationNameAr.touched || EditSubOrganizationForm.submitted) && subOrganizationNameAr.errors?.required">
+                                <span class="text-danger">
+                                    Arabic name is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="organization">{{'subOrganization.Organization'|translate}}</label>
+                            <select class="form-control" id="organization" name="organization" #organization="ngModel"
+                                [(ngModel)]="subOrganization.organizationId" pTooltip="select a SubOrganization"
+                                tooltipPosition="bottom"
+                                [class.is-invalid]="organization.touched && organization.errors || EditSubOrganizationForm.submitted"
+                                [class.is-valid]="organization.valid && EditSubOrganizationForm.submitted" required>
+                                <option selected>--select--</option>
+                                <option *ngFor="let org of organizationsList" [value]="org.id">
+                                    {{translate.currentLang == "En" ? org.name:org.nameAr}}
+                                </option>
+                            </select>
+                            <div
+                                *ngIf="(organization.touched || EditSubOrganizationForm.submitted) && organization.errors?.required">
+                                <span class="text-danger">
+                                    SubOrganization name is required
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                class="btn btn-info" (click)="hideDialog()" type="button"
+                                value="{{'Actions.Cancel'|translate}}"></button>
+                        </div>
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                class="btn btn-info" value="{{'Actions.Save'|translate}}" type="submit"></button>
+                        </div>
+                    </div>
+                </fieldset>
+                <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
+                    <p-header style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+                    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+                </p-dialog>
+            </form>
+
+
+        </ng-template>
+
+
+    </p-dialog>
+</div>

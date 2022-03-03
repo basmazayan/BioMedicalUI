@@ -1,0 +1,469 @@
+<p-dialog [(visible)]="equipmentDialog" [style]="{width: '70vw'}" [modal]="true" styleClass="p-fluid"
+    (onHide)="hideDialog()">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'equipment.AddNewEquipment' | translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/ecg.png" class="img" [alt]="product">
+            </div>
+        </div>
+        <form (ngSubmit)="AddEquipmentForm.valid && NextAndSave()" #AddEquipmentForm="ngForm">
+            <div class="container">
+                <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                    <p-tabPanel header="{{'equipment.Details' | translate}}" [disabled]=true>
+                        <fieldset class="tab">
+                            <legend>{{'equipment.Details'| translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-3 form-group" *ngIf="translate.currentLang == 'En'">
+                                    <label for="name">{{"equipment.Name"| translate}}</label>
+                                    <select class="form-control" name="masterequipmentName"
+                                        [class.is-invalid]="masterequipmentName.touched && masterequipmentName.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="masterequipmentName.valid && AddEquipmentForm.submitted"
+                                        #masterequipmentName="ngModel" [(ngModel)]="equipmentObj.MasterEquipmentId"
+                                        pTooltip="Please,Select An Equipment" tooltipPosition="bottom" required>
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let s of masterEquipment" [value]="s.id">
+                                            {{s.name}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(masterequipmentName.touched || AddEquipmentForm.submitted) && masterequipmentName.errors?.required">
+                                        <span class="text-danger">
+                                            English name is required
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 form-group" *ngIf="translate.currentLang == 'Ar'">
+                                    <label for="name">{{"equipment.NameAr"| translate}}</label>
+                                    <select class="form-control" id="masterequipmentNameAr" name="masterequipmentNameAr"
+                                        #masterequipmentNameAr="ngModel"
+                                        [class.is-invalid]="masterequipmentNameAr.touched && masterequipmentNameAr.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="masterequipmentNameAr.valid && AddEquipmentForm.submitted"
+                                        [(ngModel)]="equipmentObj.equipmentNameAr" required>
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let s of masterEquipment" [value]="s.nameAr">
+                                            {{s.nameAr}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(masterequipmentNameAr.touched || AddEquipmentForm.submitted) && masterequipmentNameAr.errors?.required">
+                                        <span class="text-danger">
+                                            Arabic name is required
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label for="internalCode">{{'equipment.barcode'| translate}}</label>
+                                    <input type="text" pInputText id="barcode" class="form-control" name="barcode"
+                                        [(ngModel)]="equipmentObj.barcode" required #barCode="ngModel"
+                                        [class.is-invalid]="barCode.touched && barCode.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="barCode.valid && AddEquipmentForm.submitted"
+                                        pTooltip="Please,Enter A barCode" tooltipPosition="bottom" />
+                                    <span class="text-danger"
+                                        *ngIf="(barCode.touched || AddEquipmentForm.submitted) && barCode.errors?.required">
+                                        Code is required
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="status">{{'equipment.EquipmentStatus'|translate}}</label>
+                                    <div>
+                                        <ul class="list-group" pTooltip="Select A status" tooltipPosition="bottom">
+                                            <li class="list-group-item" *ngFor="let item of statusList">
+                                                <input type="radio" [(ngModel)]="equipmentObj.equipmentStatuSId"
+                                                    name="status" id="status" #status="ngModel" [value]="item.id" />
+                                                {{translate.currentLang == "En" ?item.status:item.status}}
+                                            </li>
+                                        </ul>
+                                        <div *ngIf="!equipmentObj.equipmentStatuSId">
+                                            <span class="text-danger">
+                                                Status is required
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-12 " *ngIf="translate.currentLang == 'En'">
+
+                                    <label for="Description">{{'equipment.Description'| translate}}</label>
+                                    <textarea class="form-control" id="Description" type="text"
+                                        [(ngModel)]="equipmentObj.equipmentDescription"
+                                        [ngModelOptions]="{standalone: true}"
+                                        pTooltip="Please,Select An equipmentDescription"
+                                        tooltipPosition="bottom"></textarea>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" *ngIf="translate.currentLang == 'Ar'">
+                                    <label for="Description">{{'equipment.DescriptionAr'| translate}}</label>
+                                    <textarea class="form-control" id="Description" type="text"
+                                        [(ngModel)]="equipmentObj.equipmentDescriptionAr"
+                                        [ngModelOptions]="{standalone: true}"
+                                        pTooltip="Please,Select An equipmentDescription"
+                                        tooltipPosition="bottom"></textarea>
+                                </div>
+                            </div>
+                        <br><br><br>
+                    </fieldset>
+                    <button type="button" class="btn btn-info btnNext " (click)="Next()"
+                        [hidden]="isNextvalid">Next</button>
+                    <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                        [hidden]="isPrevvalid">previous</button>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'equipment.IndustryDetails' | translate}}" [disabled]=true>
+                        <fieldset class="tab">
+                            <legend>{{'equipment.IndustryDetails' | translate}}</legend>
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <label for="Color">{{'equipment.Color'| translate}}</label>
+                                    <input type="text" pInputText id="Color" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.color" autofocus
+                                        pTooltip="Enter A Color" tooltipPosition="bottom" />
+                                </div>
+                                <!-- <div class="col-md-3">
+                                    <label for="Color">{{'equipment.ColorAr'| translate}}</label>
+                                    <input type="text" pInputText id="Color" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.colorAr"/>
+                                </div> -->
+                                <div class="col-md-3">
+                                    <label for="weight">{{'equipment.weight'| translate}}</label>
+                                    <input type="number" pInputText id="weight" [ngModelOptions]="{standalone: true}"
+                                        class="form-control" [(ngModel)]="equipmentObj.weight" pTooltip="Enter A weight"
+                                        tooltipPosition="bottom" />
+                                    <!-- <small class="p-error" *ngIf="submitted && !equipmentObj.weight">weight is
+                                        required.</small> -->
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="length">{{'equipment.length'| translate}}</label>
+                                    <input type="number" pInputText id="length" [ngModelOptions]="{standalone: true}"
+                                        class="form-control" [(ngModel)]="equipmentObj.length" pTooltip="Enter A length"
+                                        tooltipPosition="bottom" />
+                                    <!-- <small class="p-error" *ngIf="submitted && !equipmentObj.length">length is
+                                        required.</small> -->
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="height">{{'equipment.height'| translate}}</label>
+                                    <input type="number" pInputText id="height" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.height"
+                                        pTooltip="Enter A height" tooltipPosition="bottom" />
+                                    <!-- <small class="p-error" *ngIf="submitted && !equipmentObj.height">height is
+                                        required.</small> -->
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="serialNumber">{{'equipment.serialNumber'| translate}}</label>
+                                    <input type="text" pInputText id="serialNumber" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.serialNumber"
+                                        pTooltip="Enter A serialNumber" tooltipPosition="bottom" />
+                                </div>
+                            </div>
+                            <br>
+                            
+                            <br><br><br>
+                        </fieldset>
+                        <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'equipment.Location' |translate}}" [disabled]=true>
+
+                        <fieldset class="tab">
+                            <legend>{{'equipment.Location' |translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-3 form-group" *ngIf="currentUser.roleName==='Admin' || currentUser.roleName==='Governorate' 
+                                || currentUser.roleName==='City' ||currentUser.roleName==='Organization'||currentUser.roleName==='HeadQuarter'
+                                ||currentUser.roleName==='DataEntry' ||currentUser.roleName==='Supplier'">
+                                    <label for="healthName">{{'equipment.healthCareUnit'|translate}}</label>
+                                    <select class="form-control" id="healthName" name="healthName" #healthName="ngModel"
+                                        [class.is-invalid]="healthName.touched && healthName.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="healthName.valid && AddEquipmentForm.submitted"
+                                        [(ngModel)]="equipmentObj.HealthCareUnitId" required
+                                        pTooltip="Select A HealthCareUnit" tooltipPosition="bottom">
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
+                                            {{translate.currentLang == "En" ?
+                                            h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(healthName.touched|| AddEquipmentForm.submitted) && healthName.errors?.required">
+                                        <span class="text-danger">
+                                            health CareUnit is required
+                                        </span>
+                                    </div>
+                                </div>
+                              
+                                <!-- <div class="col-md-3">
+
+                                    <label for="healthDirectory">{{'equipment.healthDirectory' |translate}}</label>
+
+                                    <select class="form-control" id="healthDirectory" name="healthDirectory"
+                                        #healthDirectory="ngModel"
+                                        [(ngModel)]="equipmentObj.HealthDirectoryId" (change)="fillDistrict(equipmentObj.HealthDirectoryId)"
+                                        [class.is-invalid]="healthDirectory.touched && healthDirectory.errors || AddEquipmentForm.submitted" 
+                                        [class.is-valid]="healthDirectory.valid && AddEquipmentForm.submitted" required>
+                                        <option selected>--select--</option>
+                                        <option *ngFor="let hd of healthDirectoriesList" [value]="hd.id">
+                                            {{translate.currentLang == "En" ?
+                                            hd.healthDirectoryName:hd.healthDirectoryNameAr}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(healthDirectory.touched || AddEquipmentForm.submitted) && healthDirectory.errors?.required">
+                                        <span class="text-danger">        
+                                            health Directory is required                               
+                                        </span>
+                                    </div>
+                                </div> -->
+
+
+                                <!-- <div class="col-md-3">
+                                    <label for="healthDistrict">{{'equipment.healthDistrict'|translate}}</label>
+                                    <select class="form-control" id="healthDistrict" name="healthDistrict"
+                                        #healthDistrict="ngModel"
+                                        [(ngModel)]="equipmentObj.HealthDistrictId"
+                                        [class.is-invalid]="healthDistrict.touched && healthDistrict.errors || AddEquipmentForm.submitted" 
+                                        [class.is-valid]="healthDistrict.valid && AddEquipmentForm.submitted" required>
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let hd of HealthDistrictsList" [value]="hd.id">
+                                            {{translate.currentLang == "En" ?
+                                            hd.healthDistrictName:hd.healthDistrictNameAr}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(healthDistrict.touched|| AddEquipmentForm.submitted) && healthDistrict.errors?.required">
+                                        <span class="text-danger">        
+                                            health district is required                               
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-3">
+                                    <label for="Department">{{'equipment.Department' |translate}}</label>
+                                    <select type="text" id="Department" class="form-control" #department="ngModel"
+                                        name="department" [(ngModel)]="equipmentObj.DepartmentId"
+                                        [class.is-invalid]="department.touched && department.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="department.valid && AddEquipmentForm.submitted" required
+                                        pTooltip="Select A Department" tooltipPosition="bottom">
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let d of departmentsList" [value]="d.id">
+                                            {{translate.currentLang == "En" ? d.departmentName:d.departmentNameAr}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(department.touched || AddEquipmentForm.submitted) && department.errors?.required">
+                                        <span class="text-danger">
+                                            department is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="Employee">{{'equipment.Employee' |translate}}</label>
+                                    <!-- <p-multiSelect [options]="users" (onChange)="checkCheckBoxvalue($event)"
+                                        defaultLabel="Select employee" optionLabel="userName" 
+                                        [class.is-invalid]="employees.touched && employees.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="employees.valid && AddEquipmentForm.submitted"
+                                        pTooltip="Please,Select one or more employee" tooltipPosition="bottom" required>
+                                    </p-multiSelect> -->
+                                    <ng-multiselect-dropdown 
+                                    [placeholder]="'select an Employee'"                                              
+                                    [settings]="dropdownSettings" 
+                                    [data]="users"                                  
+                                    name="userName"
+                                    pTooltip="Please,Select one or more employee"
+                                    tooltipPosition="bottom"                               
+                                    (onSelect)="onItemSelect($event)" 
+                                    (onDeSelect)="onItemDeSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)">
+                                    </ng-multiselect-dropdown>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="Floor">{{'equipment.Floor' | translate}}</label>
+                                    <input type="number" id="Floor" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.floor"
+                                        pTooltip="Select A Floor" tooltipPosition="bottom" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="Room">{{'equipment.Room' | translate}}</label>
+                                    <input type="number" id="Room" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.room"
+                                        pTooltip="Select A Room" tooltipPosition="bottom" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="internalCode">{{'equipment.internalCode' |translate}}</label>
+                                    <input type="text" pInputText id="internalCode" class="form-control"
+                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="equipmentObj.internalCode"
+                                        pTooltip="Please,Select An InternalCode" tooltipPosition="bottom" />
+                                </div>
+
+
+                            </div>
+                            <br>
+                            
+                            <br><br><br>
+                        </fieldset>
+                        <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'equipment.PurchasingDetails'|translate}}" [disabled]=true>
+
+                        <fieldset class="tab">
+                            <legend>{{'equipment.PurchasingDetails'|translate}}</legend>
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <label for="date">{{'equipment.InstallationDate'|translate}}</label>
+                                    <input type="date" class="form-control" id="installationDate"
+                                        name="installationDate" placeholder="Installation Date"
+                                        [(ngModel)]="equipmentObj.InstallationDate" #installationDate="ngModel"
+                                        [class.is-invalid]="installationDate.touched && installationDate.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="installationDate.valid && AddEquipmentForm.submitted" required
+                                        pTooltip="Please,Enter An InstallationDate" tooltipPosition="bottom">
+                                    <div
+                                        *ngIf="(installationDate.touched || AddEquipmentForm.submitted) && installationDate.errors?.required">
+                                        <span class="text-danger">
+                                            Installation Date is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="purchasedate">{{'equipment.PurchaseDate'|translate}}</label>
+                                    <input type="date" class="form-control" id="purchasedate" name="purchasedate"
+                                        placeholder="purchase Date" [(ngModel)]="equipmentObj.PurchaseDate"
+                                        #PurchaseDate="ngModel"
+                                        [class.is-invalid]="PurchaseDate.touched && PurchaseDate.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="PurchaseDate.valid && AddEquipmentForm.submitted" required
+                                        pTooltip="Please,Enter An PurchaseDate" tooltipPosition="bottom">
+                                    <div
+                                        *ngIf="(PurchaseDate.touched || AddEquipmentForm.submitted) && PurchaseDate.errors?.required">
+                                        <span class="text-danger">
+                                            Purchase Date is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="supplier">{{'equipment.Supplier'|translate}}</label>
+                                    <select type="text" id="supplier" class="form-control" name="supplier"
+                                        [(ngModel)]="equipmentObj.SupplierId" #supplierName="ngModel"
+                                        [class.is-invalid]="supplierName.touched && supplierName.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="supplierName.valid && AddEquipmentForm.submitted" required
+                                        pTooltip="Please,Select supplierName" tooltipPosition="bottom">
+                                        <option selected disabled>--select--</option>
+                                        <option *ngFor="let s of suppliersList" [value]="s.id">
+                                            {{translate.currentLang == "En" ? s.supplierName:s.supplierNameAr}}
+                                            <!-- {{s.supplierName}} -->
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="(supplierName.touched || AddEquipmentForm.submitted) && supplierName.errors?.required">
+                                        <span class="text-danger">
+                                            supplier is required
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="price">{{'equipment.Price' |translate}}</label>
+                                    <input type="text" pInputText id="price" class="form-control" name="price"
+                                        [(ngModel)]="equipmentObj.Price" #price="ngModel"
+                                        [class.is-invalid]="price.touched && price.errors || AddEquipmentForm.submitted"
+                                        [class.is-valid]="price.valid && AddEquipmentForm.submitted" required
+                                        pTooltip="Please,Enter the Price" tooltipPosition="bottom" />
+                                    <div
+                                        *ngIf="(price.touched || AddEquipmentForm.submitted) && price.errors?.required">
+                                        <span class="text-danger">
+                                            price is required
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            
+                            <br><br><br>
+                        </fieldset>
+                        <button type="submit" class="btn btn-info btnNext">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'Actions.Attachments' |translate}}" [disabled]=true>
+                        <fieldset class="tab">
+                            <!-- http://localhost:51368/api/EquipmentAttachments/upload/{{eqId}} -->
+                            <!-- url="http://biomedicalupd-001-site1.itempurl.com/api/EquipmentAttachments/upload/{{eqId}}" -->
+                            <legend>{{'Actions.Attachments' |translate}}</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p-fileUpload name="demo[]" multiple="true"
+                                        url="http://localhost:51368/api/EquipmentAttachments/upload/{{eqId}}"
+                                        accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+                                        maxFileSize="1000000000">
+                                    </p-fileUpload>
+
+                                </div>
+                            </div>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                        (click)="hideDialog()" type="button" value="cancel"
+                                        class="btn btn-info"></button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                        value="save" type="button" class="btn btn-info" (click)="saveProduct()"></button>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="button" class="btn btn-info btnNext" (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+
+                            <br><br><br>
+                        </fieldset>
+                    </p-tabPanel>
+                    
+                    <p-tabPanel header="{{'equipment.QrCode'|translate}}">
+                        <fieldset class="tab">
+                            <legend>{{'equipment.QrCode'|translate}}</legend>
+                            <div>
+                                <h4>QRCODE GENERATOR</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <input [(ngModel)]="equipmentObj.serialNumber"
+                                        [ngModelOptions]="{standalone: true}">
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-3">
+                                        <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel"
+                                            [value]="equipmentObj.serialNumber" class="coolQRCode"></ngx-qrcode>
+                                    </div>
+                                   
+                                </div> -->
+                            </div>
+                            <br>
+                            <button (click)="upload(value)">generate QRCode</button>
+                            <br>
+                            <br><br><br>
+                        </fieldset>
+                        <button type="button" class="btn btn-info btnNext" (click)="Next()">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()">previous</button>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </form>
+    </ng-template>
+</p-dialog>

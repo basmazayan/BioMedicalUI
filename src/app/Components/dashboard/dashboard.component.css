@@ -1,0 +1,38 @@
+.doughnut1{
+    display: inline-block;
+    /* margin-right: 20px; */
+}
+.doughnut2{
+    display: inline-block;
+}
+.bar{
+   display: inline-block; 
+   /* margin-right: 10px;  */
+}
+.polar{
+    display: inline-block; 
+}
+.img{
+width: 50px;
+display: inline-block;
+/* background-color: dodgerblue; */
+}
+.hospital{
+    background-color: #dcf0e2;
+
+}
+.prod{
+    background-color:#fee3cf
+}
+.Suppliers{
+    background-color: #fbf2d4
+}
+.equipment{
+    background-color: #cfeafe
+}
+p{
+    text-align: right;
+}
+.dashboard{
+    margin-left: 10px;
+}

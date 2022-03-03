@@ -1,0 +1,426 @@
+
+    <!-- <p-messages [value]="msgs"></p-messages> -->
+    <p-toast posinset="top-right"></p-toast>
+
+    
+    <div class="container-fluid">
+
+        <div class="card" >
+            <div class="card-body" >
+                <div class="row">
+                    <div class="col-md-11">       <h5>{{'healthUnit.ManageUnits' |translate}}</h5></div>
+                    <div class="col-md-1" style="text-align: right;">     
+                        <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                        routerLink="/home/addUnit" pTooltip="Add a New HealthCareUnit" tooltipPosition="right"></button>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><br/></div></div>
+            <div class="row">
+                <div class="col-md-12"> 
+    <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+    <p-table #dt [value]="healthUnits" [rows]="10" styleClass="p-datatable-striped"  [paginator]="false"
+        [(selection)]="selectedUnits" [rowHover]="true" dataKey="id" 
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [globalFilterFields]="['healthCareUnitCode','healthCareUnitName','healthCareUnitNameAr','organizationName','organizationNameAr','healthDirectoryName','healthDirectoryNameAr','healthDistrictName','healthDistrictNameAr']">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+           
+
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="form-control"
+                        (input)="dt.filterGlobal($event.target.value,'contains')"
+                        placeholder="{{'search.Search'|translate}}..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="healthCareUnitCode"  style="width: 10%;">{{'healthCareUnit.Code'|translate}} <p-sortIcon
+                        field="healthCareUnitCode"></p-sortIcon>
+                </th>
+                <th pSortableColumn="namenn1" style="width: 30%;">{{'healthCareUnit.Name'|translate}} <p-sortIcon field="healthCareUnitName">
+                </p-sortIcon>
+            </th>
+                <th pSortableColumn="organizationName">{{'healthCareUnit.organization'|translate}} <p-sortIcon
+                        field="organizationName"></p-sortIcon>
+                </th>
+                 <th pSortableColumn="healthDirectoryName">{{'healthCareUnit.governorate'|translate}} <p-sortIcon
+                        field="healthDirectoryName"></p-sortIcon>
+                </th> 
+                <th pSortableColumn="healthDistrictName">{{'healthCareUnit.district'|translate}} <p-sortIcon field="healthDistrictName">
+                    </p-sortIcon>
+                </th>
+         
+                <!-- <th pSortableColumn="director">{{'healthCareUnit.director'|translate}} <p-sortIcon field="Director">
+                    </p-sortIcon>
+                </th> -->
+                <th style="width: 10%;">{{'Actions.Action'|translate}}</th>
+            </tr>
+            <tr>
+                <th>
+                    <input pInputText type="text"
+                        (input)="dt.filter($event.target.value, 'healthCareUnitCode', 'contains')"
+                        [value]="dt.filters['healthCareUnitCode']?.value"
+                        placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                </th>
+                <th>
+                    <input *ngIf="translate.currentLang==='En'" pInputText type="text"
+                    (input)="dt.filter($event.target.value, 'healthCareUnitName', 'equals')"
+                    [value]="dt.filters['healthCareUnitName']?.value"
+                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                    <input *ngIf="translate.currentLang==='Ar'" pInputText type="text"
+                    (input)="dt.filter($event.target.value, 'healthCareUnitNameAr', 'equals')"
+                    [value]="dt.filters['healthCareUnitNameAr']?.value"
+                    placeholder="{{'search.Search'|translate}}" class="p-column-filter form-control">
+                </th>
+                <th>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="organizationList" 
+                    placeholder="{{'search.Search'|translate}}" 
+                    [showClear]="true" appendTo="body" optionLabel="name"
+                    optionValue="name"
+                    (onChange)="dt.filter($event.value,'organizationName','equals')"
+                    [filterBy]="dt.filters['organizationName']?.value" 
+                    styleClass="ui-column-filter">
+                    </p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="organizationList" 
+                    placeholder="{{'search.Search'|translate}}" 
+                    [showClear]="true" appendTo="body" optionLabel="nameAr"
+                    optionValue="nameAr"
+                    (onChange)="dt.filter($event.value,'organizationNameAr','equals')"
+                    [filterBy]="dt.filters['organizationNameAr']?.value" 
+                      styleClass="ui-column-filter" >
+                    </p-dropdown>
+                </th>
+                <th>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthDirectories" 
+                    placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryName"  optionValue="healthDirectoryName"
+                    [showClear]="true" appendTo="body"
+                    (onChange)="dt.filter($event.value,'healthDirectoryName','equals');fillDistrict($event.value)"
+                    [filterBy]="dt.filters['healthDirectoryName']?.value" 
+                      styleClass="ui-column-filter">
+                    </p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthDirectories" 
+                    placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryNameAr"  optionValue="healthDirectoryNameAr"
+                    [showClear]="true" appendTo="body"
+                    (onChange)="dt.filter($event.value,'healthDirectoryNameAr','equals');fillDistrict($event.value)"
+                    [filterBy]="dt.filters['healthDirectoryNameAr']?.value" 
+                      styleClass="ui-column-filter" >
+                    </p-dropdown>
+                </th>
+                <th>
+                    <p-dropdown *ngIf="translate.currentLang==='En'" [options]="HealthDistrictsList" 
+                    placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictName"  optionValue="healthDistrictName"
+                    [showClear]="true" appendTo="body"
+                    (onChange)="dt.filter($event.value,'healthDistrictName','equals')"
+                    [filterBy]="dt.filters['healthDistrictName']?.value" 
+                    styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
+                    <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="HealthDistrictsList" 
+                    placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictNameAr"  optionValue="healthDistrictNameAr"
+                    [showClear]="true" appendTo="body"
+                    (onChange)="dt.filter($event.value,'healthDistrictNameAr','equals')"
+                    [filterBy]="dt.filters['healthDistrictNameAr']?.value" 
+                    styleClass="ui-column-filter"></p-dropdown>
+                </th>
+               
+                <!-- <th>
+                    <input pInputText type="text"
+                    (input)="dt.filter($event.target.value, 'Director', 'contains')"
+                    [value]="dt.filters['Director']?.value"
+                    placeholder="search" class="p-column-filter form-control FilterSearch">
+                </th> -->
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-unit>
+            <tr>
+                <td>
+                    {{unit.healthCareUnitCode}}
+                </td>
+                <td>
+                    {{translate.currentLang == "En" ? unit.healthCareUnitName:unit.healthCareUnitNameAr}}
+                </td>
+
+                <td>
+                    {{translate.currentLang == "En" ? unit.organizationName:unit.organizationNameAr}}
+                    <!-- {{unit.organizationName}} -->
+                </td>
+
+                <td>
+                    {{translate.currentLang == "En" ? unit.healthDirectoryName:unit.healthDirectoryNameAr}}
+                </td>
+
+                <td>
+                    {{translate.currentLang == "En" ? unit.healthDistrictName:unit.healthDistrictNameAr}}
+                </td>
+
+         
+                <!-- <td>
+                    {{unit.director}}
+                </td> -->
+
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                        (click)="openNew(unit)" pTooltip="edit a unit" tooltipPosition="top"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                        (click)="confirmDelete(unit.id)" pTooltip="delete a unit" tooltipPosition="top"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                {{'In total there are.In total there are'| translate}} {{healthUnits ? healthUnits.length : 0 }} {{"Sidebar.healthUnitsList"| translate}}.
+            </div>
+        </ng-template>
+    </p-table>
+    <p-paginator [rows]="10" [totalRecords]="count" (onPageChange)="clicktbl($event)"></p-paginator>
+
+</div></div></div></div></div>
+<!--------------------------------------edit--------------------------------------->
+<p-dialog [(visible)]="healthUnitDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title"><legend>{{'healthUnit.healthCareUnits'|translate}}</legend></h3>
+            </div>
+            <div>
+            </div>
+        </div>
+        <form (ngSubmit)="editUnitForm.valid && updateUnit()" #editUnitForm="ngForm">
+            <p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+                <p-tabPanel header="{{'equipment.Details' | translate}}">
+                    <fieldset class="tab">
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="name">{{'healthCareUnit.Name'|translate}}</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    pTooltip="Enter A Unit Name" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.healthCareUnitName" #healthCareUnitName="ngModel"
+                                    [class.is-invalid]="healthCareUnitName.touched && healthCareUnitName.errors || editUnitForm.submitted"
+                                    [class.is-valid]="healthCareUnitName.valid && editUnitForm.submitted" required>
+                                <div
+                                    *ngIf="(healthCareUnitName.touched || editUnitForm.submitted) && healthCareUnitName.errors?.required">
+                                    <span class="text-danger">
+                                        name is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="nameAr">{{'healthCareUnit.NameAr'|translate}}</label>
+                                <input type="text" class="form-control" id="nameAr" name="nameAr"
+                                    pTooltip="Enter A Unit Name in arabic" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.healthCareUnitNameAr" #healthCareUnitNameAr="ngModel"
+                                    [class.is-invalid]="healthCareUnitNameAr.touched && healthCareUnitNameAr.errors || editUnitForm.submitted"
+                                    [class.is-valid]=" healthCareUnitNameAr.valid && editUnitForm.submitted" required>
+                                <div
+                                    *ngIf="(healthCareUnitNameAr.touched || editUnitForm.submitted) && healthCareUnitNameAr.errors?.required">
+                                    <span class="text-danger">
+                                        nameAr is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="code">{{'healthCareUnit.Code'|translate}}</label>
+                                <input type="text" class="form-control" id="code" name="code"
+                                    pTooltip="Enter A Unit code" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.healthCareUnitCode" #healthCareUnitcode="ngModel"
+                                    [class.is-invalid]="healthCareUnitcode.touched && healthCareUnitcode.errors || editUnitForm.submitted"
+                                    [class.is-valid]="healthCareUnitcode.valid && editUnitForm.submitted" required>
+                                <div
+                                    *ngIf="(healthCareUnitcode.touched || editUnitForm.submitted) && healthCareUnitcode.errors?.required">
+                                    <span class="text-danger">
+                                        Code is required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="directoryName">{{'healthCareUnit.governorate'|translate}}</label>
+                                <select class="form-control" id="directoryName" pTooltip="select A directory Name"
+                                    tooltipPosition="bottom" name="directoryName" #directoryName="ngModel"
+                                    [(ngModel)]="healthUnitobj.healthDirectoryId" (change)="loadDistricts(healthUnitobj.healthDirectoryId)"
+                                    [class.is-invalid]="directoryName.touched && directoryName.errors || editUnitForm.submitted"
+                                    [class.is-valid]=" directoryName.valid && editUnitForm.submitted" required>
+                                    <option>{{'healthUnit.name'|translate}}</option>
+                                    <option *ngFor="let h of healthDirectories" [value]="h.id">
+                                        {{translate.currentLang == "En" ? h.healthDirectoryName:h.hhealthDirectoryNameAr}}
+                                    </option>
+                                </select>
+                                <div
+                                    *ngIf="(directoryName.touched || editUnitForm.submitted) && directoryName.errors?.required">
+                                    <span class="text-danger">
+                                        nameAr is required
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label for="districtName">{{'healthCareUnit.district'|translate}}</label>
+                                <select class="form-control" id="districtName" pTooltip="select A district Name"
+                                    tooltipPosition="bottom" name="districtName" #districtName="ngModel"
+                                    [(ngModel)]="healthUnitobj.healthDistrictId"
+                                    [class.is-invalid]="districtName.touched && districtName.errors || editUnitForm.submitted"
+                                    [class.is-valid]=" districtName.valid && editUnitForm.submitted" required>
+                                    <option>{{'healthUnit.name'|translate}}</option>
+                                    <option *ngFor="let h of healthDistricts" [value]="h.id">
+                                        {{translate.currentLang == "En" ? h.healthDistrictName:h.healthDistrictNameAr}}
+                                    </option>
+                                </select>
+                                <div
+                                    *ngIf="(districtName.touched || editUnitForm.submitted) && districtName.errors?.required">
+                                    <span class="text-danger">
+                                        nameAr is required
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="organization">{{'healthCareUnit.organization'|translate}}</label>
+                                <select class="form-control" id="organization" pTooltip="select A organization Name"
+                                    tooltipPosition="bottom" name="organization" #organization="ngModel"
+                                    [(ngModel)]="healthUnitobj.organizationId"
+                                    [class.is-invalid]="organization.touched && organization.errors || editUnitForm.submitted"
+                                    [class.is-valid]=" organization.valid && editUnitForm.submitted" required>
+                                    <option>{{'healthUnit.name'|translate}}</option>
+                                    <option *ngFor="let org of organizationList" [value]="org.id">
+                                        {{translate.currentLang == "En" ? org.name:org.nameAr}}
+                                    </option>
+                                </select>
+                                <div
+                                    *ngIf="(organization.touched || editUnitForm.submitted) && organization.errors?.required">
+                                    <span class="text-danger">
+                                        nameAr is required
+                                    </span>
+                                </div>
+                            </div>
+                        </div> 
+                        <br>
+                            <button type="button" class="btn btn-info btnNext " (click)="Next()"
+                                [hidden]="isNextvalid">Next</button>
+                            <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                                [hidden]="isPrevvalid">previous</button>
+
+                            <br><br><br>
+                    </fieldset>
+                </p-tabPanel>
+                <p-tabPanel header="{{'healthCareUnit.MoreDetails' | translate}}">
+                    <fieldset class="tab">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="director">{{'healthCareUnit.director'|translate}}</label>
+                                <input type="text" class="form-control" id="director" name="director"
+                                    pTooltip="Enter director Name" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.director" #director="ngModel">
+                                <!-- <div
+                                    *ngIf="(director.touched || editUnitForm.submitted) && director.errors?.required">
+                                    <span class="text-danger">
+                                        Director name is required
+                                    </span>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Phone">{{'healthCareUnit.Phone'|translate}}</label>
+                                <input type="text" class="form-control" id="Phone" name="Phone"
+                                    pTooltip="Enter Phone" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.phone" #Phone="ngModel">
+                                <!-- <div
+                                    *ngIf="(Phone.touched || editUnitForm.submitted) && Phone.errors?.required">
+                                    <span class="text-danger">
+                                        Phone number is required
+                                    </span>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Mobile">{{'healthCareUnit.Mobile'|translate}}</label>
+                                <input type="text" class="form-control" id="Mobile" name="Mobile"
+                                    pTooltip="Enter Mobile number" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.mobile" #Mobile="ngModel">
+                                <!-- <div
+                                    *ngIf="(Mobile.touched || editUnitForm.submitted) && Mobile.errors?.required">
+                                    <span class="text-danger">
+                                        Mobile number is required
+                                    </span>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Adress">{{'healthCareUnit.Adress'| translate}}</label>
+                                <textarea class="form-control" id="Adress" name="Adress" type="text"
+                                    [(ngModel)]="healthUnitobj.adress"
+                                    pTooltip="Please,Select An equipmentDescription"
+                                    tooltipPosition="bottom"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="Email">{{'healthCareUnit.Email'|translate}}</label>
+                                <input type="text" class="form-control" id="Email" name="Email"
+                                    pTooltip="Enter Email" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.email" #Email="ngModel">
+                                <!-- <div
+                                    *ngIf="(Email.touched || editUnitForm.submitted) && Email.errors?.required">
+                                    <span class="text-danger">
+                                        Email is required
+                                    </span>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Long">{{'healthCareUnit.Long'|translate}}</label>
+                                <input type="text" class="form-control" id="Long" name="Long"
+                                    pTooltip="Enter Long number" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.long" #Long="ngModel">
+                                <!-- <div
+                                    *ngIf="(Long.touched || editUnitForm.submitted) && Long.errors?.required">
+                                    <span class="text-danger">
+                                        Long number is required
+                                    </span>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <label for="Lat">{{'healthCareUnit.Lat'|translate}}</label>
+                                <input type="text" class="form-control" id="Lat" name="Lat"
+                                    pTooltip="Enter Lat number" tooltipPosition="bottom"
+                                    [(ngModel)]="healthUnitobj.lat" #Lat="ngModel">
+                                <!-- <div
+                                    *ngIf="(Lat.touched || editUnitForm.submitted) && Lat.errors?.required">
+                                    <span class="text-danger">
+                                        Lat number is required
+                                    </span>
+                                </div> -->
+                            </div>
+                        </div>
+                        
+
+                        <br>
+                        <button type="button" class="btn btn-info btnNext " (click)="Next()"
+                            [hidden]="isNextvalid">Next</button>
+                        <button type="button" class="btn btn-info btnNext" (click)="Previous()"
+                            [hidden]="isPrevvalid">previous</button>
+
+                        <br><br><br>
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                    class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                            </div>
+                            <div class="col-lg-3">
+                                <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                    class="btn btn-info" value="save" type="submit"></button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </p-tabPanel>
+            </p-tabView>
+            <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
+                <p-header style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+                <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+            </p-dialog>
+        </form>
+
+    </ng-template>
+
+
+</p-dialog>
+<!-- </div> -->

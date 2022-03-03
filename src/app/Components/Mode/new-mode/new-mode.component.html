@@ -1,0 +1,49 @@
+<div>
+    <p-dialog [(visible)]="modeDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">Add New Mode</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddModeForm.valid && saveMode()" #AddModeForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="requestMode">RequestMode</label>
+                            <input type="text" class="form-control" pTooltip="Enter a RequestMode"
+                                tooltipPosition="bottom" id="requestMode" name="requestMode" #requestMode="ngModel"
+                                [(ngModel)]="mode.requestMode" autofocus required
+                                [class.is-invalid]="(requestMode.touched && requestMode.errors) || AddModeForm.submitted"
+                                [class.is-valid]="requestMode.valid && AddModeForm.submitted">
+                                <div *ngIf="(requestMode.touched || AddModeForm.submitted) && requestMode.errors?.required">
+                                    <span class="text-danger">
+                                        RequestMode is required
+                                    </span>
+                                </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <button pButton pRipple label="{{'Actions.Cancel' |translate}}" icon="pi pi-times"
+                                class="btn btn-info" type="button" (click)="hideDialog()" value="cancel"></button>
+                        </div>
+                        <div class="col-lg-2">
+                            <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                class="btn btn-info" type="submit" value="save"></button>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+
+       
+    </p-dialog>
+</div>

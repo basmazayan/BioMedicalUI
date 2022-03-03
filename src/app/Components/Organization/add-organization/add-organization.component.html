@@ -1,0 +1,67 @@
+<p-dialog [(visible)]="organizationDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid"
+    (onHide)="hideDialog()">
+    <ng-template pTemplate="content">
+        <div>
+            <div class="header">
+                <h3 class="title">{{'organization.AddOganization' | translate}}</h3>
+            </div>
+            <div>
+                <img src="./../assets/images/org2.jpg" class="img" [alt]="product">
+            </div>
+        </div>
+        <form (ngSubmit)="AddOrganizationForm.valid && saveOrganization()" #AddOrganizationForm="ngForm">
+            <fieldset class="tab">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="Name">{{'organization.Name'|translate}}</label>
+                        <input type="text" class="form-control" id="Name" name="Name"
+                            #organizationName="ngModel" placeholder="{{'organization.Name'|translate}}"
+                            [(ngModel)]="org.Name"
+                            [class.is-invalid]="organizationName.touched && organizationName.errors || AddOrganizationForm.submitted"
+                            [class.is-valid]="organizationName.valid && AddOrganizationForm.submitted" required
+                            pTooltip="Please,Enter A OrganizationName in English" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(organizationName.touched || AddOrganizationForm.submitted) && organizationName.errors?.required">
+                            <span class="text-danger">
+                                English name is required
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="NameAr">{{'organization.NameAr'|translate}}</label>
+                        <input type="text" class="form-control" id="NameAr" name="NameAr"
+                            #organizationNameAr="ngModel" placeholder="{{'organization.NameAr'|translate}}"
+                            [(ngModel)]="org.NameAr"
+                            [class.is-invalid]="organizationNameAr.touched && organizationNameAr.errors || AddOrganizationForm.submitted"
+                            [class.is-valid]="organizationNameAr.valid && AddOrganizationForm.submitted" required
+                            pTooltip="Please,Enter A OrganizationName in Arabic" tooltipPosition="bottom">
+                        <div
+                            *ngIf="(organizationNameAr.touched || AddOrganizationForm.submitted) && organizationNameAr.errors?.required">
+                            <span class="text-danger">
+                                Arabic name is required
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                            class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                    </div>
+                    <div class="col-lg-3">
+                        <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                            class="btn btn-info" value="save" type="submit"></button>
+                    </div>
+                </div>
+                <br><br>
+            </fieldset>
+
+        </form>
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+    <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+   <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+</p-dialog>

@@ -1,0 +1,108 @@
+<div>
+    <p-dialog [(visible)]="subCategoryDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid"
+        (onHide)="hideDialog()">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'subcategory.AddNewSubCategory'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="AddSubCategoryForm.valid && saveSubCatgory()" #AddSubCategoryForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+
+                        <div class="col-md-12 form-group">
+                            <label for="category">{{'subcategory.Category'|translate}}</label>
+                            <select class="form-control" id="category" name="category" #category="ngModel"
+                                [(ngModel)]="subCategory.equipmentCategoryId" pTooltip="select a Category"
+                                tooltipPosition="bottom"
+                                [class.is-invalid]="category.touched && category.errors || AddSubCategoryForm.submitted"
+                                [class.is-valid]="category.valid && AddSubCategoryForm.submitted" required [value]="0">
+                                <option value="0">--select--</option>
+                                <option *ngFor="let cat of categoriesList" [value]="cat.id">
+                                    {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                </option>
+                            </select>
+                            <div
+                                *ngIf="(category.touched || AddSubCategoryForm.submitted) && category.errors?.required">
+                                <span class="text-danger">
+                                    {{'ecricodes.Required'|translate}}     
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="code">{{'subcategory.Code'|translate}}</label>
+                            <input type="text" class="form-control" id="code" name="code"
+                                #code="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
+                                [(ngModel)]="subCategory.code"
+                                [class.is-invalid]="code.touched && subCategoryName.errors || AddSubCategoryForm.submitted"
+                                [class.is-valid]="code.valid && AddSubCategoryForm.submitted" required>
+                            <div
+                                *ngIf="(code.touched || AddSubCategoryForm.submitted) && code.errors?.required">
+                                <span class="text-danger">
+                                    {{'ecricodes.Required'|translate}}                  
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="subCategoryName">{{'subcategory.subCategoryName'|translate}}</label>
+                            <input type="text" class="form-control" id="subCategoryName" name="subCategoryName"
+                                #subCategoryName="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
+                                [(ngModel)]="subCategory.subCategoryName"
+                                [class.is-invalid]="subCategoryName.touched && subCategoryName.errors || AddSubCategoryForm.submitted"
+                                [class.is-valid]="subCategoryName.valid && AddSubCategoryForm.submitted" required>
+                            <div
+                                *ngIf="(subCategoryName.touched || AddSubCategoryForm.submitted) && subCategoryName.errors?.required">
+                                <span class="text-danger">
+                                    {{'ecricodes.Required'|translate}}     
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="subCategoryNameAr">{{'subcategory.subCategoryNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="subCategoryName"
+                                [ngModelOptions]="{standalone: true}" pTooltip="Enter a Name in Arabic"
+                                tooltipPosition="bottom" [(ngModel)]="subCategory.subCategoryNameAr"
+                                name="subCategoryName" #subCategoryArName="ngModel"
+                                [class.is-invalid]="subCategoryArName.touched && subCategoryArName.errors || AddSubCategoryForm.submitted"
+                                [class.is-valid]="subCategoryArName.valid && AddSubCategoryForm.submitted" required>
+                            <div
+                                *ngIf="(subCategoryArName.touched || AddSubCategoryForm.submitted) && subCategoryArName.errors?.required">
+                                <span class="text-danger">
+                                    {{'ecricodes.Required'|translate}}     
+                                </span>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"><br /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                class="btn btn-info" (click)="hideDialog()" type="button"
+                                value="{{'Actions.Cancel'|translate}}"></button>
+                        </div>
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                class="btn btn-info" value="{{'Actions.Save'|translate}}" type="submit"></button>
+                        </div>
+                    </div>
+                </fieldset>
+                <!-- <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
+                    <p-header style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+                    <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+                </p-dialog> -->
+            </form>
+
+        </ng-template>
+    </p-dialog>
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+    </p-dialog>
+</div>

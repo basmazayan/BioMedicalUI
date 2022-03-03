@@ -1,0 +1,139 @@
+
+        <!-- <p-messages [value]="msgs"></p-messages> -->
+        <p-toast posinset="top-right"></p-toast>
+
+        <div class="container-fluid">
+
+            <div class="card" >
+                <div class="card-body" >
+                    <div class="row">
+                        <div class="col-md-11">       <h5 class="p-m-0">{{'organization.Organization' | translate}}</h5></div>
+                        <div class="col-md-1" style="text-align: right;">     
+                            <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                            routerLink="/home/AddOganization" pTooltip="Add a New Equipment" tooltipPosition="right"></button>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><br/></div></div>
+                <div class="row">
+                    <div class="col-md-12"> 
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="organizationsList" [rows]="10"  styleClass="p-datatable-striped" [paginator]="true"
+            [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true" [globalFilterFields]="['name','NameAr']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+              
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText class="form-control" type="text"
+                            (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="{{'search.Search'|translate}}..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="name">{{'organization.Name' | translate}} <p-sortIcon
+                            field="name"></p-sortIcon>
+                    </th>
+                    <th style="width: 10%;">{{'Actions.Action' | translate}}</th>
+                </tr>
+                <tr>
+
+                    <th>
+                        <input pInputText type="text" 
+                            (input)="dt.filter($event.target.value, 'name', 'contains')"
+                            [value]="dt.filters['name']?.value" placeholder="{{'organization.SearchbyName'|translate}}"
+                            class="p-column-filter form-control">
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-org>
+                <tr>
+                    <td>
+                        {{translate.currentLang == "En" ? org.name:org.nameAr}}
+                    </td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(org)"></button>
+
+                        <button pButton pRipple (click)="confirmDelete(org.id)"
+                            pTooltip="delete an organization" tooltipPosition="top" icon="pi pi-trash"
+                            class="p-button-rounded p-button-danger edit"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    {{'In total there are.In total there are'| translate}}{{organizations ? organizations.length : 0 }} {{"Sidebar.Organization"| translate}}.
+                </div>
+            </ng-template>
+        </p-table>
+    </div></div></div></div>
+    <p-dialog [(visible)]="organizationDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">{{'organization.EditOrganization'|translate}}</h3>
+                </div>
+
+            </div>
+            <form (ngSubmit)="EditOrganizationForm.valid && updateOrganization()" #EditOrganizationForm="ngForm">
+                <fieldset class="tab">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="organizationName">{{'organization.Name'|translate}}</label>
+                            <input type="text" class="form-control" id="organizationName" name="organizationName"
+                                #organizationName="ngModel" placeholder="{{'organization.Name'|translate}}"
+                                [(ngModel)]="organization.name"
+                                [class.is-invalid]="organizationName.touched && organizationName.errors || EditOrganizationForm.submitted"
+                                [class.is-valid]="organizationName.valid && EditOrganizationForm.submitted" required
+                                pTooltip="Please,Enter A OrganizationName in English" tooltipPosition="bottom">
+                            <div
+                                *ngIf="(organizationName.touched || EditOrganizationForm.submitted) && organizationName.errors?.required">
+                                <span class="text-danger">
+                                   {{'General.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="organizationNameAr">{{'organization.NameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="organizationNameAr" name="organizationNameAr"
+                                #organizationNameAr="ngModel" placeholder="{{'organization.NameAr'|translate}}"
+                                [(ngModel)]="organization.nameAr"
+                                [class.is-invalid]="organizationNameAr.touched && organizationNameAr.errors || EditOrganizationForm.submitted"
+                                [class.is-valid]="organizationNameAr.valid && EditOrganizationForm.submitted" required
+                                pTooltip="Please,Enter A OrganizationName in Arabic" tooltipPosition="bottom">
+                            <div
+                                *ngIf="(organizationNameAr.touched || EditOrganizationForm.submitted) && organizationNameAr.errors?.required">
+                                <span class="text-danger">
+                                    {{'General.Required'|translate}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                class="btn btn-info" (click)="hideDialog()" value="cancel" type="button"></button>
+                        </div>
+                        <div class="col-lg-3">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                class="btn btn-info" value="save" type="submit"></button>
+                        </div>
+                    </div>
+                    <br><br>
+                </fieldset>
+            </form>
+        </ng-template>
+    </p-dialog>
+    <p-dialog [(visible)]="errorDisplay" [style]="{width: '350px'}">
+        <p-header  style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>
+       <span style="color: rgb(181, 4, 4);font-weight: bold;"> {{error}}</span>
+    </p-dialog>
+</div>

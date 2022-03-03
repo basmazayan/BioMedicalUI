@@ -1,0 +1,120 @@
+
+<div class="container-fluid">
+    <div class="card">
+        <p-messages [value]="msgs"></p-messages>
+        <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+                <button pButton pRipple icon="pi pi-plus" class="p-button-primary p-button-rounded p-mr-2"
+                pTooltip="add a new Mode" tooltipPosition="right" routerLink="/home/addMode"></button>
+            </ng-template>
+        </p-toolbar>
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="modesList" [rows]="10"styleClass="p-datatable-responsive-demo" [paginator]="true" [(selection)]="selectedModes"
+            [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+            [globalFilterFields]="['requestMode']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    <h5 class="p-m-0">Manage Modes</h5>
+
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" class="form-control" (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="Search..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+
+                    <th pSortableColumn="requestMode">RequestMode <p-sortIcon field="requestMode"></p-sortIcon>
+                    </th>
+                   
+                    <th>Actions</th>
+                </tr>
+                <tr>
+
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'requestMode', 'contains')"
+                            [value]="dt.filters['requestMode']?.value" placeholder="Search by requestMode"
+                            class="p-column-filter form-control">
+                    </th>
+                   
+                    
+
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-mode>
+                <tr>
+                    <td>{{mode.requestMode}}</td>
+                   
+
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(mode)" pTooltip="edit a mode" tooltipPosition="top"></button>
+
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                            (click)="confirmDelete(mode.id)" pTooltip="delete a mode" tooltipPosition="top"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    In total there are {{Modes ? Modes.length : 0 }} Modes.
+                </div>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-dialog [(visible)]="modeDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <h3 class="title">Edit Mode</h3>
+                </div>
+               
+            </div>
+            <form (ngSubmit)="EditModeForm.valid && updateMode()" #EditModeForm="ngForm">
+
+                <fieldset class="tab">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="requestMode">RequestMode</label>
+                            <input type="text" class="form-control" pTooltip="Enter a RequestMode"
+                                tooltipPosition="bottom" id="requestMode" name="requestMode" #requestMode="ngModel"
+                                [(ngModel)]="mode.requestMode" autofocus required
+                                [class.is-invalid]="(requestMode.touched && requestMode.errors) || EditModeForm.submitted"
+                                [class.is-valid]="requestMode.valid && EditModeForm.submitted">
+                                <div *ngIf="(requestMode.touched || EditModeForm.submitted) && requestMode.errors?.required">
+                                    <span class="text-danger">
+                                        RequestMode is required
+                                    </span>
+                                </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <button pButton pRipple label="{{'Actions.Cancel' |translate}}" icon="pi pi-times"
+                                class="btn btn-info" type="button" (click)="hideDialog()" value="cancel"></button>
+                        </div>
+                        <div class="col-lg-2">
+                            <button pButton pRipple label="{{'Actions.Save' |translate}}" icon="pi pi-check"
+                                class="btn btn-info" type="submit" value="save"></button>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+    
+
+     
+
+        </ng-template>
+    </p-dialog>
+    </div>

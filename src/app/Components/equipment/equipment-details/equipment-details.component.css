@@ -1,0 +1,16 @@
+.img{
+    width: 65px;
+    height: 65px;
+    position: relative;
+    left:90px;
+    top:-45px
+  }
+
+  .coolQRCode{
+    display: flex;
+  /* align-items: left; */
+  /* justify-content: center; */
+  filter: drop-shadow(5px 5px 5px #b96767);
+  opacity: .7;
+  }
+  

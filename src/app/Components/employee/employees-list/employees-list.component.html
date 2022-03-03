@@ -1,0 +1,197 @@
+<!-- <div class="container-fluid"> -->
+    <!-- <div class="card">
+        <p-messages [value]="msgs"></p-messages>
+        <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+
+                <button pButton pRipple icon="pi pi-plus" class="p-button-primary  p-button-rounded p-mr-2 new"
+                    routerLink="/home/addEmployee" pTooltip="Add a New Employee" tooltipPosition="right"></button>
+            </ng-template>
+        </p-toolbar>
+        <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+        <p-table #dt [value]="employees" [rows]="10" styleClass="p-datatable-responsive-demo"[paginator]="true" [(selection)]="selectedEmployees"
+            [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true" [globalFilterFields]="['employeeName']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    <h5 class="p-m-0">{{'employee.ManageEmployees' |translate}}</h5>
+
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" class="form-control"
+                            (input)="dt.filterGlobal($event.target.value,'contains')"
+                            placeholder="{{'search.Search'|translate}}..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+
+                    <th pSortableColumn="employeeName">{{'name.name'|translate}} <p-sortIcon field="employeeName">
+                        </p-sortIcon>
+                    </th>
+
+                    <th>{{'Actions.Action'|translate}}</th>
+                </tr>
+                <tr>
+
+                    <th>
+                        <input pInputText type="text"
+                            (input)="dt.filter($event.target.value, 'employeeName', 'contains')"
+                            [value]="dt.filters['employeeName']?.value"
+                            placeholder="{{'search.SearchbyName'|translate}}" class="p-column-filter form-control">
+                    </th>
+
+
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-emp>
+                <tr>
+                    <td>
+                        {{translate.currentLang == "En" ? emp.employeeName:emp.employeeNameAr}}
+                    </td>
+
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
+                            (click)="openNew(emp)"></button>
+                        <button pButton pRipple icon="pi pi-trash" pTooltip="delete An Employee" tooltipPosition="top"  class="p-button-rounded p-button-danger" (click)="confirmDelete(emp.id,emp.employeeName)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    {{'In total there are.In total there are'| translate}} {{employees ? employees.length : 0 }} employees.
+                </div>
+            </ng-template>
+        </p-table>
+    </div> -->
+    <!-- <p-dialog [(visible)]="employeeDialog" [style]="{width: '1024px'}" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div>
+                <div class="header">
+                    <p-messages  severity="error" [value]="msgs"></p-messages>
+                    <h3 class="title">Edit Employee</h3>
+                </div>
+                <div>
+                    <img src="./../assets/images/medical-equipment-icon.jpg" class="img" [alt]="product">
+                </div>
+            </div>
+            <form (ngSubmit)="EditEmployeeForm.valid && updateEmployee()" #EditEmployeeForm="ngForm">
+
+                <fieldset class="tab">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="name">{{'employee.EmployeeName'|translate}}</label>
+                            <input type="text" class="form-control" id="name" name="EmployeeName"
+                                [(ngModel)]="employee.employeeName" required
+                                [class.is-invalid]="Name.touched && Name.errors || EditEmployeeForm.submitted"
+                                [class.is-valid]="Name.valid && EditEmployeeForm.submitted" #Name="ngModel"
+                                pTooltip="Please,Enter An EmployeeName in English" tooltipPosition="bottom">
+                            <div *ngIf="(Name.touched || EditEmployeeForm.submitted) && Name.errors?.required">
+                                <span class="text-danger">
+                                    English name is required
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="name">{{'employee.EmployeeNameAr'|translate}}</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                [(ngModel)]="employee.employeeNameAr" required
+                                [class.is-invalid]="arname.touched && arname.errors || EditEmployeeForm.submitted"
+                                [class.is-valid]="arname.valid && EditEmployeeForm.submitted" #arname="ngModel"
+                                pTooltip="Please,Enter An employee Name in Arabic" tooltipPosition="bottom">
+                            <div *ngIf="(arname.touched || EditEmployeeForm.submitted) && arname.errors?.required">
+                                <span class="text-danger">
+                                    Arabic name is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="email">{{'employee.Email'|translate}}</label>
+
+                            <input type="text" class="form-control" id="email"
+                                placeholder="{{'employee.Email'|translate}}" #email="ngModel" name="email"
+                                [(ngModel)]="employee.email" required
+                                [class.is-invalid]="email.touched && email.errors || EditEmployeeForm.submitted"
+                                [class.is-valid]="email.valid && EditEmployeeForm.submitted"
+                                pTooltip="Please,Enter An employee Email" tooltipPosition="bottom">
+                            <div *ngIf="(email.touched || EditEmployeeForm.submitted) && email.errors?.required">
+                                <span class="text-danger">
+                                    Email is required
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 form-group">
+                            <label for="mobile">{{'employee.Mobile'|translate}}</label>
+                            <input type="text" class="form-control" id="mobile" [ngModelOptions]="{standalone: true}"
+                                placeholder="{{'employee.Mobile'|translate}}" [(ngModel)]="employee.mobile"
+                                pTooltip="Please,Enter A Mobile Number" tooltipPosition="bottom">
+                        </div>
+
+                        <div class="col-md-3 form-group">
+                            <label for="phone">{{'employee.Phone'|translate}}</label>
+                            <input type="text" class="form-control" id="phone" [ngModelOptions]="{standalone: true}"
+                                placeholder="{{'employee.Mobile'|translate}}" [(ngModel)]="employee.phone"
+                                pTooltip="Please,Enter A Phone Number" tooltipPosition="bottom">
+                        </div>
+
+                        <div class="col-md-3 form-group">
+                            <label for="code">{{'employee.EmployeeCode'|translate}}</label>
+                            <input type="text" class="form-control" id="employeeCode"
+                                placeholder="{{'employee.EmployeeCode'|translate}}" #Code="ngModel" name="employeeCode"
+                                [(ngModel)]="employee.employeeCode" required
+                                [class.is-invalid]="Code.touched && Code.errors || EditEmployeeForm.submitted"
+                                [class.is-valid]="Code.valid && EditEmployeeForm.submitted"
+                                pTooltip="Please,Enter An EmployeeCode" tooltipPosition="bottom">
+                            <div *ngIf="(Code.touched || EditEmployeeForm.submitted) && Code.errors?.required">
+                                <span class="text-danger">
+                                    Code is required
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 form-group">
+                            <label for="healthName">{{'employee.healthCareUnit'|translate}}</label>
+                            <select class="form-control" id="healthName" name="healthName"
+                                [(ngModel)]="employee.healthCareUnitId"
+                                [class.is-invalid]="healthCareUnit.touched && healthCareUnit.errors || EditEmployeeForm.submitted"
+                                [class.is-valid]="healthCareUnit.valid && EditEmployeeForm.submitted"
+                                #healthCareUnit="ngModel" required (change)="onSelectUnit(employee.healthCareUnitId)"
+                                pTooltip="Please,Enter A healthCareUnit" tooltipPosition="bottom">
+                                <option selected>--select--</option>
+                                <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
+                                    {{translate.currentLang == "En" ? h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                </option>
+                            </select>
+                            <div
+                                *ngIf="(healthCareUnit.touched || EditEmployeeForm.submitted) && healthCareUnit.errors?.required">
+                                <span class="text-danger">
+                                    health CareUnit is required
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <button pButton pRipple label="{{'Actions.Cancel'|translate}}" icon="pi pi-times"
+                                class="btn btn-info" type="button" (click)="hideDialog()" value="cancel"
+                                type="button"></button>
+                        </div>
+                        <div class="col-lg-2">
+                            <button pButton pRipple label="{{'Actions.Save'|translate}}" icon="pi pi-check"
+                                class="btn btn-info" value="save" type="submit" ></button>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+        </ng-template>
+
+
+    </p-dialog> -->
+<!-- </div> -->
