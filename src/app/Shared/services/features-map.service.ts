@@ -95,46 +95,5 @@ public ELSHARKYAUrl_En =
     });
     mapInstance.add(this.HOSP_ELSHARKYA_En);
   }
-  doquery()
-  {
-    const layer = new FeatureLayer({
-      url:environment.arcgisServerUrl+'healthAPP/FeatureServer/0/addFeatures',
-    //  source: graphics,
-      fields: [{
-        name: "EST_NAME",
-        alias: "EST_NAME",
-        type: "string"
-      }, {
-        name: "GOV_NAME",
-        alias: "GOV_NAME",
-        type: "string"
-      },{
-        name: "EDARA_NAME",
-        alias: "EDARA_NAME",
-        type: "string"
-    },{
-      name: "COD",
-      alias: "COD",
-      type: "small-integer"
-    },{
-      name: "CityCode",
-      alias: "CityCode",
-      type: "string"
-    },{
-      name: "ESTEng_NAME",
-      alias: "ESTEng_NAME",
-      type: "string"
-    },{
-      name: "GOVEng_NAME",
-      alias: "GOVEng_NAME",
-      type: "string"
-    },{
-      name: "EDAEng_NAME",
-      alias: "EDAEng_NAME",
-      type: "string"
-    }],
-      objectIdField: "ObjectID",
-      geometryType: "point"
-    });
-  }
+  
 }

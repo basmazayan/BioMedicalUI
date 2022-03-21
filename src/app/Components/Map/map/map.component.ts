@@ -14,10 +14,14 @@ import { modelIDsViewModel } from 'src/app/Shared/Models/modelIDsViewModel';
 import { GetStaticApiService } from 'src/app/Shared/services/get-static-api.service';
 import Request from '@arcgis/core/request';
 import esriConfig from '@arcgis/core/config.js';
+import Graphic from "@arcgis/core/Graphic";
+import Point from '@arcgis/core/geometry/Point';
 import Basemap from "@arcgis/core/Basemap";
 import TileLayer from "@arcgis/core/layers/TileLayer"
 import { loadModules } from 'esri-loader';
 import esri = __esri;
+import { environment } from 'src/environments/environment';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 // import * as enFunc from '../../../../../assets';
 @Component({
   selector: 'app-map',
@@ -63,6 +67,8 @@ export class MapComponent implements OnInit{
   basemapToggle:BasemapToggle;
   graphicLayer:GraphicsLayer;
   defaultBaseMap: string;
+  newData:string[]=[];
+  opt:string;
    model:modelIDsViewModel={
     id:[]
   }
@@ -110,7 +116,8 @@ export class MapComponent implements OnInit{
     const apiKey =
       'AAPK3dec25c93f77440089acb335a76a63aeRp1-RNQrf3ZDSmSdPcr0qALRsafRK1ieC5iBM7mNBcmj30-BjG0Bucuu5kwLCkLV';
     esriConfig.apiKey = apiKey;
-    this.initializeMap()
+    this.initializeMap();
+   // this.featureService.doquery(this.map);
   }
 postQuery()
 {
@@ -134,7 +141,6 @@ postQuery()
     //get ELSHARKYa feature
     Request(this.featureService.ELSHARKYAUrl, queryOption).then(
       (response: any) => {
-        console.log("response",response)
         for (let i = 0; i < response.data.features.length; i++) {
           let arr = [
             {
@@ -149,100 +155,7 @@ postQuery()
     );
   }
 
-//    initializeMap() {
-//     //  const [Map, MapView] = await loadModules(['esri/Map', 'esri/views/MapView']);
-//     const bufferLayer = new GraphicsLayer({
-//       blendMode: 'hard-light',
-//     });
-//     (window as any)._bufferLayer = bufferLayer;
-
-//     this.map = new Map({
-//       basemap: 'streets',
-//       layers: [bufferLayer],
-//     });
-//     (window as any)._map = this.map;
-//     const view = new MapView({
-//       map: this.map,
-//       container: 'viewDiv',
-//       center: [31.31652832030437, 30.417887641063995],
-//       zoom: 8,
-//       popup: {
-//         dockEnabled: true,
-//         dockOptions: {
-//           buttonEnabled: true,
-//           breakpoint: {
-//             width: 600,
-//             height: 1000,
-//           },
-//           position: 'top-left',
-//         },
-//       },
-//     });
-//     if(view.map==null || view.map==undefined)
-//     {
-//       console.log("gggggggggggggg")
-//     }
-//     else 
-//     {
-//       console.log("rrrrrrrrrrrrrr")
-//     }
-// //view.map=this.map;
-//     (window as any)._view = view;
-
-//     const homeWidget = new Home({
-//       view: (window as any)._view,
-//     });
-//     const compass = new Compass({
-//       view: (window as any)._view,
-//     });
-//     const scaleBar = new ScaleBar({
-//       view: (window as any)._view,
-//       unit: 'metric',
-//       style: 'ruler',
-//     });
-    
-
-//     const basemapToggle = new BasemapToggle({
-//       view: (window as any)._view,
-//       nextBasemap: 'satellite',
-//     });
-
-//     (window as any)._view.ui.add([
-//       {
-//         component: homeWidget,
-//         position: 'top-left',
-//         index: 2,
-//       },
-//       {
-//         component: basemapToggle,
-//         position: 'bottom-right',
-//         index: 2,
-//       },
-//       {
-//         component: compass,
-//         position: 'top-left',
-//         index: 4,
-//       },
-//       {
-//         component: scaleBar,
-//         position: 'bottom-left',
-//         index: 2,
-//       },
-//     ]);
-
-//     let graphicLayer = new GraphicsLayer();
-//       (window as any)._map.add(graphicLayer);
-//      (window as any)._graphicLayer = graphicLayer;
-//     //this.map.add(graphicLayer);
-//     // (window as any)._graphicLayer = graphicLayer;
-
-//     this.view = view;
-//     // console.log("this.view",this.view)
-//     return this.view.when();
-//   }
-
  initializeMap(){
-  //const [Map, MapView] = await loadModules(['esri/Map', 'esri/views/MapView']);
   const bufferLayer = new GraphicsLayer({
     blendMode: 'hard-light',
   });
@@ -260,18 +173,6 @@ this.map = new Map({
   basemap: 'streets',
   layers: [bufferLayer]
 });
-
-  // this.map = new Map({
-  //   basemap: 'streets-navigation-vector',
-  //   layers:[bufferLayer]
-  //   // layers: [
-  //   //   new TileLayer({
-  //   //     url:
-  //   //       "https://gis.ngdc.noaa.gov/arcgis/rest/services/arctic_ps/arctic_basemap/MapServer"
-  //   //   })
-  //   // ]
-  // });
-  console.log("mapmap",this.map);
   (window as any)._map = this.map;
   const view = new MapView({
     map: this.map,
@@ -338,12 +239,61 @@ this.map = new Map({
   (window as any)._map.add(graphicLayer);
   (window as any)._graphicLayer = graphicLayer;
 
-  this.view = view;
-  return this.view.when();
+  let point =new Point ({ //Create a point
+    // type: "point",
+    longitude:31.0004 ,
+    latitude: 30.7865
+ });
+
+ let simpleMarkerSymbol = {
+  type: "simple-marker",
+  color: [226, 119, 40],  // Orange
+  outline: {
+      color: [255, 255, 255], // White
+      width: 1
+  }
+};
+let pointGraphic = new Graphic({
+  geometry: point,
+  symbol: simpleMarkerSymbol
+});
+graphicLayer.add(pointGraphic);
+var formData = new FormData();
+const features:any = 
+  [{
+    "attributes": {
+      "EST_NAME":"مستشفى جديده",
+      "GOV_NAME":"القاهره الجديده",
+      "EDARA_NAME":"الجديده",
+      "COD":"2000",
+      "CityCode":"212111",
+      "ESTEng_NAME":"newHost",
+      "GOVEng_NAME":"newCairo",
+      "EDAEng_NAME":"newNew",
+    },
+    "geometry":{
+      "x":31.0004 ,
+      "y": 30.7865
+      }
+}]; 
+this.opt=features;
+let url=environment.arcgisServerUrl+'healthAPP/FeatureServer/0/addFeatures';
+let options: any={
+  feature:features,
+  Format:JSON
+}
+ console.log("options",this.opt)
+ 
+ Request(url,this.opt).then(response=>{
+   console.log(response);
+ },
+ error=>{
+   console.log("error",error)
+ }
+ );
 }
   selectMohafza()
   {
-    console.log("remove",this.map);
       this.map.remove(this.featureService.ELSHARKYA);
       this.map.remove(this.featureService.ELSHARKYA_En);
       this.map.remove(this.featureService.ADMIN_ELSHARKYA);
@@ -451,6 +401,8 @@ this.map = new Map({
             returnGeometry: true,
           },
         };
+        console.log("queryOptions",queryOption)
+
         //get ELSHARKYa admin feature
         Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOption).then(
           (response: any) => {
@@ -1278,7 +1230,6 @@ this.map = new Map({
     this.getStaticAPIService
       .GetHealthData(hospitalId, departmantId)
       .subscribe((success: any) => {
-       // console.log("success",success)
         if (success == null) {
           return null;
         } else {
@@ -1286,7 +1237,6 @@ this.map = new Map({
           {
             if(this.translate.currentLang=="Ar")
             {
-              console.log("Arabic")
               let displayDepartmentName = document.createElement('h4');
               displayDepartmentName.textContent = departmentName;
               displayDepartmentName.classList.add('displayDepartmentName');
@@ -1317,7 +1267,6 @@ this.map = new Map({
               deviceTable.appendChild(divDevicesTrTH);
     
               for (let i = 0; i < success.length; i++) {
-             //   console.log("success",success)
                 let divDevicesTrBody = document.createElement('tr');
     
                 let divDevicesTdNameValue: any = document.createElement('td');
@@ -1363,7 +1312,6 @@ this.map = new Map({
             }
             else if(this.translate.currentLang=="En")
             {
-              console.log("English")
               let displayDepartmentName = document.createElement('h4');
               displayDepartmentName.textContent = departmentName;
               displayDepartmentName.classList.add('displayDepartmentName');
@@ -1394,7 +1342,6 @@ this.map = new Map({
               deviceTable.appendChild(divDevicesTrTH);
     
               for (let i = 0; i < success.length; i++) {
-                //console.log("success",success)
                 let divDevicesTrBody = document.createElement('tr');
     
                 let divDevicesTdNameValue: any = document.createElement('td');
