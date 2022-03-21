@@ -24,11 +24,11 @@ export class NewDepartmentComponent implements OnInit {
   ngOnInit() {
     this.departmentObj = {
       id: 0,
-      departmentName: '',
+      Name: '',
 
-      departmentNameAr: '',
+      NameAr: '',
 
-      departmentCode:''
+      Code:''
 
     }
     this.openNew()

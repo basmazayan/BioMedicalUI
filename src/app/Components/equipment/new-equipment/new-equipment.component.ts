@@ -273,7 +273,7 @@ export class NewEquipmentComponent implements OnInit {
     this.sharedService.getAllmanufacturer().subscribe(data => { this.manufacturerList = data });
     this.sharedService.getAllOrigins().subscribe(data => { this.originsList = data });
     this.sharedService.getAllCategories().subscribe(data => { this.categoriesList = data });
-    this.sharedService.getAllDepartments().subscribe(data => { this.departmentsList = data });
+    this.sharedService.getAllDepartments().subscribe(data => { this.departmentsList = data ,console.log("this.departmentsList",this.departmentsList)});
     this.sharedService.getAllSuppliers().subscribe(data => { this.suppliersList = data });
     this.userService.getUsers().subscribe(data => {
       this.users = data,

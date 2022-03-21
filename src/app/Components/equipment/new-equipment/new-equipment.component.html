@@ -254,7 +254,7 @@
                                         pTooltip="Select A Department" tooltipPosition="bottom">
                                         <option selected disabled>--select--</option>
                                         <option *ngFor="let d of departmentsList" [value]="d.id">
-                                            {{translate.currentLang == "En" ? d.departmentName:d.departmentNameAr}}
+                                            {{translate.currentLang == "En" ? d.name:d.nameAr}}
                                         </option>
                                     </select>
                                     <div
@@ -362,7 +362,7 @@
                                         pTooltip="Please,Select supplierName" tooltipPosition="bottom">
                                         <option selected disabled>--select--</option>
                                         <option *ngFor="let s of suppliersList" [value]="s.id">
-                                            {{translate.currentLang == "En" ? s.supplierName:s.supplierNameAr}}
+                                            {{translate.currentLang == "En" ? s.name:s.nameAr}}
                                             <!-- {{s.supplierName}} -->
                                         </option>
                                     </select>

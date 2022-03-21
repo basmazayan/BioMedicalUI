@@ -29,9 +29,9 @@ export class SuppliersListComponent implements OnInit {
   ngOnInit(){
     this.supplierObj={
       id:0,
-      supplierCode:'',
-      supplierName:'',
-      supplierNameAr:''
+      Code:'',
+      Name:'',
+      NameAr:''
     }
     this.getAll();
   }

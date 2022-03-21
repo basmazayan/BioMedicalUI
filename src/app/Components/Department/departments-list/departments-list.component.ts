@@ -36,9 +36,9 @@ export class DepartmentsListComponent implements OnInit {
     this.getAll()
     this.departmentObj={
       id:0,
-      departmentCode:'',
-      departmentName:'',
-      departmentNameAr:''
+      Code:'',
+      Name:'',
+      NameAr:''
     }
   }
   getAll() {

@@ -21,9 +21,9 @@ export class NewSupplierComponent implements OnInit {
   ngOnInit() {
     this.supplierObj = {
       id: 0,
-      supplierName: '',
-     supplierNameAr: '',
-      supplierCode:''
+      Name: '',
+      NameAr: '',
+      Code:''
 
     }
     this.openNew()
