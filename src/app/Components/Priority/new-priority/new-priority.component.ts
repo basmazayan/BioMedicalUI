@@ -23,9 +23,9 @@ export class NewPriorityComponent implements OnInit {
   ngOnInit() {
     this.priorityObj = {
       id: 0,
-      priorityLevel: '',
+      level: '',
       description: '',
-      priorityLevelAr: '',
+      levelAr: '',
       descriptionAr: '',
       code:''
 
@@ -55,7 +55,7 @@ export class NewPriorityComponent implements OnInit {
 
   addPriority() {
     this.sharedService.addNewPriority(this.priorityObj).subscribe(data => { 
-      console.log(data) ,this.hideDialog()
+      this.hideDialog()
     },
     (error) => {
       this.errorDisplay = true;

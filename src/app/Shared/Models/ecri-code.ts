@@ -1,6 +1,6 @@
 export class EcriCode{
 id:number;
-ecri_code:string;
+code:string;
 name:string;
 nameAr:string;
 }

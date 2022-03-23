@@ -29,11 +29,11 @@ export class NewCategoryComponent implements OnInit {
     this.sharedService.getAllunits().subscribe(data=>{this.healthCareUnitsList=data})
     this.category = {
       id: 0,
-      categoryName: '',
-      categoryNameAr: '',
-      categoryCode: '',
-      categoryDescription: '',
-      categoryDescriptionAr: ''
+      name: '',
+      nameAr: '',
+      code: '',
+      description: '',
+      descriptionAr: ''
       //healthCareUnitId:0
   }
 
@@ -58,9 +58,11 @@ saveEquepmentCat() {
 }
 
 addCategory() {
+  console.log("Add")
   this.sharedService.addNewCategory(this.category).subscribe(data => { console.log(data), 
     this.router.navigate(['/home/equipmentCategories']) },
     error=>{
+      console.log("error",error)
       this.errorDialog=true;
       if (this.translate.currentLang == 'En') {
         if (error.error.status == 'code') {

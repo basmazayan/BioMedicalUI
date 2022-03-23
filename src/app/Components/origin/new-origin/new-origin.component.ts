@@ -23,9 +23,9 @@ export class NewOriginComponent implements OnInit {
     this.errorDialog=false
     this.originObj = {
       id: 0,
-      originCode: '',
-      arabicName: '',
-      englishName: ''
+      code: '',
+      name: '',
+      nameAr: ''
     }
     this.openNew()
 

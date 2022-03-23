@@ -29,8 +29,8 @@ export class ManufacturerListComponent implements OnInit {
   ngOnInit() {
     this.manufacturer={
       id:0,
-      manufacturerName:'',
-      manufacturerNameAr:'',
+      name:'',
+      nameAr:'',
       code:''
     }
     this.getAll();
@@ -91,7 +91,7 @@ export class ManufacturerListComponent implements OnInit {
   }
   deleteManfacturer(manfacturerId) {
       this.sharedService.deleteManufacturer(manfacturerId).subscribe(
-        data => { console.log(data), this.getAll() }
+        data => {this.getAll() }
       );
   }
 confirmDelete(MId,MName) {

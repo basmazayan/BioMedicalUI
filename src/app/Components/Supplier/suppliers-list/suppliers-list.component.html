@@ -78,10 +78,10 @@
             <ng-template pTemplate="body" let-supplier>
                 <tr>
                     <td style="text-align: inherit;">
-                        {{supplier.supplierCode}}
+                        {{supplier.code}}
                     </td>
                     <td style="text-align: inherit;">
-                        {{translate.currentLang == "En" ? supplier.supplierName:supplier.supplierNameAr}}
+                        {{translate.currentLang == "En" ? supplier.name:supplier.nameAr}}
                     </td>
 
 
@@ -119,7 +119,7 @@
                             <label for="supplierName">{{'supplier.Code'|translate}}</label>
                             <input type="text" class="form-control" id="supplierCode" name="supplierCode"
                                 #supplierCode="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
-                                [(ngModel)]="supplierObj.supplierCode"
+                                [(ngModel)]="supplierObj.code"
                                 [class.is-invalid]="supplierCode.touched && supplierCode.errors || EditSupplierForm.submitted"
                                 [class.is-valid]="supplierCode.valid && EditSupplierForm.submitted" required>
                             <div
@@ -134,7 +134,7 @@
                             <label for="supplierName">{{'supplier.SupplierName'|translate}}</label>
                             <input type="text" class="form-control" id="supplierName" name="supplierName"
                                 #supplierEnName="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
-                                [(ngModel)]="supplierObj.supplierName"
+                                [(ngModel)]="supplierObj.name"
                                 [class.is-invalid]="supplierEnName.touched && supplierEnName.errors || EditSupplierForm.submitted"
                                 [class.is-valid]="supplierEnName.valid && EditSupplierForm.submitted" required>
                             <div
@@ -148,7 +148,7 @@
                             <label for="supplierName">{{'supplier.SupplierNameAr'|translate}}</label>
                             <input type="text" class="form-control" id="supplierName" name="supplierArName"
                                 #supplierArName="ngModel" pTooltip="Enter a Name in Arabic" tooltipPosition="bottom"
-                                [(ngModel)]="supplierObj.supplierNameAr"
+                                [(ngModel)]="supplierObj.nameAr"
                                 [class.is-invalid]="supplierArName.touched && supplierArName.errors || EditSupplierForm.submitted"
                                 [class.is-valid]="supplierArName.valid && EditSupplierForm.submitted" required>
                             <div

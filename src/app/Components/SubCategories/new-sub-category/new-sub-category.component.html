@@ -17,13 +17,13 @@
                         <div class="col-md-12 form-group">
                             <label for="category">{{'subcategory.Category'|translate}}</label>
                             <select class="form-control" id="category" name="category" #category="ngModel"
-                                [(ngModel)]="subCategory.equipmentCategoryId" pTooltip="select a Category"
+                                [(ngModel)]="subCategory.categoryId" pTooltip="select a Category"
                                 tooltipPosition="bottom"
                                 [class.is-invalid]="category.touched && category.errors || AddSubCategoryForm.submitted"
                                 [class.is-valid]="category.valid && AddSubCategoryForm.submitted" required [value]="0">
                                 <option value="0">--select--</option>
                                 <option *ngFor="let cat of categoriesList" [value]="cat.id">
-                                    {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                    {{translate.currentLang == "En" ? cat.name:cat.nameAr}}
                                 </option>
                             </select>
                             <div
@@ -51,7 +51,7 @@
                             <label for="subCategoryName">{{'subcategory.subCategoryName'|translate}}</label>
                             <input type="text" class="form-control" id="subCategoryName" name="subCategoryName"
                                 #subCategoryName="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
-                                [(ngModel)]="subCategory.subCategoryName"
+                                [(ngModel)]="subCategory.name"
                                 [class.is-invalid]="subCategoryName.touched && subCategoryName.errors || AddSubCategoryForm.submitted"
                                 [class.is-valid]="subCategoryName.valid && AddSubCategoryForm.submitted" required>
                             <div
@@ -65,7 +65,7 @@
                             <label for="subCategoryNameAr">{{'subcategory.subCategoryNameAr'|translate}}</label>
                             <input type="text" class="form-control" id="subCategoryName"
                                 [ngModelOptions]="{standalone: true}" pTooltip="Enter a Name in Arabic"
-                                tooltipPosition="bottom" [(ngModel)]="subCategory.subCategoryNameAr"
+                                tooltipPosition="bottom" [(ngModel)]="subCategory.nameAr"
                                 name="subCategoryName" #subCategoryArName="ngModel"
                                 [class.is-invalid]="subCategoryArName.touched && subCategoryArName.errors || AddSubCategoryForm.submitted"
                                 [class.is-valid]="subCategoryArName.valid && AddSubCategoryForm.submitted" required>

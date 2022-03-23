@@ -32,7 +32,7 @@
                             <label for="priorityLevel">{{'Priority.PriorityLevel'|translate}}</label>
                             <input type="text" class="form-control" id="priorityLevel"
                              name="priorityLevel" #priorityLevel="ngModel"
-                             pTooltip="Enter a Priority level"tooltipPosition="bottom"  [(ngModel)]="priorityObj.priorityLevel" 
+                             pTooltip="Enter a Priority level"tooltipPosition="bottom"  [(ngModel)]="priorityObj.level" 
                                 [class.is-invalid]="priorityLevel.touched && priorityLevel.errors || AddPriorityForm.submitted" 
                                 [class.is-valid]="priorityLevel.valid && AddPriorityForm.submitted" required>
                                 <div *ngIf="(priorityLevel?.touched || AddPriorityForm.submitted) && priorityLevel.errors?.required">
@@ -44,7 +44,7 @@
                         <div class="col-md-12">
                             <label for="priorityArLevel">{{'Priority.PriorityLevelAr'|translate}}</label>
                             <input type="text" class="form-control" id="priorityArLevel" name="priorityArLevel" #priorityArLevel="ngModel"
-                            pTooltip="Enter a priorityLevel in Arabic"tooltipPosition="bottom" [(ngModel)]="priorityObj.priorityLevelAr" 
+                            pTooltip="Enter a priorityLevel in Arabic"tooltipPosition="bottom" [(ngModel)]="priorityObj.levelAr" 
                                 [class.is-invalid]="priorityArLevel.touched && priorityArLevel.errors || AddPriorityForm.submitted" 
                                 [class.is-valid]="priorityArLevel.valid && AddPriorityForm.submitted" required>
                                 <div *ngIf="(priorityArLevel.touched || AddPriorityForm.submitted) && priorityArLevel.errors?.required">

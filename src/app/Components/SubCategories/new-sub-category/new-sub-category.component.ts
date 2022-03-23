@@ -24,10 +24,9 @@ export class NewSubCategoryComponent implements OnInit {
   ngOnInit(){
     this.subCategory = {
       id: 0,
-      subCategoryName: '',
-      subCategoryNameAr: '',
-
-      equipmentCategoryId:0,
+      name: '',
+      nameAr: '',
+      categoryId:0,
       code:''
   }
 
@@ -55,7 +54,7 @@ saveSubCatgory() {
 }
 
 addSubCategory() {
-  if(this.subCategory.equipmentCategoryId ==0)
+  if(this.subCategory.categoryId ==0)
   {
     this.errorDisplay = true;
     if (this.translate.currentLang == 'En') {

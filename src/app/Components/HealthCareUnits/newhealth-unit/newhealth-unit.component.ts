@@ -32,25 +32,25 @@ export class NewhealthUnitComponent implements OnInit {
   ngOnInit(): void {
     this.healthUnitobj={
       id:0,
-      healthCareUnitCode:'',
-      healthCareUnitName:'',
-      healthCareUnitNameAr:'',
-      healthDistrictId:0,
-      healthDirectoryId:0,
-      OrganizationId:0,
-      OrganizationName:'',
-      OrganizationNameAr:'',
-      healthDistrictName:'',
-      healthDistrictNameAr:'',
-      healthDirectoryName:'',
-      healthDirectoryNameAr:'',
-      Address:'',
-      Director:'',
-      Phone:'',
-      Mobile:'',
-      Email:'',
-      Long:0,
-      Lat:0
+      code:'',
+      name:'',
+      nameAr:'',
+      cityId:0,
+      governorateId:0,
+      organizationId:0,
+      organizationName:'',
+      organizationNameAr:'',
+      cityName:'',
+      cityNameAr:'',
+      governorateName:'',
+      governorateNameAr:'',
+      address:'',
+      director:'',
+      phone:'',
+      mobile:'',
+      email:'',
+      long:0,
+      lat:0
     }
    this.openNew()
   }
@@ -63,7 +63,7 @@ export class NewhealthUnitComponent implements OnInit {
   }
   saveHealthUnit(){
     console.log("CareUnits",this.healthUnitobj);
-    console.log("DirecIIID",this.healthUnitobj.healthDirectoryId);
+    console.log("DirecIIID",this.healthUnitobj.governorateId);
     this.sharedService.addNewHealthCareUnit(this.healthUnitobj).subscribe(
       data=>{console.log(data),this.router.navigate(['/home/healthUnitsList'])}, error=>{
         this.errorDialog=true,

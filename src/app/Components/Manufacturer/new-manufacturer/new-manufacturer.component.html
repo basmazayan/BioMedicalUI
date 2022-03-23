@@ -37,7 +37,7 @@
                             <input type="text" class="form-control" id="manufacturerName" name="manufacturerEnName"
                             pTooltip="Enter a Name"tooltipPosition="bottom"   placeholder="{{'Manufacturer.manufacturerName'|translate}}"
                              #manufacturerEnName="ngModel"
-                                [(ngModel)]="manufacturer.manufacturerName" 
+                                [(ngModel)]="manufacturer.name" 
 
                                 [class.is-invalid]="manufacturerEnName.touched && manufacturerEnName.errors || AddManufacturerForm.submitted" 
                                 [class.is-valid]="manufacturerEnName.valid && AddManufacturerForm.submitted" required>
@@ -51,7 +51,7 @@
                             <label for="manufacturerNameAr">{{'Manufacturer.manufacturerNameAr'|translate}}</label>
                             <input type="text" class="form-control" id="manufacturerName" name="manufacturerArName"
                             pTooltip="Enter a Name in Arabic"tooltipPosition="bottom"  placeholder="{{'Manufacturer.manufacturerNameAr'|translate}}"
-                                [(ngModel)]="manufacturer.manufacturerNameAr" #manufacturerArName="ngModel"
+                                [(ngModel)]="manufacturer.nameAr" #manufacturerArName="ngModel"
                                 [class.is-invalid]="manufacturerArName.touched && manufacturerArName.errors || AddManufacturerForm.submitted" 
                                 [class.is-valid]="manufacturerArName.valid && AddManufacturerForm.submitted" required>
                                 <div *ngIf="(manufacturerArName.touched || AddManufacturerForm.submitted) && manufacturerArName.errors?.required">

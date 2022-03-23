@@ -30,7 +30,8 @@ export class SubCategoriesComponent implements OnInit {
     this.sharedService.getSubCategories().subscribe(data => { this.subCategoriesList = data });
 
   }
-  openNew(subCat) {
+  debugging
+  openNew(subCat) {  
     this.subCategoryDialog = true
     this.submitted = false;
     this.subCategory = subCat

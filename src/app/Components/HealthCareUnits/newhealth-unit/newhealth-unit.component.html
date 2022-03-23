@@ -18,7 +18,7 @@
                                 <label for="name">{{'healthCareUnit.Name'|translate}}</label>
                                 <input type="text" class="form-control" id="name" name="name"
                                     pTooltip="Enter A Unit Name" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.healthCareUnitName" #healthCareUnitName="ngModel"
+                                    [(ngModel)]="healthUnitobj.name" #healthCareUnitName="ngModel"
                                     [class.is-invalid]="healthCareUnitName.touched && healthCareUnitName.errors || AddUnitForm.submitted"
                                     [class.is-valid]="healthCareUnitName.valid && AddUnitForm.submitted" required>
                                 <div
@@ -32,7 +32,7 @@
                                 <label for="nameAr">{{'healthCareUnit.NameAr'|translate}}</label>
                                 <input type="text" class="form-control" id="nameAr" name="nameAr"
                                     pTooltip="Enter A Unit Name in arabic" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.healthCareUnitNameAr" #healthCareUnitNameAr="ngModel"
+                                    [(ngModel)]="healthUnitobj.nameAr" #healthCareUnitNameAr="ngModel"
                                     [class.is-invalid]="healthCareUnitNameAr.touched && healthCareUnitNameAr.errors || AddUnitForm.submitted"
                                     [class.is-valid]=" healthCareUnitNameAr.valid && AddUnitForm.submitted" required>
                                 <div
@@ -46,7 +46,7 @@
                                 <label for="code">{{'healthCareUnit.Code'|translate}}</label>
                                 <input type="text" class="form-control" id="code" name="code"
                                     pTooltip="Enter A Unit code" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.healthCareUnitCode" #healthCareUnitcode="ngModel"
+                                    [(ngModel)]="healthUnitobj.code" #healthCareUnitcode="ngModel"
                                     [class.is-invalid]="healthCareUnitcode.touched && healthCareUnitcode.errors || AddUnitForm.submitted"
                                     [class.is-valid]="healthCareUnitcode.valid && AddUnitForm.submitted" required>
                                 <div
@@ -63,12 +63,12 @@
                                 <label for="directoryName">{{'healthCareUnit.governorate'|translate}}</label>
                                 <select class="form-control" id="directoryName" pTooltip="select A directory Name"
                                     tooltipPosition="bottom" name="directoryName" #directoryName="ngModel"
-                                    [(ngModel)]="healthUnitobj.healthDirectoryId" (change)="loadDistricts(healthUnitobj.healthDirectoryId)"
+                                    [(ngModel)]="healthUnitobj.governorateId" (change)="loadDistricts(healthUnitobj.governorateId)"
                                     [class.is-invalid]="directoryName.touched && directoryName.errors || AddUnitForm.submitted"
                                     [class.is-valid]=" directoryName.valid && AddUnitForm.submitted" required>
-                                    <option>{{'healthCareUnit.directory'|translate}}</option>
+                                    <option selected value="0" disabled>--select--</option>
                                     <option *ngFor="let h of healthDirectories" [value]="h.id">
-                                        {{translate.currentLang == "En" ? h.healthDirectoryName:h.hhealthDirectoryNameAr}}
+                                        {{translate.currentLang == "En" ? h.name:h.nameAr}}
                                     </option>
                                 </select>
                                 <div
@@ -83,12 +83,12 @@
                                 <label for="districtName">{{'healthCareUnit.district'|translate}}</label>
                                 <select class="form-control" id="districtName" pTooltip="select A district Name"
                                     tooltipPosition="bottom" name="districtName" #districtName="ngModel"
-                                    [(ngModel)]="healthUnitobj.healthDistrictId"
+                                    [(ngModel)]="healthUnitobj.cityId"
                                     [class.is-invalid]="districtName.touched && districtName.errors || AddUnitForm.submitted"
                                     [class.is-valid]=" districtName.valid && AddUnitForm.submitted" required>
-                                    <option>{{'healthCareUnit.district'|translate}}</option>
+                                    <option selected value="0" disabled>--select--</option>
                                     <option *ngFor="let h of healthDistricts" [value]="h.id">
-                                        {{translate.currentLang == "En" ? h.healthDistrictName:h.healthDistrictNameAr}}
+                                        {{translate.currentLang == "En" ? h.name:h.nameAr}}
                                     </option>
                                 </select>
                                 <div
@@ -102,10 +102,10 @@
                                 <label for="organization">{{'healthCareUnit.organization'|translate}}</label>
                                 <select class="form-control" id="organization" pTooltip="select A organization Name"
                                     tooltipPosition="bottom" name="organization" #organization="ngModel"
-                                    [(ngModel)]="healthUnitobj.OrganizationId"
+                                    [(ngModel)]="healthUnitobj.organizationId"
                                     [class.is-invalid]="organization.touched && organization.errors || AddUnitForm.submitted"
                                     [class.is-valid]=" organization.valid && AddUnitForm.submitted" required>
-                                    <option>{{'healthUnit.organization'|translate}}</option>
+                                    <option selected value="0" disabled>--select--</option>
                                     <option *ngFor="let org of organizationList" [value]="org.id">
                                         {{translate.currentLang == "En" ? org.name:org.nameAr}}
                                     </option>
@@ -137,7 +137,7 @@
                                 <label for="director">{{'healthCareUnit.director'|translate}}</label>
                                 <input type="text" class="form-control" id="director" name="director"
                                     pTooltip="Enter director Name" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.Director" #director="ngModel">
+                                    [(ngModel)]="healthUnitobj.director" #director="ngModel">
                                 <!-- <div
                                     *ngIf="(director.touched || AddUnitForm.submitted) && director.errors?.required">
                                     <span class="text-danger">
@@ -149,7 +149,7 @@
                                 <label for="Phone">{{'healthCareUnit.Phone'|translate}}</label>
                                 <input type="text" class="form-control" id="Phone" name="Phone"
                                     pTooltip="Enter Phone" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.Phone" #Phone="ngModel"
+                                    [(ngModel)]="healthUnitobj.phone" #Phone="ngModel"
                                    >
                                 <!-- <div
                                     *ngIf="(Phone.touched || AddUnitForm.submitted) && Phone.errors?.required">
@@ -162,7 +162,7 @@
                                 <label for="Mobile">{{'healthCareUnit.Mobile'|translate}}</label>
                                 <input type="text" class="form-control" id="Mobile" name="Mobile"
                                     pTooltip="Enter Mobile number" tooltipPosition="bottom" 
-                                    [(ngModel)]="healthUnitobj.Mobile" #Mobile="ngModel">
+                                    [(ngModel)]="healthUnitobj.mobile" #Mobile="ngModel">
                                 <!-- <div
                                     *ngIf="(Mobile.touched || AddUnitForm.submitted) && Mobile.errors?.required">
                                     <span class="text-danger">
@@ -173,7 +173,7 @@
                             <div class="col-md-3">
                                 <label for="Adress">{{'healthCareUnit.Adress'| translate}}</label>
                                 <textarea class="form-control" id="Adress" type="text"
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="healthUnitobj.Adress"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="healthUnitobj.adress"
                                     pTooltip="Please,Select An equipmentDescription"
                                     tooltipPosition="bottom"></textarea>
                             </div>
@@ -183,7 +183,7 @@
                                 <label for="Email">{{'healthCareUnit.Email'|translate}}</label>
                                 <input type="text" class="form-control" id="Email" name="Email"
                                     pTooltip="Enter Email" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.Email" #Email="ngModel">
+                                    [(ngModel)]="healthUnitobj.email" #Email="ngModel">
                                 <!-- <div
                                     *ngIf="(Email.touched || AddUnitForm.submitted) && Email.errors?.required">
                                     <span class="text-danger">
@@ -195,7 +195,7 @@
                                 <label for="Long">{{'healthCareUnit.Long'|translate}}</label>
                                 <input type="text" class="form-control" id="Long" name="Long"
                                     pTooltip="Enter Long number" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.Long" #Long="ngModel">
+                                    [(ngModel)]="healthUnitobj.long" #Long="ngModel">
                                 <!-- <div
                                     *ngIf="(Long.touched || AddUnitForm.submitted) && Long.errors?.required">
                                     <span class="text-danger">
@@ -207,7 +207,7 @@
                                 <label for="Lat">{{'healthCareUnit.Lat'|translate}}</label>
                                 <input type="text" class="form-control" id="Lat" name="Lat"
                                     pTooltip="Enter Lat number" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.Lat" #Lat="ngModel">
+                                    [(ngModel)]="healthUnitobj.lat" #Lat="ngModel">
                                 <!-- <div
                                     *ngIf="(Lat.touched || AddUnitForm.submitted) && Lat.errors?.required">
                                     <span class="text-danger">

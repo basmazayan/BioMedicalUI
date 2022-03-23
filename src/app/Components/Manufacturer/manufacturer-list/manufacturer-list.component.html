@@ -75,7 +75,7 @@
                     <td  style="text-align: inherit;">{{manufacturer.code}}</td>
                     <td  style="text-align: inherit;">
                         {{translate.currentLang == "En" ?
-                        manufacturer.manufacturerName:manufacturer.manufacturerNameAr}}
+                        manufacturer.name:manufacturer.nameAr}}
                     </td>
 
 
@@ -130,7 +130,7 @@
                             <label for="manufacturerName">{{'Manufacturer.manufacturerName'|translate}}</label>
                             <input type="text" class="form-control" id="manufacturerName" name="manufacturerEnName"
                                 pTooltip="Enter a Name" tooltipPosition="bottom" #manufacturerEnName="ngModel"
-                                [(ngModel)]="manufacturer.manufacturerName"
+                                [(ngModel)]="manufacturer.name"
                                 [class.is-invalid]="manufacturerEnName.touched && manufacturerEnName.errors || EditManufacturerForm.submitted"
                                 [class.is-valid]="manufacturerEnName.valid && EditManufacturerForm.submitted" required>
                             <div
@@ -144,7 +144,7 @@
                             <label for="manufacturerNameAr">{{'Manufacturer.manufacturerNameAr'|translate}}</label>
                             <input type="text" class="form-control" id="manufacturerName" name="manufacturerArName"
                                 pTooltip="Enter a Name in Arabic" tooltipPosition="bottom"
-                                [(ngModel)]="manufacturer.manufacturerNameAr" #manufacturerArName="ngModel"
+                                [(ngModel)]="manufacturer.nameAr" #manufacturerArName="ngModel"
                                 [class.is-invalid]="manufacturerArName.touched && manufacturerArName.errors || EditManufacturerForm.submitted"
                                 [class.is-valid]="manufacturerArName.valid && EditManufacturerForm.submitted" required>
                             <div

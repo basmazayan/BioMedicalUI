@@ -77,9 +77,9 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-dept>
                             <tr>
-                                <td style="text-align: inherit;">{{dept.departmentCode}}</td>
+                                <td style="text-align: inherit;">{{dept.code}}</td>
                                 <td style="text-align: inherit;">
-                                    {{translate.currentLang == "En" ? dept.departmentName:dept.departmentNameAr}}
+                                    {{translate.currentLang == "En" ? dept.name:dept.nameAr}}
                                 </td>
                                 <td style="text-align: inherit;">
                                     <button pButton pRipple icon="pi pi-pencil"
@@ -121,7 +121,7 @@
                         <label for="departmentCode">{{'department.Code'|translate}}</label>
                         <input type="text" class="form-control" id="departmentCode" name="departmentCode"
                             #departmentCode="ngModel" placeholder="{{'department.Code'|translate}}"
-                            [(ngModel)]="departmentObj.departmentCode"
+                            [(ngModel)]="departmentObj.code"
                             [class.is-invalid]="departmentCode.touched && departmentCode.errors || EditDepartmentForm.submitted"
                             [class.is-valid]="departmentCode.valid && EditDepartmentForm.submitted" required
                             pTooltip="Please,Enter A departmentCode" tooltipPosition="bottom">
@@ -141,7 +141,7 @@
                         <label for="departmentName">{{'department.DepartmentName'|translate}}</label>
                         <input type="text" class="form-control" id="departmentName" name="departmentEnName"
                             #departmentEnName="ngModel" placeholder="{{'department.DepartmentName'|translate}}"
-                            [(ngModel)]="departmentObj.departmentName"
+                            [(ngModel)]="departmentObj.name"
                             [class.is-invalid]="departmentEnName.touched && departmentEnName.errors || EditDepartmentForm.submitted"
                             [class.is-valid]="departmentEnName.valid && EditDepartmentForm.submitted" required
                             pTooltip="Please,Enter A DepartmentName in English" tooltipPosition="bottom">
@@ -156,7 +156,7 @@
                         <label for="departmentName">{{'department.DepartmentNameAr'|translate}}</label>
                         <input type="text" class="form-control" id="departmentName" name="departmentArName"
                             #departmentArName="ngModel" placeholder="{{'department.DepartmentNameAr'|translate}}"
-                            [(ngModel)]="departmentObj.departmentNameAr"
+                            [(ngModel)]="departmentObj.nameAr"
                             [class.is-invalid]="departmentArName.touched && departmentArName.errors || EditDepartmentForm.submitted"
                             [class.is-valid]="departmentArName.valid && EditDepartmentForm.submitted" required
                             pTooltip="Please,Enter A DepartmentName in Arabic" tooltipPosition="bottom">

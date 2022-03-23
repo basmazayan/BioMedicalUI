@@ -43,14 +43,13 @@ export class SubOrganizationListComponent implements OnInit {
     })
   }
   getAll() {
-    this.suborganizationservice.getAllSubOrganization().subscribe(data => { this.SubOrganizationsList = data, console.log(this.SubOrganizationsList) });
+    this.suborganizationservice.getAllSubOrganization().subscribe(data => { this.SubOrganizationsList = data});
   }
   openNew(subOrg) {
-    console.log("sub", subOrg)
     this.subOrganizationDialog = true
     this.submitted = false;
     this.subOrganization = subOrg
-    this.organizatioService.getAllOrganization().subscribe(data => { this.organizationsList = data, console.log(this.organizationsList) });
+    this.organizatioService.getAllOrganization().subscribe(data => { this.organizationsList = data });
   }
   hideDialog() {
     this.subOrganizationDialog = false;
@@ -59,10 +58,7 @@ export class SubOrganizationListComponent implements OnInit {
   }
   updatesubIOrg() {
     this.submitted = true;
-    console.log("subCategoryIs", this.subOrganization)
     this.suborganizationservice.updateSubOrganization(this.subOrganization.id, this.subOrganization).subscribe(data => {
-      console.log(data), this.hideDialog()
-
     }, error => {
       this.errorDialog = true;
       if (this.translate.currentLang == 'En') {
@@ -88,9 +84,8 @@ export class SubOrganizationListComponent implements OnInit {
   deleteSubOrg(subOrg) {
     //  var result = confirm("Want to delete this subCat" + "?");
     //  if (result) {
-    console.log("subCat");
     this.suborganizationservice.deleteSubOrganization(subOrg).subscribe(
-      data => { console.log(data), this.getAll() }
+      data => {this.getAll() }
     );
     //  }
     //  this.router.navigate(['/home/equipmentSubCategories/'])

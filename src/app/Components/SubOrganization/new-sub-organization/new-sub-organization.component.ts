@@ -55,7 +55,7 @@ saveSubOrganization() {
 
 addSubOrganization() {
   this.subSubOrganizationService.addNewSubOrganization(this.subOrganization).subscribe(
-    data => { console.log(data),this.hideDialog()},error=>{
+    data => { this.hideDialog()},error=>{
       this.errorDialog=true;
       if (this.translate.currentLang == 'En') {
              if (error.error.status == 'name') {

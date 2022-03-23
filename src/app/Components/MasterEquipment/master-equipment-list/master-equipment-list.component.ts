@@ -99,7 +99,7 @@ export class MasterEquipmentListComponent implements OnInit {
     this.submitted = true;
     this.msterEquipmentDialog = true;
 
-    if (this.masterEquipmentObj.equipmentCategoryId == 0) {
+    if (this.masterEquipmentObj.categoryId == 0) {
       this.errorDisplay = true;
       if (this.translate.currentLang == 'En') {
 
@@ -112,7 +112,7 @@ export class MasterEquipmentListComponent implements OnInit {
     }
 
 
-    if (this.masterEquipmentObj.manufacturerId == 0) {
+    if (this.masterEquipmentObj.brandId == 0) {
       this.errorDisplay = true;
       if (this.translate.currentLang == 'En') {
 

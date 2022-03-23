@@ -1,6 +1,6 @@
 export class Origin {
     id: number;
-    originCode: string;
-    arabicName:string;
-    englishName:string;
+    code: string;
+    name:string;
+    nameAr:string;
 }

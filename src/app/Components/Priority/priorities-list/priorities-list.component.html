@@ -75,7 +75,7 @@
                     </td>
 
                     <td style="text-align: inherit;">
-                        {{translate.currentLang == "En" ? priority.priorityLevel:priority.priorityLevelAr}}
+                        {{translate.currentLang == "En" ? priority.level:priority.levelAr}}
                     </td>
 
 
@@ -134,7 +134,7 @@
                             <label for="priorityLevel">{{'Priority.PriorityLevel'|translate}}</label>
                             <input type="text" class="form-control" id="priorityLevel" name="priorityLevel"
                                 #priorityLevel="ngModel" pTooltip="Enter a Priority level" tooltipPosition="bottom"
-                                [(ngModel)]="priorityObj.priorityLevel"
+                                [(ngModel)]="priorityObj.level"
                                 [class.is-invalid]="priorityLevel.touched && priorityEnLevel.errors || EditPriorityForm.submitted"
                                 [class.is-valid]="priorityLevel.valid && EditPriorityForm.submitted" required>
                             <div
@@ -148,7 +148,7 @@
                             <label for="priorityLevel">{{'Priority.PriorityLevelAr'|translate}}</label>
                             <input type="text" class="form-control" id="priorityLevel" name="priorityArLevel"
                                 #priorityArLevel="ngModel" pTooltip="Enter a priorityLevel in Arabic"
-                                tooltipPosition="bottom" [(ngModel)]="priorityObj.priorityLevelAr"
+                                tooltipPosition="bottom" [(ngModel)]="priorityObj.levelAr"
                                 [class.is-invalid]="priorityArLevel.touched && priorityArLevel.errors || EditPriorityForm.submitted"
                                 [class.is-valid]="priorityArLevel.valid && EditPriorityForm.submitted" required>
                             <div

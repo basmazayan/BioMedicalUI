@@ -16,7 +16,7 @@
                             <label for="categoryCode">{{'equipmentcategory.CategoryCode'|translate}}</label>
                             <input type="text" class="form-control" id="categoryCode"
                                 name="categoryCode" placeholder="{{'equipmentcategory.CategoryCode'|translate}}"
-                                [(ngModel)]="category.categoryCode" #Code="ngModel"
+                                [(ngModel)]="category.code" #Code="ngModel"
                                 [class.is-invalid]="Code.touched && Code.errors || AddEquipmentCategoryForm.submitted" 
                                 [class.is-valid]="Code.valid && AddEquipmentCategoryForm.submitted" required
                                 pTooltip="Enter A categoryCode" tooltipPosition="bottom">
@@ -33,7 +33,7 @@
                         <div class="col-md-12">
                             <label for="name">{{'equipmentcategory.CategoryName'|translate}}</label>
                             <input type="text" class="form-control" id="name" name="enname"
-                               [(ngModel)]="category.categoryName"
+                               [(ngModel)]="category.name"
                                 #EnName="ngModel"
                                 [class.is-invalid]="EnName.touched && EnName.errors || AddEquipmentCategoryForm.submitted" 
                                 [class.is-valid]="EnName.valid && AddEquipmentCategoryForm.submitted" required
@@ -47,7 +47,7 @@
                         <div class="col-md-12">
                             <label for="name">{{'equipmentcategory.CategoryNameAr'|translate}}</label>
                             <input type="text" class="form-control" id="name" name="arname"
-                                 [(ngModel)]="category.categoryNameAr"
+                                 [(ngModel)]="category.nameAr"
                                 #ArName="ngModel"
                                 [class.is-invalid]="ArName.touched && ArName.errors || AddEquipmentCategoryForm.submitted" 
                                 [class.is-valid]="ArName.valid && AddEquipmentCategoryForm.submitted" required
@@ -62,14 +62,14 @@
                         <div class="col-md-12 form-group">
                             <label for="categoryDescription">{{'equipmentcategory.CategoryDescription'|translate}}</label>
                             <input type="text" class="form-control" id="categoryDescription" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="category.categoryDescription" autofocus 
+                                [(ngModel)]="category.description" autofocus 
                                  pTooltip="Enter Description in English" tooltipPosition="bottom">
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="categoryDescription">{{'equipmentcategory.CategoryDescriptionAr'|translate}}</label>
                             <input type="text" class="form-control" id="categoryDescription" [ngModelOptions]="{standalone: true}"  
                                 pTooltip="Enter Description in arabic" tooltipPosition="bottom"
-                                 [(ngModel)]="category.categoryDescriptionAr" autofocus>
+                                 [(ngModel)]="category.descriptionAr" autofocus>
                         </div>
                         <!-- <div class="col-md-3 form-group">
                             <label for="healthName">{{'equipmentcategory.HealthCareUnit'|translate}}</label>

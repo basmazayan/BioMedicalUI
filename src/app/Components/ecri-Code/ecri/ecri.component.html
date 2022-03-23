@@ -16,7 +16,7 @@
                             <label for="ecri_code">{{'ecricodes.Code'|translate}}</label>
                             <input type="text" class="form-control" pTooltip="Enter a ecri Code"
                                 tooltipPosition="bottom" id="ecri_code" name="ecri_code" #ecri_code="ngModel"
-                                [(ngModel)]="ecriObj.ecri_code" autofocus required
+                                [(ngModel)]="ecriObj.code" autofocus required
                                 [class.is-invalid]="(ecri_code.touched && ecri_code.errors) || AddecriCodeForm.submitted"
                                 [class.is-valid]="ecri_code.valid && AddecriCodeForm.submitted">
                                 <div *ngIf="(ecri_code.touched || AddecriCodeForm.submitted) && ecri_code.errors?.required">

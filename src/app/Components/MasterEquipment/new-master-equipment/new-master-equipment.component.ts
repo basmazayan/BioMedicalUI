@@ -48,19 +48,30 @@ export class NewMasterEquipmentComponent implements OnInit {
       name: '',
       nameAr: '',
       masterCode: '',
-      equipmentCategoryId: 0,
-      equipmentDescriptionAr: '',
-      equipmentSubCategoryId: 0,
+      categoryId: 0,
+      descriptionAr: '',
+      subCategoryId: 0,
       expectedLifeTime: 0,
-      manufacturerId: 0,
-      manufacturerName:'',
-      manufacturerNameAr:'',
+      brandId: 0,
+      brandName:'',
+      brandNameAr:'',
       modelNumber: '',
       originId: 0,
       originCode:'',
       priorityId: 0,
       upaCode: '',
       versionNumber: '',
+      Ampair:'',
+      ElectricRequirement:'',
+      Frequency:'',
+      PMBGColor:'',
+      PMColor:'',
+      Power:'',
+      Voltage:'',
+      Height:0,
+      Length:0,
+      Weight:0,
+      Width:0,
       AttachmentIDs:[]
     }
     this.openNew();
@@ -89,7 +100,7 @@ export class NewMasterEquipmentComponent implements OnInit {
 //console.log("this.masterEquipmentObj",this.masterEquipmentObj);
 
 
-    if(this.masterEquipmentObj.manufacturerId == 0)
+    if(this.masterEquipmentObj.brandId == 0)
     {
       this.errorDisplay = true;
       if (this.translate.currentLang == 'En') {
@@ -103,7 +114,7 @@ export class NewMasterEquipmentComponent implements OnInit {
     }
 
     
-    if(this.masterEquipmentObj.equipmentCategoryId == 0)
+    if(this.masterEquipmentObj.categoryId == 0)
     {
       this.errorDisplay = true;
       if (this.translate.currentLang == 'En') {

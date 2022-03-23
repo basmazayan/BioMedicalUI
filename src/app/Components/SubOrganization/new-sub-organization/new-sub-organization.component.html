@@ -49,7 +49,7 @@
                                 tooltipPosition="bottom"
                                 [class.is-invalid]="organization.touched && organization.errors || AddSubOrganizationForm.submitted"
                                 [class.is-valid]="organization.valid && AddSubOrganizationForm.submitted" required>
-                                <option selected>--select--</option>
+                                <option selected value="0">--select--</option>
                                 <option *ngFor="let org of OrganizationsList" [value]="org.id">
                                     {{translate.currentLang == "En" ? org.name:org.nameAr}}
                                 </option>

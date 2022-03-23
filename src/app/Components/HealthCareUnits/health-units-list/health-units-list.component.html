@@ -136,10 +136,10 @@
         <ng-template pTemplate="body" let-unit>
             <tr>
                 <td>
-                    {{unit.healthCareUnitCode}}
+                    {{unit.code}}
                 </td>
                 <td>
-                    {{translate.currentLang == "En" ? unit.healthCareUnitName:unit.healthCareUnitNameAr}}
+                    {{translate.currentLang == "En" ? unit.name:unit.nameAr}}
                 </td>
 
                 <td>
@@ -148,11 +148,11 @@
                 </td>
 
                 <td>
-                    {{translate.currentLang == "En" ? unit.healthDirectoryName:unit.healthDirectoryNameAr}}
+                    {{translate.currentLang == "En" ? unit.governorateName:unit.governorateNameAr}}
                 </td>
 
                 <td>
-                    {{translate.currentLang == "En" ? unit.healthDistrictName:unit.healthDistrictNameAr}}
+                    {{translate.currentLang == "En" ? unit.cityName:unit.cityNameAr}}
                 </td>
 
          
@@ -197,7 +197,7 @@
                                 <label for="name">{{'healthCareUnit.Name'|translate}}</label>
                                 <input type="text" class="form-control" id="name" name="name"
                                     pTooltip="Enter A Unit Name" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.healthCareUnitName" #healthCareUnitName="ngModel"
+                                    [(ngModel)]="healthUnitobj.name" #healthCareUnitName="ngModel"
                                     [class.is-invalid]="healthCareUnitName.touched && healthCareUnitName.errors || editUnitForm.submitted"
                                     [class.is-valid]="healthCareUnitName.valid && editUnitForm.submitted" required>
                                 <div
@@ -211,7 +211,7 @@
                                 <label for="nameAr">{{'healthCareUnit.NameAr'|translate}}</label>
                                 <input type="text" class="form-control" id="nameAr" name="nameAr"
                                     pTooltip="Enter A Unit Name in arabic" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.healthCareUnitNameAr" #healthCareUnitNameAr="ngModel"
+                                    [(ngModel)]="healthUnitobj.nameAr" #healthCareUnitNameAr="ngModel"
                                     [class.is-invalid]="healthCareUnitNameAr.touched && healthCareUnitNameAr.errors || editUnitForm.submitted"
                                     [class.is-valid]=" healthCareUnitNameAr.valid && editUnitForm.submitted" required>
                                 <div
@@ -225,7 +225,7 @@
                                 <label for="code">{{'healthCareUnit.Code'|translate}}</label>
                                 <input type="text" class="form-control" id="code" name="code"
                                     pTooltip="Enter A Unit code" tooltipPosition="bottom"
-                                    [(ngModel)]="healthUnitobj.healthCareUnitCode" #healthCareUnitcode="ngModel"
+                                    [(ngModel)]="healthUnitobj.code" #healthCareUnitcode="ngModel"
                                     [class.is-invalid]="healthCareUnitcode.touched && healthCareUnitcode.errors || editUnitForm.submitted"
                                     [class.is-valid]="healthCareUnitcode.valid && editUnitForm.submitted" required>
                                 <div
@@ -241,12 +241,12 @@
                                 <label for="directoryName">{{'healthCareUnit.governorate'|translate}}</label>
                                 <select class="form-control" id="directoryName" pTooltip="select A directory Name"
                                     tooltipPosition="bottom" name="directoryName" #directoryName="ngModel"
-                                    [(ngModel)]="healthUnitobj.healthDirectoryId" (change)="loadDistricts(healthUnitobj.healthDirectoryId)"
+                                    [(ngModel)]="healthUnitobj.governorateId" (change)="loadDistricts(healthUnitobj.healthDirectoryId)"
                                     [class.is-invalid]="directoryName.touched && directoryName.errors || editUnitForm.submitted"
                                     [class.is-valid]=" directoryName.valid && editUnitForm.submitted" required>
                                     <option>{{'healthUnit.name'|translate}}</option>
                                     <option *ngFor="let h of healthDirectories" [value]="h.id">
-                                        {{translate.currentLang == "En" ? h.healthDirectoryName:h.hhealthDirectoryNameAr}}
+                                        {{translate.currentLang == "En" ? h.name:h.nameAr}}
                                     </option>
                                 </select>
                                 <div
@@ -261,12 +261,12 @@
                                 <label for="districtName">{{'healthCareUnit.district'|translate}}</label>
                                 <select class="form-control" id="districtName" pTooltip="select A district Name"
                                     tooltipPosition="bottom" name="districtName" #districtName="ngModel"
-                                    [(ngModel)]="healthUnitobj.healthDistrictId"
+                                    [(ngModel)]="healthUnitobj.cityId"
                                     [class.is-invalid]="districtName.touched && districtName.errors || editUnitForm.submitted"
                                     [class.is-valid]=" districtName.valid && editUnitForm.submitted" required>
                                     <option>{{'healthUnit.name'|translate}}</option>
                                     <option *ngFor="let h of healthDistricts" [value]="h.id">
-                                        {{translate.currentLang == "En" ? h.healthDistrictName:h.healthDistrictNameAr}}
+                                        {{translate.currentLang == "En" ? h.name:h.nameAr}}
                                     </option>
                                 </select>
                                 <div

@@ -16,7 +16,7 @@
                             <label for="supplierName">{{'supplier.Code'|translate}}</label>
                             <input type="text" class="form-control" id="supplierCode" name="supplierCode"
                                 #supplierCode="ngModel" pTooltip="Enter a Name" tooltipPosition="bottom"
-                                [(ngModel)]="supplierObj.supplierCode"
+                                [(ngModel)]="supplierObj.Code"
                                 [class.is-invalid]="supplierCode.touched && supplierCode.errors || AddSupplierForm.submitted"
                                 [class.is-valid]="supplierCode.valid && AddSupplierForm.submitted" required>
                             <div
@@ -31,7 +31,7 @@
                         <div class="col-md-12">
                             <label for="supplierName">{{'supplier.SupplierName'|translate}}</label>
                             <input type="text" class="form-control" id="supplierName" name="supplierName" #supplierEnName="ngModel"
-                                pTooltip="Enter a Name"tooltipPosition="bottom"  [(ngModel)]="supplierObj.supplierName" 
+                                pTooltip="Enter a Name"tooltipPosition="bottom"  [(ngModel)]="supplierObj.Name" 
                                 [class.is-invalid]="supplierEnName.touched && supplierEnName.errors || AddSupplierForm.submitted" 
                                 [class.is-valid]="supplierEnName.valid && AddSupplierForm.submitted" required>
                                 <div *ngIf="(supplierEnName.touched || AddSupplierForm.submitted) && supplierEnName.errors?.required">
@@ -44,7 +44,7 @@
                         <div class="col-md-12">
                             <label for="supplierName">{{'supplier.SupplierNameAr'|translate}}</label>
                             <input type="text" class="form-control" id="supplierName" name="supplierArName" #supplierArName="ngModel"
-                            pTooltip="Enter a Name in Arabic"tooltipPosition="bottom"  [(ngModel)]="supplierObj.supplierNameAr" 
+                            pTooltip="Enter a Name in Arabic"tooltipPosition="bottom"  [(ngModel)]="supplierObj.NameAr" 
                                 [class.is-invalid]="supplierArName.touched && supplierArName.errors || AddSupplierForm.submitted" 
                                 [class.is-valid]="supplierArName.valid && AddSupplierForm.submitted" required>
                                 <div *ngIf="(supplierArName.touched || AddSupplierForm.submitted) && supplierArName.errors?.required">

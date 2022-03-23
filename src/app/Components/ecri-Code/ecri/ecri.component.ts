@@ -23,7 +23,7 @@ export class ECRIComponent implements OnInit {
   ngOnInit() {
     this.ecriObj = {
       id: 0,
-      ecri_code: '',
+      code: '',
       name:'',
       nameAr:''
     

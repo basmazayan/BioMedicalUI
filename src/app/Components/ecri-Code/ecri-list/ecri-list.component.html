@@ -36,7 +36,7 @@
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="ecri_code">{{"ecricodes.code"|translate}} <p-sortIcon
+                            <th pSortableColumn="ecri_code">{{"ecricodes.Code"|translate}} <p-sortIcon
                                     field="ecri_code"></p-sortIcon>
                             </th>
                             <th>{{'ecricodes.Name'|translate}}</th>
@@ -73,7 +73,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-ecri>
                         <tr>
-                            <td style="text-align: inherit;">{{ecri.ecri_code}}</td>
+                            <td style="text-align: inherit;">{{ecri.code}}</td>
                             <td style="text-align: inherit;">
                                 {{translate.currentLang == "En" ? ecri.name:ecri.nameAr}}
                             </td>
@@ -119,7 +119,7 @@
                     <div class="col-md-12">
                         <label for="ecri_code">{{'ecricodes.Code'|translate}}</label>
                         <input type="text" class="form-control" pTooltip="Enter a ecriCode" tooltipPosition="bottom"
-                            id="ecri_code" name="ecri_code" #ecri_code="ngModel" [(ngModel)]="ecriObj.ecri_code"
+                            id="ecri_code" name="ecri_code" #ecri_code="ngModel" [(ngModel)]="ecriObj.code"
                             autofocus required [ngModelOptions]="{standalone: true}"
                             [class.is-invalid]="(ecri_code.touched && ecri_code.errors) || EditEcriCodeForm.submitted"
                             [class.is-valid]="ecri_code.valid && EditEcriCodeForm.submitted">

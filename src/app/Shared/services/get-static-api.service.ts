@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DepartmemtByHospitalCodeViewModels } from '../Models/DepartmemtByHospitalCodeViewModels';
 import { HealthCareDevicesViewModels } from '../Models/HealthCareDevicesViewModels';
+import { HealthCareUnit } from '../Models/HealthCareUnit';
 import { modelIDsViewModel } from '../Models/modelIDsViewModel';
 
 @Injectable({
@@ -30,6 +31,14 @@ export class GetStaticApiService {
       .post(
         this.expropriationRequestUrl +
         'GetOrginisations' , model
+      )
+      .pipe();
+  }
+  getHospitalInCity(cityCode:string[]){
+    return this.http
+      .post(
+        this.expropriationRequestUrl +
+        'GetHospitalsInCity',cityCode
       )
       .pipe();
   }

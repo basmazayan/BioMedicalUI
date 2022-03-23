@@ -27,8 +27,6 @@ export class OriginsListComponent implements OnInit {
 
   ngOnInit() {
     this.getAll();
-
-    console.log("translate", this.translate.currentLang);
   }
   getAll() {
     this.sharedService.getAllOrigins().subscribe(data => { this.originsList = data });
@@ -38,7 +36,6 @@ export class OriginsListComponent implements OnInit {
     this.originDialog = true
     this.submitted = false;
     this.origin = o
-    console.log(o)
   }
   hideDialog() {
     this.originDialog = false;
@@ -48,10 +45,8 @@ export class OriginsListComponent implements OnInit {
  
   updateOrigin() {
     this.submitted = true;
-    console.log(this.origin)
     this.sharedService.updateOrigin(this.origin.id,this.origin).subscribe(data => {
-      this.hideDialog()
-      console.log("data",data)}
+      this.hideDialog()}
       ,error=>{
         this.errorDialog=true,
         this.error=error.error.message,this.getAll()
@@ -61,9 +56,8 @@ export class OriginsListComponent implements OnInit {
   deleteOrigin(originId) {
   //  var result = confirm("Want to delete this origin" + "?");
   //  if (result) {
-    //  console.log("origin");
       this.sharedService.deleteOrigin(originId).subscribe(
-        data => {  this.getAll(), console.log(data)}
+        data => {  this.getAll()}
       );
    // }
     //this.router.navigate(['/home/origins/'])

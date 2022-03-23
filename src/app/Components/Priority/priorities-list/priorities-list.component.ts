@@ -51,10 +51,7 @@ export class PrioritiesListComponent implements OnInit {
     this.sharedService.updatePriority(this.priorityObj.id, this.priorityObj).subscribe(data => 
       {this.hideDialog()},
       (error) => {
-        this.errorDisplay = true;
-        console.log("error.error.status",error.error.status)
- console.log("this.translate.currentLang ",this.translate.currentLang )
-        
+        this.errorDisplay = true;     
         if (this.translate.currentLang == 'En') {
           if (error.error.status == 'code') {
             this.errorMessage = error.error.message;

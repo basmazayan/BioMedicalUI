@@ -79,9 +79,9 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-cat>
                             <tr>
-                                <td style="text-align: inherit;"> {{cat.categoryCode}}</td>
+                                <td style="text-align: inherit;"> {{cat.code}}</td>
                                 <td style="text-align: inherit;">
-                                    {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                    {{translate.currentLang == "En" ? cat.name:cat.nameAr}}
                                 </td>
 
 
@@ -121,7 +121,7 @@
                     <div class="col-md-12">
                         <label for="categoryCode">{{'equipmentcategory.CategoryCode'|translate}}</label>
                         <input type="text" class="form-control" id="categoryCode" name="categoryCode"
-                            [(ngModel)]="category.categoryCode" #categoryCode="ngModel"
+                            [(ngModel)]="category.code" #categoryCode="ngModel"
                             [class.is-invalid]="categoryCode.touched && categoryCode.errors || EditEquipmentCategoryForm.submitted"
                             [class.is-valid]="categoryCode.valid && EditEquipmentCategoryForm.submitted" required
                             pTooltip="Enter Code" tooltipPosition="bottom">
@@ -135,7 +135,7 @@
                     <div class="col-md-12">
                         <label for="categoryName">{{'equipmentcategory.CategoryName'|translate}}</label>
                         <input type="text" class="form-control" id="categoryName" name="categoryName"
-                            [(ngModel)]="category.categoryName" #categoryName="ngModel"
+                            [(ngModel)]="category.name" #categoryName="ngModel"
                             [class.is-invalid]="categoryName.touched && categoryName.errors || EditEquipmentCategoryForm.submitted"
                             [class.is-valid]="categoryName.valid && EditEquipmentCategoryForm.submitted" required
                             pTooltip="Enter A name in English" tooltipPosition="bottom">
@@ -149,7 +149,7 @@
                     <div class="col-md-12">
                         <label for="name">{{'equipmentcategory.CategoryNameAr'|translate}}</label>
                         <input type="text" class="form-control" id="name" name="arname"
-                            [(ngModel)]="category.categoryNameAr" #ArName="ngModel"
+                            [(ngModel)]="category.nameAr" #ArName="ngModel"
                             [class.is-invalid]="ArName.touched && ArName.errors || EditEquipmentCategoryForm.submitted"
                             [class.is-valid]="ArName.valid && EditEquipmentCategoryForm.submitted" required
                             pTooltip="Enter A name in arabic" tooltipPosition="bottom">
@@ -162,14 +162,14 @@
                     <div class="col-md-12 form-group">
                         <label for="categoryDescription">{{'equipmentcategory.CategoryDescription'|translate}}</label>
                         <textarea type="text" class="form-control" id="categoryDescription"
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="category.categoryDescription"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="category.description"
                             pTooltip="Enter Description in English" tooltipPosition="bottom"></textarea>
                     </div>
                     <div class="col-md-12 form-group">
                         <label for="categoryDescription">{{'equipmentcategory.CategoryDescriptionAr'|translate}}</label>
                         <textarea class="form-control" id="categoryDescription" [ngModelOptions]="{standalone: true}"
                             pTooltip="Enter Description in arabic" tooltipPosition="bottom"
-                            [(ngModel)]="category.categoryDescriptionAr"></textarea>
+                            [(ngModel)]="category.descriptionAr"></textarea>
                     </div>
 
                 </div>

@@ -123,7 +123,7 @@
 
                 </td>
                 <td  style="text-align: inherit;">
-                    {{translate.currentLang == "En" ? masterEquipment.manufacturerName:masterEquipment.manufacturerNameAr}}
+                    {{translate.currentLang == "En" ? masterEquipment.brandName:masterEquipment.brandNameAr}}
                 </td>
                 <td  style="text-align: inherit;">
                     {{masterEquipment.modelNumber}}
@@ -169,7 +169,7 @@
                         <fieldset class="tab">
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <label for="Code">{{'masterEquipment.masterCode'|translate}}</label>
+                                    <label for="Code">{{'masterEquipment.MasterCode'|translate}}</label>
 
                                     <input type="text" class="form-control" id="Code" name="Code" #Code="ngModel"
                                         pTooltip="Enter a code" tooltipPosition="bottom"
@@ -222,12 +222,12 @@
                                 <div class="col-md-6 form-group">
                                     <label for="category">{{'equipment.Category'| translate}}</label>
                                     <select class="form-control" id="category" name="category" #category="ngModel"
-                                        [(ngModel)]="masterEquipmentObj.equipmentCategoryId"
+                                        [(ngModel)]="masterEquipmentObj.categoryId"
                                         (change)="fillSubCategory(masterEquipment.equipmentCategoryId)" 
                                         pTooltip="Please,Select Category" tooltipPosition="bottom">
                                         <option selected value="0">--select--</option>
                                         <option *ngFor="let cat of categoriesList" [value]="cat.id">
-                                            {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                            {{translate.currentLang == "En" ? cat.name:cat.nameAr}}
                                         </option>
                                     </select>
                                  
@@ -237,11 +237,11 @@
                                     <select class="form-control" id="subCategory" name="subCategory"
                                         #subCategory="ngModel"
                                         
-                                        [(ngModel)]="masterEquipmentObj.equipmentSubCategoryId" 
+                                        [(ngModel)]="masterEquipmentObj.subCategoryId" 
                                         pTooltip="Select A SubCategory" tooltipPosition="bottom">
                                         <option selected value="0">--select--</option>
                                         <option *ngFor="let s of subCategoriesList" [value]="s.id">
-                                            {{translate.currentLang == "En" ? s.subCategoryName:s.subCategoryNameAr}}
+                                            {{translate.currentLang == "En" ? s.name:s.nameAr}}
                                         </option>
                                     </select>
                                   
@@ -262,11 +262,11 @@
                                     <label for="manufacturer">{{'equipment.Manufacturer'| translate}}</label>
 
                                     <select class="form-control" id="manufacturer" #manufacturer="ngModel"
-                                        name="manufacturer" [(ngModel)]="masterEquipmentObj.manufacturerId"
+                                        name="manufacturer" [(ngModel)]="masterEquipmentObj.brandId"
                                         pTooltip="Select A Brand" tooltipPosition="bottom">
                                         <option  value="0">--select--</option>
                                         <option *ngFor="let m of manufacturerList" [value]="m.id">
-                                            {{translate.currentLang == "En" ? m.manufacturerName:m.manufacturerNameAr}}
+                                            {{translate.currentLang == "En" ? m.name:m.nameAr}}
                                         </option>
                                     </select>
                      
@@ -275,7 +275,7 @@
                                         [(ngModel)]="masterEquipmentObj.originId"
                                         pTooltip="Select An Origin" tooltipPosition="bottom">
                                         <option selected value="0">--select--</option>
-                                        <option *ngFor="let o of originsList" [value]="o.id">{{o.originCode}}</option>
+                                        <option *ngFor="let o of originsList" [value]="o.id">{{o.code}}</option>
                                     </select>
                         
                                     <label for="ExpectedLifeTime">{{'equipment.expectedtimelife'| translate}}</label>

@@ -70,8 +70,8 @@
             
             <ng-template pTemplate="body" let-origin>
                 <tr>
-                    <td  style="text-align: inherit;">{{origin.originCode}}</td>
-                    <td  style="text-align: inherit;">{{translate.currentLang == "En" ?origin.englishName :origin.arabicName}}</td>
+                    <td  style="text-align: inherit;">{{origin.code}}</td>
+                    <td  style="text-align: inherit;">{{translate.currentLang == "En" ?origin.name :origin.nameAr}}</td>
                     <td  style="text-align: inherit;">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info edit"
                             (click)="openNew(origin)" pTooltip="edit an origin" tooltipPosition="top"></button>
@@ -108,17 +108,17 @@
                         <div class="col-md-12">
                             <label for="originCode">{{'origin.OriginCode'|translate}}</label>
                             <input type="text" class="form-control" id="originCode" [ngModelOptions]="{standalone: true}"
-                                placeholder="{{'origin.OriginCode'|translate}}" [(ngModel)]="origin.originCode" autofocus>
+                                placeholder="{{'origin.OriginCode'|translate}}" [(ngModel)]="origin.code" autofocus>
                         </div>
                         <div class="col-md-12">
                             <label for="englishName">{{'origin.englishName'|translate}}</label>
                             <input type="text" class="form-control" id="englishName" [ngModelOptions]="{standalone: true}"
-                                placeholder="{{'origin.englishName'|translate}}" [(ngModel)]="origin.englishName" autofocus>
+                                placeholder="{{'origin.englishName'|translate}}" [(ngModel)]="origin.name" autofocus>
                         </div>
                         <div class="col-md-12">
                             <label for="arabicName">{{'origin.arabicName'|translate}}</label>
                             <input type="text" class="form-control" id="arabicName" [ngModelOptions]="{standalone: true}"
-                                placeholder="{{'origin.arabicName'|translate}}" [(ngModel)]="origin.arabicName" autofocus>
+                                placeholder="{{'origin.arabicName'|translate}}" [(ngModel)]="origin.nameAr" autofocus>
                         </div>
                     </div>
 

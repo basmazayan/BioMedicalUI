@@ -20,8 +20,8 @@ export class NewManufacturerComponent implements OnInit {
   ngOnInit() {
     this.manufacturer = {
       id: 0,
-      manufacturerName: '',
-      manufacturerNameAr: '',
+      name: '',
+      nameAr: '',
       code:''
     }
     this.openNew()
@@ -46,8 +46,7 @@ export class NewManufacturerComponent implements OnInit {
   addManufacturer() {
     this.sharedService.addNewManufacturer(this.manufacturer).subscribe(
       data => {
-        this.router.navigate(['/home/Manfacturers/'])
-      //  console.log(data) 
+        this.router.navigate(['/home/Manfacturers/']) 
     }
       ,error=>{
         this.errorDisplay=true;

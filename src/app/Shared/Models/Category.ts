@@ -1,10 +1,10 @@
 export class Category {
     id: number;
-    categoryName: string;
-    categoryCode: string;
-    categoryDescription: string;
-    categoryNameAr: string;
-    categoryDescriptionAr: string;
+    name: string;
+    code: string;
+    description: string;
+    nameAr: string;
+    descriptionAr: string;
    // healthCareUnitId:number;
     
 }

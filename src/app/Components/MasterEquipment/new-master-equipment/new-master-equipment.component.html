@@ -83,12 +83,12 @@
                                 <div class="col-md-6 form-group">
                                     <label for="category">{{'equipment.Category'| translate}}</label>
                                     <select class="form-control" id="category" name="category" #category="ngModel"
-                                        [(ngModel)]="masterEquipmentObj.equipmentCategoryId"
-                                        (change)="fillSubCategory(masterEquipmentObj.equipmentCategoryId)" 
+                                        [(ngModel)]="masterEquipmentObj.categoryId"
+                                        (change)="fillSubCategory(masterEquipmentObj.categoryId)" 
                                         pTooltip="Please Select Category" tooltipPosition="bottom" [value]="0">
                                         <option selected value="0">--select--</option>
                                         <option *ngFor="let cat of categoriesList" [value]="cat.id">
-                                            {{translate.currentLang == "En" ? cat.categoryName:cat.categoryNameAr}}
+                                            {{translate.currentLang == "En" ? cat.name:cat.nameAr}}
                                         </option>
                                     </select>
                                     <!-- <div
@@ -102,11 +102,11 @@
                                     <label for="subCategory">{{'equipment.SubCategory'| translate}}</label>
                                     <select class="form-control" id="subCategory" name="subCategory"
                                         #subCategory="ngModel"
-                                        [(ngModel)]="masterEquipmentObj.equipmentSubCategoryId"  [value]="0"
+                                        [(ngModel)]="masterEquipmentObj.subCategoryId"  [value]="0"
                                         pTooltip="Select A SubCategory" tooltipPosition="bottom">
                                         <option selected value="0">--select--</option>
                                         <option *ngFor="let s of subCategoriesList" [value]="s.id">
-                                            {{translate.currentLang == "En" ? s.subCategoryName:s.subCategoryNameAr}}
+                                            {{translate.currentLang == "En" ? s.name:s.nameAr}}
                                         </option>
                                     </select>
                                     <!-- <div
@@ -135,11 +135,11 @@
                                     <label for="manufacturer">{{'equipment.Manufacturer'| translate}}</label>
 
                                     <select class="form-control" id="manufacturer" #manufacturer="ngModel"
-                                        name="manufacturer" [(ngModel)]="masterEquipmentObj.manufacturerId"
+                                        name="manufacturer" [(ngModel)]="masterEquipmentObj.brandId"
                                         pTooltip="Select Brand" tooltipPosition="bottom" [value]="0">
                                         <option selected value="0">--select--</option>
                                         <option *ngFor="let m of manufacturerList" [value]="m.id">
-                                            {{translate.currentLang == "En" ? m.manufacturerName:m.manufacturerNameAr}}
+                                            {{translate.currentLang == "En" ? m.name:m.nameAr}}
                                         </option>
                                     </select>
                                     <!-- <span class="text-danger"
@@ -153,7 +153,7 @@
                                         [(ngModel)]="masterEquipmentObj.originId"  [value]="0"
                                         pTooltip="Select Origin" tooltipPosition="bottom">
                                         <option value="0">--select--</option>
-                                        <option *ngFor="let o of originsList" [value]="o.id">{{o.originCode}}</option>
+                                        <option *ngFor="let o of originsList" [value]="o.id">{{o.code}}</option>
                                     </select>
                                     <!-- <span class="text-danger"
                                         *ngIf="(origin.touched || AddMasterEquipForm.submitted) && origin.errors?.required">
@@ -189,7 +189,7 @@
                                                     name="priority{{i}}" id="priority{{i}}" #priority="ngModel"
                                                     [value]="item.id" group="priority" [checked]="(i === 0)"/>
                                                 {{translate.currentLang == "En" ?
-                                                item.priorityLevel:item.priorityLevelAr}}
+                                                item.level:item.levelAr}}
 
                                             </li>
                                         </ul>
