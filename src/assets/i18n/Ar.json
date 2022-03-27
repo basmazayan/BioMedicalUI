@@ -356,7 +356,8 @@
         "Long": "خطوط الطول",
         "Lat": "خطوط العرض",
         "MoreDetails": "تفاصيل اكثر",
-        "Adress": "العنوان"
+        "Adress": "العنوان",
+        "SubOrganization": "المنظمة الفرعية"
     },
     "In total there are": {
         "In total there are": "عرض"

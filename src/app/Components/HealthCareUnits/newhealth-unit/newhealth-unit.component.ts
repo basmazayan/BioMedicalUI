@@ -5,8 +5,10 @@ import { HealthCareUnit } from 'src/app/Shared/Models/HealthCareUnit';
 import { healthDirectory } from 'src/app/Shared/Models/healthDirectory';
 import { HealthDistrict } from 'src/app/Shared/Models/HealthDistrict';
 import { Organization } from 'src/app/Shared/Models/Organization';
+import { SubOrganization } from 'src/app/Shared/Models/subOrganization';
 import { OrganizationService } from 'src/app/Shared/services/organization.service';
 import { SharedService } from 'src/app/Shared/services/shared.service';
+import { SubSubOrganizationService } from 'src/app/Shared/services/sub-organization.service';
 
 @Component({
   selector: 'app-newhealth-unit',
@@ -18,7 +20,7 @@ export class NewhealthUnitComponent implements OnInit {
   submitted:boolean
   healthUnitobj:HealthCareUnit
   healthDistricts:HealthDistrict[];
-  organizationList:Organization[];
+  subOrganizationList:SubOrganization[];
   healthDirectories:healthDirectory[];
   index:number=0;
   isNextvalid:boolean=false;
@@ -26,7 +28,8 @@ export class NewhealthUnitComponent implements OnInit {
   errorDialog: boolean;
   error:string
   constructor(private sharedService:SharedService,
-    private translate: TranslateService,
+    private subOrganizationService: SubSubOrganizationService,
+    private translate:TranslateService,
     private router:Router,private organizationService:OrganizationService) { }
 
   ngOnInit(): void {
@@ -37,9 +40,9 @@ export class NewhealthUnitComponent implements OnInit {
       nameAr:'',
       cityId:0,
       governorateId:0,
-      organizationId:0,
-      organizationName:'',
-      organizationNameAr:'',
+      suborganizationId:0,
+      subOrganizationName:'',
+      subOrganizationNameAr:'',
       cityName:'',
       cityNameAr:'',
       governorateName:'',
@@ -59,7 +62,8 @@ export class NewhealthUnitComponent implements OnInit {
     this.submitted = false;
    // this.sharedService.getAllHealthDistrict().subscribe(data=>{this.healthDistricts=data});
     this.sharedService.getAllHealthDirectories().subscribe(data=>{this.healthDirectories=data,console.log("Directories",this.healthDirectories)});
-    this.organizationService.getAllOrganization().subscribe(data=>{this.organizationList=data});
+    this.subOrganizationService.getAllSubOrganization().subscribe(data=>{this.subOrganizationList=data,
+    console.log("this.subOrganizationList",this.subOrganizationList)});
   }
   saveHealthUnit(){
     console.log("CareUnits",this.healthUnitobj);

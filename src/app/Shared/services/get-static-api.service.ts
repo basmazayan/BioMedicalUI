@@ -36,13 +36,21 @@ export class GetStaticApiService {
   }
   getHospitalInCity(cityCode:string[]){
     return this.http
-      .post(
+      .post<HealthCareUnit[]>(
         this.expropriationRequestUrl +
         'GetHospitalsInCity',cityCode
       )
       .pipe();
   }
-  GetDepartmantsData( model:modelIDsViewModel) {
+  getHospitalInOrganization(OrgId:number[]){
+    return this.http
+      .post(
+        this.expropriationRequestUrl +
+        'GetHospitalsInOrganization',OrgId
+      )
+      .pipe();
+  }
+  GetDepartmantsData( model:number[]) {
     return this.http
       .post(
         this.expropriationRequestUrl +
@@ -72,13 +80,12 @@ export class GetStaticApiService {
       )
       .pipe();
   }
-  GetSubOrginisations( model:modelIDsViewModel) {
+  GetSubOrginisations( orgIds:number[]) {
     
     return this.http
       .post(
         this.expropriationRequestUrl +
-        'GetSubOrginisations' , model
-        
+        'GetSubOrginisations', orgIds
       )
       .pipe();
   }

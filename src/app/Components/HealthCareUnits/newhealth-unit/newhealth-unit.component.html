@@ -99,14 +99,14 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="organization">{{'healthCareUnit.organization'|translate}}</label>
+                                <label for="organization">{{'healthCareUnit.SubOrganization'|translate}}</label>
                                 <select class="form-control" id="organization" pTooltip="select A organization Name"
                                     tooltipPosition="bottom" name="organization" #organization="ngModel"
                                     [(ngModel)]="healthUnitobj.organizationId"
                                     [class.is-invalid]="organization.touched && organization.errors || AddUnitForm.submitted"
                                     [class.is-valid]=" organization.valid && AddUnitForm.submitted" required>
                                     <option selected value="0" disabled>--select--</option>
-                                    <option *ngFor="let org of organizationList" [value]="org.id">
+                                    <option *ngFor="let org of subOrganizationList" [value]="org.id">
                                         {{translate.currentLang == "En" ? org.name:org.nameAr}}
                                     </option>
                                 </select>

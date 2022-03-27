@@ -73,7 +73,7 @@
                                 <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
                                             [value]="item.code">
                                              {{item.arName}} -->
-                                <p-checkbox name="group1" [value]="item.hospitalId" [(ngModel)]="organizationIds"
+                                <p-checkbox name="group1" [value]="item.id" [(ngModel)]="organizationIds"
                                 (click)="selectOrginataions()"></p-checkbox>
                                                 <!-- {{item[0].nameAr}} -->
                                 {{translate.currentLang == "En" ?
@@ -99,7 +99,7 @@
                                 <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
                                             [value]="item.code">
                                              {{item.arName}} -->
-                                <p-checkbox name="group1" [value]="item.hospitaIds" [(ngModel)]="subOrganizationIds"
+                                <p-checkbox name="group1" [value]="item.id" [(ngModel)]="subOrganizationIds"
                                 (click)="selectSubOrginataions()"></p-checkbox>
                                                 <!-- {{item.name}} -->
                                 {{translate.currentLang == "En" ?

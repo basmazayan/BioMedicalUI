@@ -12,11 +12,11 @@ export class HealthCareUnit{
     code:string;
     cityId:number;
     governorateId:number;
-    organizationId:number;
+    suborganizationId:number;
     cityName:string;
     cityNameAr:string;
     governorateName:string;
     governorateNameAr:string;
-    organizationName:string;
-    organizationNameAr:string;
+    subOrganizationName:string;
+    subOrganizationNameAr:string;
 }

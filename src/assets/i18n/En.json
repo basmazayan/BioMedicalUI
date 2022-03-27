@@ -358,7 +358,8 @@
         "Long": "Longitue",
         "Lat": "Latitude",
         "MoreDetails": "More Details",
-        "Adress": "Address"
+        "Adress": "Address",
+        "SubOrganization": "SubOrganization"
     },
     "In total there are": {
         "In total there are": "In total there are"

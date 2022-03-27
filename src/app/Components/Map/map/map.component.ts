@@ -22,6 +22,7 @@ import { loadModules } from 'esri-loader';
 import esri = __esri;
 import { environment } from 'src/environments/environment';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import { HealthCareUnit } from 'src/app/Shared/Models/HealthCareUnit';
 // import * as enFunc from '../../../../../assets';
 @Component({
   selector: 'app-map',
@@ -50,7 +51,7 @@ export class MapComponent implements OnInit {
   supplierNames: any = [];
   brands: any = [];
   HOSP_ELSHARKYAArr: any[] = [];
-  organizationIds: string[] = [];
+  organizationIds: number[] = [];
   subOrganizationIds: number[] = [];
   departmentIds: number[] = [];
   brandIds: number[] = [];
@@ -69,6 +70,8 @@ export class MapComponent implements OnInit {
   defaultBaseMap: string;
   newData: string[] = [];
   opt: string;
+  hosCodes:any[]=[];
+  hospitalsInCity:HealthCareUnit[];
   model: modelIDsViewModel = {
     id: []
   }
@@ -131,7 +134,6 @@ export class MapComponent implements OnInit {
     //get ELSHARKYa feature
     Request(this.featureService.ELSHARKYAUrl, queryOption).then(
       (response: any) => {
-        console.log("response", response)
         for (let i = 0; i < response.data.features.length; i++) {
           let arr = [
             {
@@ -144,7 +146,7 @@ export class MapComponent implements OnInit {
         }
       },
       (error: any) => {
-        console.log("error", error)
+
       }
     );
   }
@@ -276,13 +278,9 @@ export class MapComponent implements OnInit {
       feature: features,
       Format: JSON
     }
-    console.log("options", this.opt)
-
     Request(url, this.opt).then(response => {
-      console.log(response);
     },
       error => {
-        console.log("error", error)
       }
     );
   }
@@ -391,7 +389,6 @@ export class MapComponent implements OnInit {
             returnGeometry: true,
           },
         };
-        console.log("queryOptions", queryOption)
 
         //get ELSHARKYa admin feature
         Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOption).then(
@@ -621,25 +618,14 @@ export class MapComponent implements OnInit {
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
-          console.log("res", re),
+          this.hospitalsInCity=re;
             this.getStaticAPIService
               .GetOrginisations(this.model)
               .subscribe((res: any) => {
                 this.orginataions = res;
-                console.log("this.orginataions", this.orginataions)
               });
 
         });
-        // this.getStaticAPIService
-        //   .GetOrginisations(this.model)
-        //   .subscribe((res: any) => {
-        //     this.orginataions = res;
-        //     let getHospitals = []
-        //     for (let i = 0; i < res.length; i++) {
-        //       getHospitals.push(res[i].hospitalId)
-        //     }
-        //     this.selectHospital(true, getHospitals)
-        //   });
         //draw hospitals
         let queryOptionHospitals: any = {
           responseType: 'json',
@@ -671,27 +657,14 @@ export class MapComponent implements OnInit {
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
-          console.log("res", re),
             this.getStaticAPIService
               .GetOrginisations(this.model)
               .subscribe((res: any) => {
                 this.orginataions = res;
-                console.log("this.orginataions", this.orginataions)
               });
 
         });
 
-        // this.getStaticAPIService
-        //   .GetOrginisations(this.model)
-        //   .subscribe((res:any) => {
-        //     this.orginataions=res;
-        //     console.log("this.orginataions",this.orginataions)
-        //     let getHospitals=[]
-        //     for (let i = 0; i < res.length; i++) {
-        //       getHospitals.push(res[i].hospitalId)
-        //     }
-        //     this.selectHospital(true,getHospitals)
-        //   });
         //draw hospitals
         let queryOptionHospitals: any = {
           responseType: 'json',
@@ -1142,29 +1115,50 @@ export class MapComponent implements OnInit {
 
   selectOrginataions() {
     if (this.organizationIds.length > 0) {
-      console.log("org", this.organizationIds)
       if (this.translate.currentLang == "En") {
         this.map.remove(this.featureService.ADMIN_ELSHARKYA);
         this.map.remove(this.featureService.HOSP_ELSHARKYA);
-        console.log("hosCode", this.organizationIds[this.organizationIds.length - 1])
-        this.selectHospital(true, this.organizationIds[this.organizationIds.length - 1])
-        this.model.id = this.organizationIds
-        this.getStaticAPIService
-          .GetSubOrginisations(this.model)
-          .subscribe((res: any) => {
-            this.subOrginataions = res;
-          });
+        
+        this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(hospitals => {
+          this.organizationIds.forEach(org=>{
+            hospitals.forEach(hos=>{       
+              if(hos.suborganizationId==org)
+              {
+                this.hosCodes.push(hos.code);
+              }
+            })
+            this.selectHospital(true,this.hosCodes);
+          })
+          this.hosCodes=[];
+          this.getStaticAPIService
+            .GetSubOrginisations(this.organizationIds)
+            .subscribe((res: any) => {
+              this.subOrginataions=res;
+              console.log("this.subOrginataions",this.subOrginataions)
+            });
+        })
+        // this.model.id = this.organizationIds
       }
       else if (this.translate.currentLang == "Ar") {
         this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
         this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
-        this.selectHospital(true, this.organizationIds[this.organizationIds.length - 1])
-        this.model.id = this.organizationIds
-        this.getStaticAPIService
-          .GetSubOrginisations(this.model)
-          .subscribe((res: any) => {
-            this.subOrginataions = res;
-          });
+        this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(hospitals => {
+          this.organizationIds.forEach(org=>{
+            hospitals.forEach(hos=>{
+              if(hos.suborganizationId==org)
+              {
+                this.hosCodes.push(hos.code);
+              }
+            })
+            this.selectHospital(true,this.hosCodes);
+          })
+          this.hosCodes=[];
+          this.getStaticAPIService
+            .GetSubOrginisations(this.organizationIds)
+            .subscribe((res: any) => {
+              this.subOrginataions=res;
+            });
+        })
       }
     }
     else {
@@ -1180,10 +1174,11 @@ export class MapComponent implements OnInit {
   selectSubOrginataions() {
     if (this.subOrganizationIds.length > 0) {
       this.getStaticAPIService
-        .GetDepartmantsData(this.model)
+        .GetDepartmantsData(this.subOrganizationIds)
         .subscribe((res: any) => {
           this.DepartmantsData = res;
-          this.selectHospital(true, this.subOrganizationIds)
+          console.log("this.DepartmantsData",this.DepartmantsData)
+         // this.selectHospital(true, this.subOrganizationIds)
         });
     }
     else {
