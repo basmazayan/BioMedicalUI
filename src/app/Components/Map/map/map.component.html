@@ -44,12 +44,10 @@
                         </div>
                         <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
                             <li class="list-group-item" *ngFor="let item of this.ADMIN_ELSHARKYAArr">
-                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                            [value]="item.code">
-                                             {{item.arName}} -->
+                                
                                 <p-checkbox name="group1" [value]="item.cityCode" [(ngModel)]="ctyCode"
                                                 (click)="selectCity()"></p-checkbox>
-                                                <!-- {{item.arName}} -->
+                                               
                                 {{translate.currentLang == "En" ?
                                 item.enName:item.arName}}
                             </li>
@@ -70,12 +68,10 @@
                         </div>
                         <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
                             <li class="list-group-item" *ngFor="let item of orginataions">
-                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                            [value]="item.code">
-                                             {{item.arName}} -->
+                             
                                 <p-checkbox name="group1" [value]="item.id" [(ngModel)]="organizationIds"
                                 (click)="selectOrginataions()"></p-checkbox>
-                                                <!-- {{item[0].nameAr}} -->
+                                                
                                 {{translate.currentLang == "En" ?
                                 item.name:item.nameAr}}
                             </li>
@@ -122,12 +118,10 @@
                         </div>
                         <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
                             <li class="list-group-item" *ngFor="let item of DepartmantsData">
-                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                            [value]="item.code">
-                                             {{item.arName}} -->
+                                
                                 <p-checkbox name="group1" [value]="item.departmentID" [(ngModel)]="departmentIds"
                                 (click)="selectDepartmants()"></p-checkbox>
-                                                <!-- {{item.name}} -->
+                                       
                                 {{translate.currentLang == "En" ?
                                 item.departmentEngName:item.departmentArName}}
                             </li>
@@ -148,14 +142,10 @@
                         </div>
                         <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
                             <li class="list-group-item" *ngFor="let item of brands">
-                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                            [value]="item.code">
-                                             {{item.arName}} -->
-                                <p-checkbox name="group1" [value]="item.hospitalCode" [(ngModel)]="brandIds"
+                                <p-checkbox name="group1" [value]="item.hospitalCode" [(ngModel)]="hosCodesInBrand"
                                 (click)="selectBrand()"></p-checkbox>
-                                                <!-- {{item.name}} -->
                                 {{translate.currentLang == "En" ?
-                                item.manFactureName:item.manFactureNameAr}}
+                                item.name:item.nameAr}}
                             </li>
                         </ul>
                     </div>
@@ -174,18 +164,68 @@
                   </div>
                   <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
                       <li class="list-group-item" *ngFor="let item of supplierNames">
-                          <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                      [value]="item.code">
-                                       {{item.arName}} -->
                           <p-checkbox name="group1" [value]="item.id" [(ngModel)]="supplierIds"
-                          ></p-checkbox>
-                                          <!-- {{item.name}} -->
+                          (click)="selectSupplier()"></p-checkbox>
                           {{translate.currentLang == "En" ?
                           item.name:item.nameAr}}
                       </li>
                   </ul>
               </div>
           </div>
+
+    <!-----------------------Prices----------------------------->
+        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse9" role="button" aria-expanded="false" 
+          aria-controls="collapseExample">{{'map.PriceRange'|translate}}</a>
+          <div id="collapse9"  class="panel-collapse collapse" aria-labelledby="headingOne"
+              data-bs-parent="#accordionExample">
+              <div class="accordion-body p-0" style="margin-top: -20px;">
+                  <div style="display: block;" class="input-group">
+                    <div class="form-outline ">
+                        <label class="form-label" for="formS1"></label>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <label id="fprice1">{{'map.From'|translate}}: </label>
+                          <input type="text" class="form-control" id="fprice2" name="director"
+                                 (focusout)="onFocusOutEvent($event,'from')" [(ngModel)]="fromPrice" 
+                                 pTooltip="Enter From Value" tooltipPosition="bottom">
+                      </div>
+                      <div class="col-lg-6">
+                        <label id="tprice1">{{'map.To'|translate}}: </label>
+                        <input type="text" class="form-control" id="tprice2" name="director"
+                               (focusout)="onFocusOutEvent($event,'to')" [(ngModel)]="toPrice" 
+                               pTooltip="Enter To Value" tooltipPosition="bottom">
+                      </div>
+                      <br>
+                  </div>
+              </div>
+          </div>
+
+          
+    <!-----------------------Date Range----------------------------->
+    <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse10" role="button" aria-expanded="false" 
+        aria-controls="collapseExample">{{'map.DateRange'|translate}}</a>
+        <div id="collapse10"  class="panel-collapse collapse" aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body p-0" style="margin-top: -20px;">
+                <div style="display: block;" class="input-group">
+                  <div class="form-outline ">
+                      <label class="form-label" for="formS1"></label>
+                  </div>
+                </div>
+                <div class="row fdate" style="width: 80%;">
+                        <label id="fdate1">{{'map.From'|translate}}: </label>
+                        <input id="fdate2" type="date" class="form-control" name="director" 
+                              (change)="getDate('fromdate')" pTooltip="Enter From Value" tooltipPosition="bottom">
+                </div>
+                <div class="row fdate" style="width: 80%;">
+                    <label id="tdate1">{{'map.To'|translate}}: </label>
+                    <input id="tdate2" type="date" class="form-control" name="director"
+                    (change)="getDate('todate')" pTooltip="Enter To Value" tooltipPosition="bottom">
+                </div>
+            </div>
+        </div>
       </div>
     </div>
 </aside>

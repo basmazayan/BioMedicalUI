@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { dateVM } from '../Models/dateVM';
 import { DepartmemtByHospitalCodeViewModels } from '../Models/DepartmemtByHospitalCodeViewModels';
 import { HealthCareDevicesViewModels } from '../Models/HealthCareDevicesViewModels';
 import { HealthCareUnit } from '../Models/HealthCareUnit';
@@ -47,6 +48,22 @@ export class GetStaticApiService {
       .post(
         this.expropriationRequestUrl +
         'GetHospitalsInOrganization',OrgId
+      )
+      .pipe();
+  }
+  getHospitalInSubOrganization(subOrgIds:number[]){
+    return this.http
+      .post<HealthCareUnit[]>(
+        this.expropriationRequestUrl +
+        'GetHospitalsInSubOrganization',subOrgIds
+      )
+      .pipe();
+  }
+  GetHospitalsInDepartment(DeptIds:number[]){
+    return this.http
+      .post<HealthCareUnit[]>(
+        this.expropriationRequestUrl +
+        'GetHospitalsInDepartment',DeptIds
       )
       .pipe();
   }
@@ -97,11 +114,35 @@ export class GetStaticApiService {
       )
       .pipe();
   }
-  GetSuppliers( model:modelIDsViewModel) {
+  GetSuppliers( hosCodesInBrand:string[]) {
     return this.http
       .post(
         this.expropriationRequestUrl +
-        'GetSuppliers' , model
+        'GetSuppliers' , hosCodesInBrand
+      )
+      .pipe();
+  }
+  GetHospitalsBySupplier( supplierIds:number[]) {
+    return this.http
+      .post<HealthCareUnit[]>(
+        this.expropriationRequestUrl +
+        'GetHospitalsBySupplier' , supplierIds
+      )
+      .pipe();
+  }
+  GetPriceRange( fromPrice:number,toPrice:number) {
+    return this.http
+      .get<HealthCareUnit[]>(
+        this.expropriationRequestUrl +
+        'GetPriceRange?FPrice='+fromPrice+'&ToPrice='+toPrice
+      )
+      .pipe();
+  }
+  GetDateRange(dates:dateVM) {
+    return this.http
+      .post<HealthCareUnit[]>(
+        this.expropriationRequestUrl +
+        'GetDateRange',dates
       )
       .pipe();
   }

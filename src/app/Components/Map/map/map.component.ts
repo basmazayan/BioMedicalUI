@@ -23,6 +23,7 @@ import esri = __esri;
 import { environment } from 'src/environments/environment';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { HealthCareUnit } from 'src/app/Shared/Models/HealthCareUnit';
+import { dateVM } from 'src/app/Shared/Models/dateVM';
 // import * as enFunc from '../../../../../assets';
 @Component({
   selector: 'app-map',
@@ -47,14 +48,14 @@ export class MapComponent implements OnInit {
   hospitalCode: number[] = [];
   orginataions: any[] = [];
   subOrginataions: any = [];
-  DepartmantsData: any = [];
+  DepartmantsData: any[] = [];
   supplierNames: any = [];
   brands: any = [];
   HOSP_ELSHARKYAArr: any[] = [];
   organizationIds: number[] = [];
   subOrganizationIds: number[] = [];
   departmentIds: number[] = [];
-  brandIds: number[] = [];
+  hosCodesInBrand: string[] = [];
   supplierIds: number[] = []
   healthDirectoriesList: healthDirectory[];
   getDeviceId: number;
@@ -70,8 +71,21 @@ export class MapComponent implements OnInit {
   defaultBaseMap: string;
   newData: string[] = [];
   opt: string;
-  hosCodes:any[]=[];
+  //hosCodes:any[]=[];
+  hosCodeInDeprement:any[]=[];
+  hosCodeInBrand:any[]=[];
+  hosCodeInSupplier:any[]=[];
+  hosCodeForPrice:any[]=[];
+  hosCodeForDate:any[]=[];
+  hcodesInSubOrganization:any[]=[];
+  hosCodesInOrganization:any[]=[];
+  hspitalCode:any[]=[];
   hospitalsInCity:HealthCareUnit[];
+  fromPrice:number=0;
+  toPrice:number=0;
+  fromDate:Date;
+  toDate:Date;
+  dates:dateVM;
   model: modelIDsViewModel = {
     id: []
   }
@@ -79,9 +93,50 @@ export class MapComponent implements OnInit {
     private featureService: FeaturesMapService, private getStaticAPIService: GetStaticApiService) {
     this.defaultBaseMap = 'streets';
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      // this.ngOnInit();
       if (event.lang == 'Ar') {
-        if (this.organizationIds != null && this.ctyCode.length != 0) {
+        document.getElementById('fdate1').style.marginRight="15%";
+        document.getElementById('fdate2').style.marginRight="15%";
+        document.getElementById('tdate1').style.marginRight="15%";
+        document.getElementById('tdate2').style.marginRight="15%";
+        if(this.fromPrice!=0 || this.toPrice!=0)
+        {
+          var frm=$('#fprice2').val();
+          var to=$('#tprice2').val();
+          if(frm!=undefined)
+          {
+            this.onFocusOutEvent(frm,'from');
+          }
+          if(to!=undefined)
+          {
+            this.onFocusOutEvent(to,'to');
+          }
+        }
+        else if(this.dates.from!=null || this.dates.to!=null)
+        {
+          if(this.dates.to==null)
+          {
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.getDate('fromdate');
+          }
+          else if(this.dates.from==null)
+          {
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate('todate');
+          }
+        }
+        else if(this.supplierIds.length>0 && this.supplierIds!=null){
+          this.selectSupplier();
+        }
+        else if(this.hosCodesInBrand.length > 0 && this.hosCodesInBrand !=null){
+          this.selectBrand();
+        }
+        else if (this.departmentIds.length > 0 && this.departmentIds !=null ) {
+          this.selectDepartmants();
+        }
+        else if(this.subOrganizationIds.length>0 && this.subOrganizationIds!=null){
+          this.selectSubOrginataions();
+        }
+        else if (this.organizationIds != null && this.organizationIds.length != 0) {
           this.selectOrginataions();
         }
         else if (this.ctyCode != null && this.ctyCode.length != 0) {
@@ -92,7 +147,45 @@ export class MapComponent implements OnInit {
         }
       }
       else {
-        if (this.organizationIds != null && this.organizationIds.length != 0) {
+        if(this.fromPrice!=0 || this.toPrice!=0)
+        {
+          var frm=$('#fprice2').val();
+          var to=$('#tprice2').val();
+          if(frm!=undefined)
+          {
+            this.onFocusOutEvent(frm,'from');
+          }
+          if(to!=undefined)
+          {
+            this.onFocusOutEvent(to,'to');
+          }
+        }
+        else if(this.dates.from!=null || this.dates.to!=null)
+        {
+          if(this.dates.to==null)
+          {
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.getDate('fromdate');
+          }
+          else if(this.dates.from==null)
+          {
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate('todate');
+          }
+        }
+        else if(this.supplierIds.length>0 && this.supplierIds!=null){
+          this.selectSupplier();
+        }
+        else if(this.hosCodesInBrand.length > 0 && this.hosCodesInBrand !=null){
+          this.selectBrand();
+        }
+        else if (this.departmentIds.length > 0 && this.departmentIds !=null ) {
+          this.selectDepartmants();
+        }
+        else if(this.subOrganizationIds.length>0 && this.subOrganizationIds!=null){
+          this.selectSubOrginataions();
+        }
+        else if (this.organizationIds != null && this.organizationIds.length != 0) {
           this.selectOrginataions();
         }
         else if (this.ctyCode != null && this.ctyCode.length != 0) {
@@ -105,6 +198,10 @@ export class MapComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.dates = {
+      from: null,
+      to: null
+    }
     this.generateSelectFeatures();
     esriConfig.assetsPath = './assets';
     const apiKey =
@@ -361,17 +458,44 @@ export class MapComponent implements OnInit {
                 //get cityCode feature
                 Request(this.featureService.HOSP_ELSHARKYAUrl, queryOptionHospitals).then(
                   (response: any) => {
-                    let hspitalCode = []
+                   // let hspitalCode = []
                     for (let i = 0; i < response.data.features.length; i++) {
-                      hspitalCode.push(response.data.features[i].attributes.COD)
+                      this.hspitalCode.push(response.data.features[i].attributes.COD)
                     }
-                    this.selectHospital(true, hspitalCode)
+                    if(this.fromPrice!=0 || this.toPrice!=0)
+                    {
+                      var frm=$('#fprice2').val();
+                      var to=$('#tprice2').val();
+                      if(frm!=undefined)
+                      {
+                        this.onFocusOutEvent(frm,'from');
+                      }
+                      if(to!=undefined)
+                      {
+                        this.onFocusOutEvent(to,'to');
+                      }
+                    }
+                    else if(this.dates.from!=null || this.dates.to!=null)
+                    {
+                      if(this.dates.to==null)
+                      {
+                        this.dates.from=new Date($('#fdate2').val().toString());
+                        this.getDate('fromdate');
+                      }
+                      else if(this.dates.from==null)
+                      {
+                        this.dates.to=new Date($('#tdate2').val().toString());
+                        this.getDate('todate');
+                      }
+                    }
+                    else {this.selectHospital(true, this.hspitalCode)}
                   });
-
+                  this.hspitalCode=[];
               })
           })
       }
       else if (this.translate.currentLang == "En") {
+        
         this.map.remove(this.featureService.HOSP_ELSHARKYA);
         this.featureService.FeatureELSHARKYA_En(
           this.map,
@@ -438,13 +562,39 @@ export class MapComponent implements OnInit {
                 //get cityCode feature
                 Request(this.featureService.HOSP_ELSHARKYAUrl_En, queryOptionHospitals).then(
                   (response: any) => {
-                    let hspitalCode = []
+                    //let hspitalCode = []
                     for (let i = 0; i < response.data.features.length; i++) {
-                      hspitalCode.push(response.data.features[i].attributes.COD)
+                      this.hspitalCode.push(response.data.features[i].attributes.COD)
                     }
-                    this.selectHospital(true, hspitalCode)
+                    if(this.fromPrice!=0 || this.toPrice!=0)
+                    {
+                      var frm=$('#fprice2').val();
+                      var to=$('#tprice2').val();
+                      if(frm!=undefined)
+                      {
+                        this.onFocusOutEvent(frm,'from');
+                      }
+                      if(to!=undefined)
+                      {
+                        this.onFocusOutEvent(to,'to');
+                      }
+                    }
+                    else if(this.dates.from!=null || this.dates.to!=null)
+                    {
+                      if(this.dates.to==null)
+                      {
+                        this.dates.from=new Date($('#fdate2').val().toString());
+                        this.getDate('fromdate');
+                      }
+                      else if(this.dates.from==null)
+                      {
+                        this.dates.to=new Date($('#tdate2').val().toString());
+                        this.getDate('todate');
+                      }
+                    }
+                    else{this.selectHospital(true, this.hspitalCode)}
                   });
-
+                  this.hspitalCode=[];
               })
           })
       }
@@ -455,153 +605,6 @@ export class MapComponent implements OnInit {
       this.DepartmantsData = [];
       this.brands = [];
       this.supplierNames = [];
-      //   this.map.remove(this.featureService.ELSHARKYA);
-      //   this.map.remove(this.featureService.ELSHARKYA_En);
-      //   this.map.remove(this.featureService.ADMIN_ELSHARKYA);
-      //   this.map.remove(this.featureService.HOSP_ELSHARKYA);
-      //   this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
-      //   this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
-      //   this.ADMIN_ELSHARKYAArr = [];
-      //   let queryOptionCitys: any = {
-      //     responseType: 'json',
-      //     query: {
-      //       f: 'json',
-      //       where: `MohafazaCode in (${this.mohafazatCode})`,
-      //       returnCountOnly: false,
-      //       outFields: '*',
-      //       returnGeometry: true,
-      //     },
-      //   };
-
-      //   //get cityCode feature
-      //   Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOptionCitys).then(
-      //     (response: any) => {
-      //       this.citycode=[]
-      //       for (let i = 0; i < response.data.features.length; i++) {
-      //         this.citycode.push(response.data.features[i].attributes.CityCode)
-
-      //       }
-
-      //       //draw hospitals
-      //       let queryOptionHospitals: any = {
-      //         responseType: 'json',
-      //         query: {
-      //           f: 'json',
-      //           where: `CityCode in (${this.citycode})`,
-      //           returnCountOnly: false,
-      //           outFields: '*',
-      //           returnGeometry: false,
-      //         },
-      //       };
-
-      //       //get cityCode feature
-      //       Request(this.featureService.HOSP_ELSHARKYAUrl, queryOptionHospitals).then(
-      //         (response: any) => {
-
-      //           let hspitalCodeInMohafza=[]
-      //           for (let i = 0; i < response.data.features.length; i++) {
-      //             hspitalCodeInMohafza.push(response.data.features[i].attributes.COD)
-      //           }
-
-      //         //  this.selectHospital(true,hspitalCodeInMohafza)
-      //         }
-      //       );
-      //     }
-      //   );
-
-      //   this.map.remove(this.featureService.ELSHARKYA);
-      //   this.map.remove(this.featureService.HOSP_ELSHARKYA);
-
-      //   this.ctyCode = [];
-      //   this.featureService.FeatureELSHARKYA(
-      //     this.map,
-      //     1,
-      //     `MohafazaCode in (${this.mohafazatCode})`
-      //   );
-
-      //   // this.featureService.FeatureHOSP_ELSHARKYA(
-      //   //   this.map,
-      //   //   1,
-      //   //   this.popupHOSPLayer,
-      //   //   `CityCode in (${this.citycode})`
-      //   // );
-
-      //   let queryOption: any = {
-      //     responseType: 'json',
-      //     query: {
-      //       f: 'json',
-      //       where: `MohafazaCode in (${this.mohafazatCode})`,
-      //       returnCountOnly: false,
-      //       outFields: '*',
-      //       returnGeometry: true,
-      //     },
-      //   };
-      //   //get ELSHARKYa admin feature
-      //   Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOption).then(
-      //     (response: any) => {
-
-      //       this.ADMIN_ELSHARKYAArr = [];
-
-      //       for (let i = 0; i < response.data.features.length; i++) {
-      //         let arr = [
-      //           {
-      //             arName: response.data.features[i].attributes.EDARA_NAME,
-      //             code: response.data.features[i].attributes.COD,
-      //           },
-      //         ];
-      //         this.ADMIN_ELSHARKYAArr.push(...arr);
-      //       }
-      //       this.map.remove(this.featureService.ADMIN_ELSHARKYA);
-      //       this.featureService.FeatureADMIN_ELSHARKYA(
-      //         this.map,
-      //         1,
-      //         `MohafazaCode in (${this.ADMIN_ELSHARKYAArr})`
-      //       );
-      //     });
-
-      //   let citycode=[]
-
-      //   let queryOptionCity: any = {
-      //     responseType: 'json',
-      //     query: {
-      //       f: 'json',
-      //       where: `MohafazaCode in (${this.mohafazatCode})`,
-      //       returnCountOnly: false,
-      //       outFields: '*',
-      //       returnGeometry: true,
-      //     },
-      //   };
-
-      //   //get cityCode feature
-      //   Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOptionCity).then(
-      //     (response: any) => {
-      //       for (let i = 0; i < response.data.features.length; i++) {
-      //         citycode .push(response.data.features[i].attributes.CityCode)
-
-      //       }
-
-      //       //draw hospitals
-      //       let queryOptionHospitals: any = {
-      //         responseType: 'json',
-      //         query: {
-      //           f: 'json',
-      //           where: `CityCode in (${citycode})`,
-      //           returnCountOnly: false,
-      //           outFields: '*',
-      //           returnGeometry: false,
-      //         },
-      //       };
-      //       //get cityCode feature
-      //       Request(this.featureService.HOSP_ELSHARKYAUrl, queryOptionHospitals).then(
-      //         (response: any) => {
-
-      //           let hspitalCode=[]
-      //           for (let i = 0; i < response.data.features.length; i++) {
-      //             hspitalCode.push(response.data.features[i].attributes.COD)
-      //           }
-      //          // this.selectHospital(true,hspitalCode)
-      //         });
-      //     });
     }
   }
   selectCity() {
@@ -610,11 +613,11 @@ export class MapComponent implements OnInit {
     if (this.ctyCode.length > 0) {
       if (this.translate.currentLang == "Ar") {
         this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
-        this.featureService.FeatureADMIN_ELSHARKYA(
-          this.map,
-          1,
-          `CityCode in (${this.ctyCode})`
-        );
+        // this.featureService.FeatureADMIN_ELSHARKYA(
+        //   this.map,
+        //   1,
+        //   `CityCode in (${this.ctyCode})`
+        // );
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
@@ -640,20 +643,47 @@ export class MapComponent implements OnInit {
         //get cityCode feature
         Request(this.featureService.HOSP_ELSHARKYAUrl, queryOptionHospitals).then(
           (response: any) => {
-            let hspitalCode = []
+          //  let hspitalCode = []
             for (let i = 0; i < response.data.features.length; i++) {
-              hspitalCode.push(response.data.features[i].attributes.COD)
+              this.hspitalCode.push(response.data.features[i].attributes.COD)
             }
-            this.selectHospital(true, hspitalCode)
+            if(this.fromPrice!=0 || this.toPrice!=0)
+            {
+              var frm=$('#fprice2').val();
+              var to=$('#tprice2').val();
+              if(frm!=undefined)
+              {
+                this.onFocusOutEvent(frm,'from');
+              }
+              if(to!=undefined)
+              {
+                this.onFocusOutEvent(to,'to');
+              }
+            }
+            else if(this.dates.from!=null || this.dates.to!=null)
+            {
+              if(this.dates.to==null)
+              {
+                this.dates.from=new Date($('#fdate2').val().toString());
+                this.getDate('fromdate');
+              }
+              else if(this.dates.from==null)
+              {
+                this.dates.to=new Date($('#tdate2').val().toString());
+                this.getDate('todate');
+              }
+            }
+            else{this.selectHospital(true, this.hspitalCode)}
           });
+          this.hspitalCode=[];
       }
       else if (this.translate.currentLang == "En") {
         this.map.remove(this.featureService.HOSP_ELSHARKYA);
-        this.featureService.FeatureADMIN_ELSHARKYA_En(
-          this.map,
-          1,
-          `CityCode in (${this.ctyCode})`
-        );
+        // this.featureService.FeatureADMIN_ELSHARKYA_En(
+        //   this.map,
+        //   1,
+        //   `CityCode in (${this.ctyCode})`
+        // );
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
@@ -679,12 +709,39 @@ export class MapComponent implements OnInit {
         //get cityCode feature
         Request(this.featureService.HOSP_ELSHARKYAUrl, queryOptionHospitals).then(
           (response: any) => {
-            let hspitalCode = []
+          //  let hspitalCode = []
             for (let i = 0; i < response.data.features.length; i++) {
-              hspitalCode.push(response.data.features[i].attributes.COD)
+              this.hspitalCode.push(response.data.features[i].attributes.COD)
             }
-            this.selectHospital(true, hspitalCode)
+            if(this.fromPrice!=0 || this.toPrice!=0)
+            {
+              var frm=$('#fprice2').val();
+              var to=$('#tprice2').val();
+              if(frm!=undefined)
+              {
+                this.onFocusOutEvent(frm,'from');
+              }
+              if(to!=undefined)
+              {
+                this.onFocusOutEvent(to,'to');
+              }
+            }
+            else if(this.dates.from!=null || this.dates.to!=null)
+            {
+              if(this.dates.to==null)
+              {
+                this.dates.from=new Date($('#fdate2').val().toString());
+                this.getDate('fromdate');
+              }
+              else if(this.dates.from==null)
+              {
+                this.dates.to=new Date($('#tdate2').val().toString());
+                this.getDate('todate');
+              }
+            }
+            else {this.selectHospital(true, this.hspitalCode)}
           });
+          this.hspitalCode=[];
       }
     }
     else {
@@ -739,12 +796,39 @@ export class MapComponent implements OnInit {
       //get cityCode feature
       Request(this.featureService.HOSP_ELSHARKYAUrl, queryOptionHospitals).then(
         (response: any) => {
-          let hspitalCode = []
+         // let hspitalCode = []
           for (let i = 0; i < response.data.features.length; i++) {
-            hspitalCode.push(response.data.features[i].attributes.COD)
+            this.hspitalCode.push(response.data.features[i].attributes.COD)
           }
-          this.selectHospital(true, hspitalCode)
+          if(this.fromPrice!=0 || this.toPrice!=0)
+          {
+            var frm=$('#fprice2').val();
+            var to=$('#tprice2').val();
+            if(frm!=undefined)
+            {
+              this.onFocusOutEvent(frm,'from');
+            }
+            if(to!=undefined)
+            {
+              this.onFocusOutEvent(to,'to');
+            }
+          }
+          else if(this.dates.from!=null || this.dates.to!=null)
+          {
+            if(this.dates.to==null)
+            {
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.getDate('fromdate');
+            }
+            else if(this.dates.from==null)
+            {
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate('todate');
+            }
+          }
+          else{this.selectHospital(true, this.hspitalCode)}
         });
+        this.hspitalCode=[];
     }
 
   }
@@ -1115,51 +1199,52 @@ export class MapComponent implements OnInit {
 
   selectOrginataions() {
     if (this.organizationIds.length > 0) {
-      if (this.translate.currentLang == "En") {
+     // if (this.translate.currentLang == "En") {
         this.map.remove(this.featureService.ADMIN_ELSHARKYA);
         this.map.remove(this.featureService.HOSP_ELSHARKYA);
-        
-        this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(hospitals => {
-          this.organizationIds.forEach(org=>{
-            hospitals.forEach(hos=>{       
-              if(hos.suborganizationId==org)
-              {
-                this.hosCodes.push(hos.code);
-              }
-            })
-            this.selectHospital(true,this.hosCodes);
-          })
-          this.hosCodes=[];
-          this.getStaticAPIService
-            .GetSubOrginisations(this.organizationIds)
-            .subscribe((res: any) => {
-              this.subOrginataions=res;
-              console.log("this.subOrginataions",this.subOrginataions)
-            });
-        })
-        // this.model.id = this.organizationIds
-      }
-      else if (this.translate.currentLang == "Ar") {
         this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
         this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(hospitals => {
-          this.organizationIds.forEach(org=>{
-            hospitals.forEach(hos=>{
-              if(hos.suborganizationId==org)
+          this.getStaticAPIService.GetSubOrginisations(this.organizationIds).subscribe((res: any)=>{
+            this.subOrginataions=res;
+            this.subOrginataions.forEach(suborg=>{
+            hospitals.forEach(hos=>{       
+              if(hos.suborganizationId==suborg.id)
               {
-                this.hosCodes.push(hos.code);
+                this.hosCodesInOrganization.push(hos.code);
               }
             })
-            this.selectHospital(true,this.hosCodes);
+            if(this.fromPrice!=0 || this.toPrice!=0)
+            {
+              var frm=$('#fprice2').val();
+              var to=$('#tprice2').val();
+              if(frm!=undefined)
+              {
+                this.onFocusOutEvent(frm,'from');
+              }
+              if(to!=undefined)
+              {
+                this.onFocusOutEvent(to,'to');
+              }
+            }
+            else if(this.dates.from!=null || this.dates.to!=null)
+            {
+              if(this.dates.to==null)
+              {
+                this.dates.from=new Date($('#fdate2').val().toString());
+                this.getDate('fromdate');
+              }
+              else if(this.dates.from==null)
+              {
+                this.dates.to=new Date($('#tdate2').val().toString());
+                this.getDate('todate');
+              }
+            }
+            else {this.selectHospital(true,this.hosCodesInOrganization);}
           })
-          this.hosCodes=[];
-          this.getStaticAPIService
-            .GetSubOrginisations(this.organizationIds)
-            .subscribe((res: any) => {
-              this.subOrginataions=res;
-            });
         })
-      }
+          this.hosCodesInOrganization=[];
+        })
     }
     else {
       this.subOrginataions = [];
@@ -1172,23 +1257,120 @@ export class MapComponent implements OnInit {
     }
   }
   selectSubOrginataions() {
+    //var hcodesInSubOrganization=[];
     if (this.subOrganizationIds.length > 0) {
+      this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+        this.map.remove(this.featureService.HOSP_ELSHARKYA);
+        this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+        this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+      this.getStaticAPIService.getHospitalInSubOrganization(this.subOrganizationIds).subscribe(hospitals => {
+         hospitals.forEach(hos=>{
+          this.hosCodesInOrganization.forEach(hosCode=>{
+            if(hos.code==hosCode)
+            {
+              this.hcodesInSubOrganization.push(hos.code);
+            }
+          })
+         })
       this.getStaticAPIService
         .GetDepartmantsData(this.subOrganizationIds)
-        .subscribe((res: any) => {
-          this.DepartmantsData = res;
-          console.log("this.DepartmantsData",this.DepartmantsData)
-         // this.selectHospital(true, this.subOrganizationIds)
-        });
+        .subscribe((depts: any) => {
+          depts.forEach(dept=>{
+            this.hosCodesInOrganization.forEach(hos=>{
+              if(hos==dept.hospitalCode)
+              {
+                if(!this.DepartmantsData.some(dep=>dep.departmentID==dept.departmentID))
+                {
+                  this.DepartmantsData.push(dept); 
+                }
+              }
+            })     
+          })
+          if(this.fromPrice!=0 || this.toPrice!=0)
+          {
+            var frm=$('#fprice2').val();
+            var to=$('#tprice2').val();
+            if(frm!=undefined)
+            {
+              this.onFocusOutEvent(frm,'from');
+            }
+            if(to!=undefined)
+            {
+              this.onFocusOutEvent(to,'to');
+            }
+          }
+          else if(this.dates.from!=null || this.dates.to!=null)
+          {
+            if(this.dates.to==null)
+            {
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.getDate('fromdate');
+            }
+            else if(this.dates.from==null)
+            {
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate('todate');
+            }
+          }
+          else{this.selectHospital(true, this.hcodesInSubOrganization)}
+        })
+      })
+      this.DepartmantsData=[];
+      this.hcodesInSubOrganization=[];
     }
     else {
       this.DepartmantsData = [];
       this.brands = [];
       this.supplierNames = [];
+      this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+      this.map.remove(this.featureService.HOSP_ELSHARKYA);
+      this.selectOrginataions();
     }
   }
   selectDepartmants() {
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA);
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
     if (this.departmentIds.length > 0) {
+      this.getStaticAPIService.GetHospitalsInDepartment(this.departmentIds).subscribe(hos=>{
+        hos.forEach(h=>{
+          this.hosCodesInOrganization.forEach(hcode=>{
+            if(h.code==hcode)
+            {
+              this.hosCodeInDeprement.push(hcode)
+            }
+          })
+        });
+        if(this.fromPrice!=0 || this.toPrice!=0)
+        {
+          var frm=$('#fprice2').val();
+          var to=$('#tprice2').val();
+          if(frm!=undefined)
+          {
+            this.onFocusOutEvent(frm,'from');
+          }
+          if(to!=undefined)
+          {
+            this.onFocusOutEvent(to,'to');
+          }
+        }
+        else if(this.dates.from!=null || this.dates.to!=null)
+        {
+          if(this.dates.to==null)
+          {
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.getDate('fromdate');
+          }
+          else if(this.dates.from==null)
+          {
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate('todate');
+          }
+        }
+        else{this.selectHospital(true, this.hosCodeInDeprement)}
+      })
+      this.hosCodeInDeprement=[];
       this.getStaticAPIService.GetBrands(this.departmentIds)
         .subscribe(res => {
           this.brands = res
@@ -1197,18 +1379,120 @@ export class MapComponent implements OnInit {
     else {
       this.brands = [];
       this.supplierNames = [];
+      this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+      this.map.remove(this.featureService.HOSP_ELSHARKYA);
+      this.selectSubOrginataions();
     }
   }
   selectBrand() {
-    if (this.brandIds.length > 0) {
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA);
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+    if (this.hosCodesInBrand.length > 0) {
       this.getStaticAPIService
-        .GetSuppliers(this.model)
+        .GetSuppliers(this.hosCodesInBrand)
         .subscribe((res: any) => {
           this.supplierNames = res;
+          this.supplierNames.forEach(s=>{
+            if(!this.hosCodeInBrand.some(i=>i==s.hospitalCode))
+            {
+              this.hosCodeInBrand.push(s.hospitalCode)
+            }
+          })
+          if(this.fromPrice!=0 || this.toPrice!=0)
+          {
+            var frm=$('#fprice2').val();
+            var to=$('#tprice2').val();
+            if(frm!=undefined)
+            {
+              this.onFocusOutEvent(frm,'from');
+            }
+            if(to!=undefined)
+            {
+              this.onFocusOutEvent(to,'to');
+            }
+          }
+          else if(this.dates.from!=null || this.dates.to!=null)
+          {
+            if(this.dates.to==null)
+            {
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.getDate('fromdate');
+            }
+            else if(this.dates.from==null)
+            {
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate('todate');
+            }
+          }
+          else{this.selectHospital(true,this.hosCodeInBrand)}
         });
+        this.hosCodeInBrand=[];
     }
     else {
       this.supplierNames = [];
+      this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+      this.map.remove(this.featureService.HOSP_ELSHARKYA);
+      this.selectDepartmants();
+    }
+  }
+  selectSupplier()
+  {
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA);
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+    // let hosCodeInSupplier=[];
+    if(this.supplierIds.length>0)
+    {
+      this.getStaticAPIService.GetHospitalsBySupplier(this.supplierIds).subscribe(hospital=>{
+        this.hosCodeInBrand.forEach(hoscode=>{
+          hospital.forEach(h=>{
+            if(hoscode==h.code)
+            {
+              if(!this.hosCodeInSupplier.some(i=>i==h.code))
+              {
+                this.hosCodeInSupplier.push(h.code)
+              }
+            }
+          })
+          if(this.fromPrice!=0 || this.toPrice!=0)
+          {
+            var frm=$('#fprice2').val();
+            var to=$('#tprice2').val();
+            if(frm!=undefined)
+            {
+              this.onFocusOutEvent(frm,'from');
+            }
+            if(to!=undefined)
+            {
+              this.onFocusOutEvent(to,'to');
+            }
+          }
+          else if(this.dates.from!=null || this.dates.to!=null)
+          {
+            if(this.dates.to==null)
+            {
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.getDate('fromdate');
+            }
+            else if(this.dates.from==null)
+            {
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate('todate');
+            }
+          }
+          else{this.selectHospital(true,this.hosCodeInSupplier)}
+        })
+      })
+      this.hosCodeInSupplier=[];
+    }
+    else
+    {
+      this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+      this.map.remove(this.featureService.HOSP_ELSHARKYA);
+      this.selectBrand();
     }
   }
   generateContnetTable(hospitalId, departmantId, tabBody, departmentName) {
@@ -1374,5 +1658,264 @@ export class MapComponent implements OnInit {
       });
   }
 
-
+  onFocusOutEvent(event,arg){
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA);
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+    if(event.target!=undefined){
+      if(arg=='from'){
+        this.fromPrice=event.target.value;
+        this.toPrice=Number($('#tprice2').val());
+      }
+      else if(arg=='to'){
+        this.toPrice=event.target.value;
+        this.fromPrice=Number($('#fprice2').val());
+      }
+    }
+    else if(event.target==undefined){
+      if(arg=='from'){
+        this.fromPrice=event;
+        this.toPrice=Number($('#tprice2').val());
+      }
+      else if(arg=='to'){
+        this.toPrice=event;
+        this.fromPrice=Number($('#fprice2').val());
+      }
+    }
+    this.getStaticAPIService.GetPriceRange(this.fromPrice,this.toPrice).subscribe(hos=>{
+      if(this.supplierIds.length>0 && this.supplierIds!=null){
+        this.hosCodeInSupplier.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForPrice.some(code=>code==hCode))
+              {
+                this.hosCodeForPrice.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if(this.hosCodesInBrand.length > 0 && this.hosCodesInBrand !=null){
+        this.hosCodesInBrand.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForPrice.some(code=>code==hCode))
+              {
+                this.hosCodeForPrice.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if (this.departmentIds.length > 0 && this.departmentIds !=null ) {
+        this.hosCodeInDeprement.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForPrice.some(code=>code==hCode))
+              {
+                this.hosCodeForPrice.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if(this.subOrganizationIds.length>0 && this.subOrganizationIds!=null){
+        this.hcodesInSubOrganization.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForPrice.some(code=>code==hCode))
+              {
+                this.hosCodeForPrice.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if (this.organizationIds != null && this.organizationIds.length != 0) {
+        this.hosCodesInOrganization.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForPrice.some(code=>code==hCode))
+              {
+                this.hosCodeForPrice.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if (this.ctyCode != null && this.ctyCode.length != 0) {
+        this.hspitalCode.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForPrice.some(code=>code==hCode))
+              {
+                this.hosCodeForPrice.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else{
+        if(this.hspitalCode.length>0)
+        {
+          this.hspitalCode.forEach(hCode=>{
+            hos.forEach(hos=>{
+               if(hos.code==hCode)
+               {
+                if(!this.hosCodeForPrice.some(code=>code==hos.code))
+                {
+                  this.hosCodeForPrice.push(hos.code);
+                }
+              }
+            })
+          });
+        }
+        else
+        {
+          hos.forEach(hos=>{
+             if(!this.hosCodeForPrice.some(code=>code==hos.code))
+             {
+               this.hosCodeForPrice.push(hos.code);
+             }
+         })
+        }
+      }
+      this.selectHospital(true,this.hosCodeForPrice)
+      this.hosCodeForPrice=[];
+    })
+  }
+  getDate(arg)
+  {
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA);
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+    console.log("arg",arg)
+    if(arg=='fromdate')
+    {
+      this.dates.from=new Date($('#fdate2').val().toString());
+      this.dates.to=null;
+    }
+    else if(arg=='todate')
+    {
+      this.dates.to=new Date($('#tdate2').val().toString());
+      this.dates.from=null;
+    }
+    console.log("from",this.dates.from,"   to",this.dates.to)
+    this.getStaticAPIService.GetDateRange(this.dates).subscribe(hos=>{
+      console.log("hos",hos);
+      if(this.supplierIds.length>0 && this.supplierIds!=null){
+        this.hosCodeInSupplier.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForDate.some(code=>code==hCode))
+              {
+                this.hosCodeForDate.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if(this.hosCodesInBrand.length > 0 && this.hosCodesInBrand !=null){
+        this.hosCodesInBrand.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForDate.some(code=>code==hCode))
+              {
+                this.hosCodeForDate.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if (this.departmentIds.length > 0 && this.departmentIds !=null ) {
+        this.hosCodeInDeprement.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForDate.some(code=>code==hCode))
+              {
+                this.hosCodeForDate.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if(this.subOrganizationIds.length>0 && this.subOrganizationIds!=null){
+        this.hcodesInSubOrganization.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForDate.some(code=>code==hCode))
+              {
+                this.hosCodeForDate.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if (this.organizationIds != null && this.organizationIds.length != 0) {
+        this.hosCodesInOrganization.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForDate.some(code=>code==hCode))
+              {
+                this.hosCodeForDate.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else if (this.ctyCode != null && this.ctyCode.length != 0) {
+        this.hspitalCode.forEach(hCode=>{
+          hos.forEach(hos=>{
+            if(hos.code==hCode)
+            {
+              if(!this.hosCodeForDate.some(code=>code==hCode))
+              {
+                this.hosCodeForDate.push(hCode);
+              }
+            }
+          })
+        });
+      }
+      else{
+        if(this.hspitalCode.length>0)
+        {
+          this.hspitalCode.forEach(hCode=>{
+            hos.forEach(hos=>{
+               if(hos.code==hCode)
+               {
+                if(!this.hosCodeForDate.some(code=>code==hos.code))
+                {
+                  this.hosCodeForDate.push(hos.code);
+                }
+              }
+            })
+          });
+        }
+        else
+        {
+          hos.forEach(hos=>{
+             if(!this.hosCodeForDate.some(code=>code==hos.code))
+             {
+               this.hosCodeForDate.push(hos.code);
+             }
+         })
+        }
+      }
+      this.selectHospital(true,this.hosCodeForDate)
+      this.hosCodeForDate=[];
+    })
+  }
 }

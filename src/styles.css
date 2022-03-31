@@ -211,7 +211,15 @@ body
   margin-left: 50rem !important;  } 
 .p-message-detail:lang(En) {
   margin-left: 0.5rem !important;  }
-
+/* .fdate:lang(Ar){
+    margin-right: -10% !important;
+ } */
+ /* [lang="Ar"] .fdate {
+  margin-right: -10% !important;
+} */
+ .fdate:lang(En){
+  margin-left: 5% !important;
+}
   /* .multiselect-dropdown{
     line-height: 1.3;
   } */

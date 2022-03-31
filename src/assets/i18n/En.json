@@ -439,6 +439,10 @@
     },
     "map":
     {
-        "File":"File"
+        "File":"File",
+        "From":"from",
+        "To":"to",
+        "DateRange":"Installation Date",
+        "PriceRange":"Price range"
     }
 }
