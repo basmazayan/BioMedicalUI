@@ -600,11 +600,41 @@ export class MapComponent implements OnInit {
       }
     }
     else {
+      if(this.fromPrice!=0 || this.toPrice!=0)
+      {
+        console.log("hhhhh")
+        var frm=$('#fprice2').val();
+        var to=$('#tprice2').val();
+        if(frm!=undefined)
+        {
+          this.onFocusOutEvent(frm,'from');
+        }
+        if(to!=undefined)
+        {
+          this.onFocusOutEvent(to,'to');
+        }
+      }
+      else if(this.dates.from!=null || this.dates.to!=null)
+      {
+        if(this.dates.to==null)
+        {
+          this.dates.from=new Date($('#fdate2').val().toString());
+          this.getDate('fromdate');
+        }
+        else if(this.dates.from==null)
+        {
+          this.dates.to=new Date($('#tdate2').val().toString());
+          this.getDate('todate');
+        }
+      }
+      // this.hspitalCode=[];
+     // else {this.selectHospital(true, this.hspitalCode)}
       this.orginataions = [];
       this.subOrginataions = [];
       this.DepartmantsData = [];
       this.brands = [];
       this.supplierNames = [];
+      this.hospitalsInCity=[];
     }
   }
   selectCity() {
@@ -1765,6 +1795,7 @@ export class MapComponent implements OnInit {
       else{
         if(this.hspitalCode.length>0)
         {
+          console.log("this.hspitalCode",this.hspitalCode)
           this.hspitalCode.forEach(hCode=>{
             hos.forEach(hos=>{
                if(hos.code==hCode)
@@ -1787,6 +1818,7 @@ export class MapComponent implements OnInit {
          })
         }
       }
+      console.log("this.hosCodeForPrice",this.hosCodeForPrice)
       this.selectHospital(true,this.hosCodeForPrice)
       this.hosCodeForPrice=[];
     })
