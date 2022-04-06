@@ -1,0 +1,20 @@
+/* .date-input{
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    font-size: 15px;
+    color: #666666;
+    text-indent: 8px;
+    border: 1px solid #2d2d2d;
+} */
+.text-field-position {
+    position: relative;
+}
+
+.text-field-position span {
+    position: absolute;
+    right: 1.5em;
+    top: 0;
+    bottom: 0;
+    line-height: 25px;
+}

@@ -216,13 +216,16 @@
                 </div>
                 <div class="row fdate" style="width: 80%;">
                         <label id="fdate1">{{'map.From'|translate}}: </label>
-                        <input id="fdate2" type="date" class="form-control" name="director" 
+                        <div class="text-field-position"><input id="fdate2" type="date" class="form-control date-input" name="director" 
                               (change)="getDate('fromdate')" pTooltip="Enter From Value" tooltipPosition="bottom">
+                              <span class="removeClick" type="button" (click)="clearDate('f')">&times;</span></div>
+                              <!-- <i class="form-control-clear pi pi-times" id="clcbtn"></i> -->
                 </div>
                 <div class="row fdate" style="width: 80%;">
                     <label id="tdate1">{{'map.To'|translate}}: </label>
-                    <input id="tdate2" type="date" class="form-control" name="director"
-                    (change)="getDate('todate')" pTooltip="Enter To Value" tooltipPosition="bottom">
+                    <div class="text-field-position"><input id="tdate2" type="date" class="form-control" name="director"
+                            (change)="getDate('todate')" pTooltip="Enter To Value" tooltipPosition="bottom">
+                            <span class="removeClick" type="button" (click)="clearDate('t')">&times;</span></div>
                 </div>
             </div>
         </div>
