@@ -334,8 +334,8 @@ export class MapComponent implements OnInit {
 
     let point = new Point({ //Create a point
       // type: "point",
-      longitude: 31.0004,
-      latitude: 30.7865
+      longitude: 31.233334,
+      latitude: 30.033333
     });
 
     let simpleMarkerSymbol = {
@@ -352,35 +352,45 @@ export class MapComponent implements OnInit {
     });
     graphicLayer.add(pointGraphic);
     var formData = new FormData();
-    const features: any =
-      [{
+    const Features:any =
+      {
+        responseType: 'html',
+        method:'POST',
+        f:'html',
+        ssl: false,
         "attributes": {
-          "EST_NAME": "مستشفى جديده",
-          "GOV_NAME": "القاهره الجديده",
-          "EDARA_NAME": "الجديده",
-          "COD": "2000",
-          "CityCode": "212111",
-          "ESTEng_NAME": "newHost",
-          "GOVEng_NAME": "newCairo",
-          "EDAEng_NAME": "newNew",
+          "EST_NAME": "مستشفى جديده116",
+          "GOV_NAME": "القاهره الجديده16",
+          "EDARA_NAME": "16الجديده",
+          "COD": "20005",
+          "CityCode": "212016",
+          "ESTEng_NAME": "newHost16",
+          "GOVEng_NAME": "newCairo16",
+          "EDAEng_NAME": "newNew16",
         },
         "geometry": {
-          "x": 31.0004,
-          "y": 30.7865
+          "x": 31.233334,
+          "y": 30.033333
         }
-      }];
-    this.opt = features;
-    let url = environment.arcgisServerUrl + 'healthAPP/FeatureServer/0/addFeatures';
-    let options: any = {
-      feature: features,
-      Format: JSON
-    }
-    Request(url, this.opt).then(response => {
-    },
-      error => {
-      }
-    );
-  }
+      };
+      
+    //  this.opt = features;
+      let url = environment.arcgisServerUrl + 'healthAPP/FeatureServer/0/addFeatures/';
+    
+    // let options: any = {
+    //   feature: features,
+    //   Format: JSON
+    // }
+this.getStaticAPIService.postdata(Features).subscribe(d=>{
+  console.log("gggg",d);
+})
+  //   Request("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",Features).then((response:any) => {
+  //     console.log("response1111",response)
+  // },
+  //   error=>{
+  //     console.log("res",error);
+  //   });
+}
   selectMohafza() {
     this.map.remove(this.featureService.ELSHARKYA);
     this.map.remove(this.featureService.ELSHARKYA_En);
@@ -1991,3 +2001,5 @@ export class MapComponent implements OnInit {
       });
   }
 }
+
+

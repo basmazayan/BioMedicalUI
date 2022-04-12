@@ -162,6 +162,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import { RequestListComponent } from './Components/ContractRequest/request-list/request-list.component';
 import { MapComponent } from './Components/Map/map/map.component';
 import { Storage } from '@ionic/storage-angular';
+import { AgmCoreModule } from '@agm/core';
 // import { JwPaginationComponent } from 'jw-angular-pagination';
 @NgModule({
   declarations: [
@@ -301,7 +302,11 @@ import { Storage } from '@ionic/storage-angular';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    AgmCoreModule.forRoot({
+      // libraries: ["places"],
+      apiKey: 'AIzaSyCxvNEG1CRZ0pzoriAujg07y101MbOkFrQ'
+    }),
   ],
   providers: [MessageService,
     ConfirmationService,

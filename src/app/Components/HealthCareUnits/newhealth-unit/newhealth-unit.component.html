@@ -99,19 +99,19 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="organization">{{'healthCareUnit.SubOrganization'|translate}}</label>
-                                <select class="form-control" id="organization" pTooltip="select A organization Name"
-                                    tooltipPosition="bottom" name="organization" #organization="ngModel"
-                                    [(ngModel)]="healthUnitobj.organizationId"
-                                    [class.is-invalid]="organization.touched && organization.errors || AddUnitForm.submitted"
-                                    [class.is-valid]=" organization.valid && AddUnitForm.submitted" required>
+                                <label for="Suborganization">{{'healthCareUnit.SubOrganization'|translate}}</label>
+                                <select class="form-control" id="suborganization" pTooltip="select A suborganization Name"
+                                    tooltipPosition="bottom" name="suborganization" #suborganization="ngModel"
+                                    [(ngModel)]="healthUnitobj.suborganizationId"
+                                    [class.is-invalid]="suborganization.touched && suborganization.errors || AddUnitForm.submitted"
+                                    [class.is-valid]=" suborganization.valid && AddUnitForm.submitted" required>
                                     <option selected value="0" disabled>--select--</option>
                                     <option *ngFor="let org of subOrganizationList" [value]="org.id">
                                         {{translate.currentLang == "En" ? org.name:org.nameAr}}
                                     </option>
                                 </select>
                                 <div
-                                    *ngIf="(organization.touched || AddUnitForm.submitted) && organization.errors?.required">
+                                    *ngIf="(suborganization.touched || AddUnitForm.submitted) && suborganization.errors?.required">
                                     <span class="text-danger">
                                         nameAr is required
                                     </span>
@@ -173,7 +173,7 @@
                             <div class="col-md-3">
                                 <label for="Adress">{{'healthCareUnit.Adress'| translate}}</label>
                                 <textarea class="form-control" id="Adress" type="text"
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="healthUnitobj.adress"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="healthUnitobj.address"
                                     pTooltip="Please,Select An equipmentDescription"
                                     tooltipPosition="bottom"></textarea>
                             </div>
@@ -235,10 +235,16 @@
                             </div>
                         </div>
                         <br>
-
+                        
                     </fieldset>
+                    <!-- <div class="row"> -->
+                        <agm-map style="height: 500px;" [latitude]="healthUnitobj.lat" [longitude]="healthUnitobj.long" [zoom]="5"
+                            (mapClick)="mapClicked($event)" [disableDefaultUI]="false" [zoomControl]="false">
+                            <agm-marker iconUrl={{curicon}} [latitude]="healthUnitobj.lat" [longitude]="healthUnitobj.long">
+                            </agm-marker>
+                        </agm-map>
+                    <!-- </div> -->
                 </p-tabPanel>
-
             </p-tabView>
             <p-dialog [(visible)]="errorDialog" [style]="{width: '350px'}">
                 <p-header style="color: rgb(181, 4, 4);">  {{'General.Error'|translate}} </p-header>

@@ -329,7 +329,7 @@ body,
 
 /* Style the buttons inside the tab */
 .tab button {
-  background-color: inherit;
+  background-color: rgb(147, 163, 209);
   float: right;
   border: none;
   outline: none;
@@ -339,9 +339,9 @@ body,
 }
 
 /* Change background color of buttons on hover */
-.tab button:hover {
+/* .tab button:hover {
   background-color: rgb(147, 163, 209);
-}
+} */
 
 /* Create an active/current tablink class */
 .tab button.active {

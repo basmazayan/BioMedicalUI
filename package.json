@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.1.0",
     "@angular/animations": "^12.2.2",
     "@angular/cdk": "^11.2.13",
     "@angular/common": "~12.2.2",
@@ -42,6 +43,8 @@
     "@progress/kendo-licensing": "^1.2.0",
     "@techiediaries/ngx-qrcode": "^9.1.0",
     "@types/file-saver": "^2.0.2",
+    "@types/google.maps": "^3.48.5",
+    "@types/googlemaps": "^3.43.3",
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^4.6.0",
     "chart.js": "^2.9.4",
