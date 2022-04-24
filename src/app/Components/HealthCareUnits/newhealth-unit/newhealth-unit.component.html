@@ -138,12 +138,6 @@
                                 <input type="text" class="form-control" id="director" name="director"
                                     pTooltip="Enter director Name" tooltipPosition="bottom"
                                     [(ngModel)]="healthUnitobj.director" #director="ngModel">
-                                <!-- <div
-                                    *ngIf="(director.touched || AddUnitForm.submitted) && director.errors?.required">
-                                    <span class="text-danger">
-                                        Director name is required
-                                    </span>
-                                </div> -->
                             </div>
                             <div class="col-md-3">
                                 <label for="Phone">{{'healthCareUnit.Phone'|translate}}</label>
@@ -151,24 +145,12 @@
                                     pTooltip="Enter Phone" tooltipPosition="bottom"
                                     [(ngModel)]="healthUnitobj.phone" #Phone="ngModel"
                                    >
-                                <!-- <div
-                                    *ngIf="(Phone.touched || AddUnitForm.submitted) && Phone.errors?.required">
-                                    <span class="text-danger">
-                                        Phone number is required
-                                    </span>
-                                </div> -->
                             </div>
                             <div class="col-md-3">
                                 <label for="Mobile">{{'healthCareUnit.Mobile'|translate}}</label>
                                 <input type="text" class="form-control" id="Mobile" name="Mobile"
                                     pTooltip="Enter Mobile number" tooltipPosition="bottom" 
                                     [(ngModel)]="healthUnitobj.mobile" #Mobile="ngModel">
-                                <!-- <div
-                                    *ngIf="(Mobile.touched || AddUnitForm.submitted) && Mobile.errors?.required">
-                                    <span class="text-danger">
-                                        Mobile number is required
-                                    </span>
-                                </div> -->
                             </div>
                             <div class="col-md-3">
                                 <label for="Adress">{{'healthCareUnit.Adress'| translate}}</label>
@@ -184,36 +166,19 @@
                                 <input type="text" class="form-control" id="Email" name="Email"
                                     pTooltip="Enter Email" tooltipPosition="bottom"
                                     [(ngModel)]="healthUnitobj.email" #Email="ngModel">
-                                <!-- <div
-                                    *ngIf="(Email.touched || AddUnitForm.submitted) && Email.errors?.required">
-                                    <span class="text-danger">
-                                        Email is required
-                                    </span>
-                                </div> -->
+
                             </div>
                             <div class="col-md-3">
                                 <label for="Long">{{'healthCareUnit.Long'|translate}}</label>
                                 <input type="text" class="form-control" id="Long" name="Long"
                                     pTooltip="Enter Long number" tooltipPosition="bottom"
                                     [(ngModel)]="healthUnitobj.long" #Long="ngModel">
-                                <!-- <div
-                                    *ngIf="(Long.touched || AddUnitForm.submitted) && Long.errors?.required">
-                                    <span class="text-danger">
-                                        Long number is required
-                                    </span>
-                                </div> -->
                             </div>
                             <div class="col-md-3">
                                 <label for="Lat">{{'healthCareUnit.Lat'|translate}}</label>
                                 <input type="text" class="form-control" id="Lat" name="Lat"
                                     pTooltip="Enter Lat number" tooltipPosition="bottom"
                                     [(ngModel)]="healthUnitobj.lat" #Lat="ngModel">
-                                <!-- <div
-                                    *ngIf="(Lat.touched || AddUnitForm.submitted) && Lat.errors?.required">
-                                    <span class="text-danger">
-                                        Lat number is required
-                                    </span>
-                                </div> -->
                             </div>
                         </div>
                         

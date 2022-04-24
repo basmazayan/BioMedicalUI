@@ -24,6 +24,8 @@ import { environment } from 'src/environments/environment';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { HealthCareUnit } from 'src/app/Shared/Models/HealthCareUnit';
 import { dateVM } from 'src/app/Shared/Models/dateVM';
+// import * as L from 'leaflet';
+// import 'esri-leaflet';
 // import * as enFunc from '../../../../../assets';
 @Component({
   selector: 'app-map',
@@ -70,7 +72,7 @@ export class MapComponent implements OnInit {
   graphicLayer: GraphicsLayer;
   defaultBaseMap: string;
   newData: string[] = [];
-  opt: string;
+  opt: any;
   //hosCodes:any[]=[];
   hosCodeInDeprement:any[]=[];
   hosCodeInBrand:any[]=[];
@@ -352,44 +354,61 @@ export class MapComponent implements OnInit {
     });
     graphicLayer.add(pointGraphic);
     var formData = new FormData();
-    const Features:any =
-      {
+    let Features:any =
+    {
         responseType: 'html',
-        method:'POST',
-        f:'html',
-        ssl: false,
-        "attributes": {
-          "EST_NAME": "مستشفى جديده116",
-          "GOV_NAME": "القاهره الجديده16",
-          "EDARA_NAME": "16الجديده",
-          "COD": "20005",
-          "CityCode": "212016",
-          "ESTEng_NAME": "newHost16",
-          "GOVEng_NAME": "newCairo16",
-          "EDAEng_NAME": "newNew16",
+        rollbackOnFailure:true,
+        f: 'json',
+        Features: {
+          EST_NAME: "مستشفى جديده117",
+          GOV_NAME: "القاهره الجديده17",
+          EDARA_NAME: "17الجديده",
+          COD: "20005",
+          CityCode: "212017",
+          ESTEng_NAME: "newHost17",
+          GOVEng_NAME: "newCairo17",
+          EDAEng_NAME: "newNew17",
         },
-        "geometry": {
-          "x": 31.233334,
-          "y": 30.033333
-        }
+        geometry: {
+          x: 31.233334,
+          y: 30.033333
+        },
+        geometryType:"esriGeometryPoint"
       };
+
+      // let queryOption: any = {
+      //   responseType: 'json',
+      //   query: {
+      //     f: 'json',
+      //     where: `MohafazaCode in (${this.mohafazatCode})`,
+      //     returnCountOnly: false,
+      //     outFields: '*',
+      //     returnGeometry: true,
+      //   },
+      // };
       
-    //  this.opt = features;
+      
       let url = environment.arcgisServerUrl + 'healthAPP/FeatureServer/0/addFeatures/';
+      // this.getStaticAPIService.postdata(url,Features).subscribe(d=>{
+      //   console.log("d",d)
+      // },
+      // error=>{
+      //   console.log('err',error)
+      // });
     
     // let options: any = {
     //   feature: features,
     //   Format: JSON
     // }
-this.getStaticAPIService.postdata(Features).subscribe(d=>{
-  console.log("gggg",d);
-})
-  //   Request("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",Features).then((response:any) => {
-  //     console.log("response1111",response)
-  // },
-  //   error=>{
-  //     console.log("res",error);
-  //   });
+    // JSON.stringify(Features)
+   
+
+    Request("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",Features).then((response:any) => {
+      console.log("response1111",response)
+  },
+    error=>{
+      console.log("res",error);
+    });
 }
   selectMohafza() {
     this.map.remove(this.featureService.ELSHARKYA);
@@ -470,6 +489,7 @@ this.getStaticAPIService.postdata(Features).subscribe(d=>{
                   (response: any) => {
                    // let hspitalCode = []
                     for (let i = 0; i < response.data.features.length; i++) {
+                      
                       this.hspitalCode.push(response.data.features[i].attributes.COD)
                     }
                     if(this.fromPrice!=0 || this.toPrice!=0)
@@ -528,6 +548,8 @@ this.getStaticAPIService.postdata(Features).subscribe(d=>{
         Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOption).then(
           (response: any) => {
             this.ADMIN_ELSHARKYAArr = [];
+            console.log("response.data.features",response.data.features)
+
             for (let i = 0; i < response.data.features.length; i++) {
               let arr = [
                 {
@@ -552,12 +574,11 @@ this.getStaticAPIService.postdata(Features).subscribe(d=>{
             //get cityCode feature
             Request(this.featureService.ADMIN_ELSHARKYAUrl, queryOptionCity).then(
               (response: any) => {
+                console.log("city",response.data.features)
                 this.citycode = []
-                for (let i = 0; i < response.data.features.length; i++) {
+                for (let i = 0; i < response.data.features.length; i++) {              
                   this.citycode.push(response.data.features[i].attributes.CityCode)
-
                 }
-
                 //draw hospitals
                 let queryOptionHospitals: any = {
                   responseType: 'json',
@@ -574,6 +595,7 @@ this.getStaticAPIService.postdata(Features).subscribe(d=>{
                   (response: any) => {
                     //let hspitalCode = []
                     for (let i = 0; i < response.data.features.length; i++) {
+                      // console.log("hospitals",response.data.features)
                       this.hspitalCode.push(response.data.features[i].attributes.COD)
                     }
                     if(this.fromPrice!=0 || this.toPrice!=0)
@@ -652,11 +674,11 @@ this.getStaticAPIService.postdata(Features).subscribe(d=>{
     if (this.ctyCode.length > 0) {
       if (this.translate.currentLang == "Ar") {
         this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
-        // this.featureService.FeatureADMIN_ELSHARKYA(
-        //   this.map,
-        //   1,
-        //   `CityCode in (${this.ctyCode})`
-        // );
+        this.featureService.FeatureADMIN_ELSHARKYA(
+          this.map,
+          1,
+          `CityCode in (${this.ctyCode})`
+        );
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
@@ -718,11 +740,11 @@ this.getStaticAPIService.postdata(Features).subscribe(d=>{
       }
       else if (this.translate.currentLang == "En") {
         this.map.remove(this.featureService.HOSP_ELSHARKYA);
-        // this.featureService.FeatureADMIN_ELSHARKYA_En(
-        //   this.map,
-        //   1,
-        //   `CityCode in (${this.ctyCode})`
-        // );
+        this.featureService.FeatureADMIN_ELSHARKYA_En(
+          this.map,
+          1,
+          `CityCode in (${this.ctyCode})`
+        );
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {

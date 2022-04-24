@@ -154,10 +154,10 @@ export class GetStaticApiService {
       .pipe();
   }
 
-  postdata(obj)
+  postdata(url,obj)
   {
     return this.http
-    .post("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",obj)
+    .post(url,obj)
     .pipe();
 
   }

@@ -76,8 +76,8 @@ export class NewhealthUnitComponent implements OnInit {
     });
   }
   saveHealthUnit(){
-    this.sharedService.addNewHealthCareUnit(this.healthUnitobj).subscribe(
-      data=>{
+  //  this.sharedService.addNewHealthCareUnit(this.healthUnitobj).subscribe(
+      //data=>{
         let graphicLayer = new GraphicsLayer();
         // (window as any)._map.add(graphicLayer);
         // (window as any)._graphicLayer = graphicLayer;
@@ -101,6 +101,7 @@ export class NewhealthUnitComponent implements OnInit {
         const features: any =
       {
         responseType: 'html',
+        method:'Post',
         "attributes": {
           "EST_NAME": this.healthUnitobj.nameAr,
           "GOV_NAME":  this.healthUnitobj.governorateNameAr,
@@ -130,12 +131,13 @@ export class NewhealthUnitComponent implements OnInit {
           console.log("error",error)
         }
       );
-      }, 
-      error=>{
-        this.errorDialog=true,
-        this.error=error.error.message;
+    //  }, 
+      // error=>{
+      //   this.errorDialog=true,
+      //   this.error=error.error.message;
         
-      });
+      // }
+      //);
     
   }
   hideDialog(){

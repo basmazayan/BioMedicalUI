@@ -51,6 +51,7 @@
     "cli-update": "^3.2.7",
     "cors": "^2.8.5",
     "date-fns": "^2.22.1",
+    "esri-leaflet": "^3.0.8",
     "esri-loader": "^3.4.0",
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
