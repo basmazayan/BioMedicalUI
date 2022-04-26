@@ -76,11 +76,9 @@ export class NewhealthUnitComponent implements OnInit {
     });
   }
   saveHealthUnit(){
-  //  this.sharedService.addNewHealthCareUnit(this.healthUnitobj).subscribe(
-      //data=>{
+    this.sharedService.addNewHealthCareUnit(this.healthUnitobj).subscribe(
+      data=>{
         let graphicLayer = new GraphicsLayer();
-        // (window as any)._map.add(graphicLayer);
-        // (window as any)._graphicLayer = graphicLayer;
         let point = new Point({
           longitude: this.healthUnitobj.long,
           latitude: this.healthUnitobj.lat
@@ -98,10 +96,8 @@ export class NewhealthUnitComponent implements OnInit {
           symbol: simpleMarkerSymbol
         });
         graphicLayer.add(pointGraphic);
-        const features: any =
+      let features = [
       {
-        responseType: 'html',
-        method:'Post',
         "attributes": {
           "EST_NAME": this.healthUnitobj.nameAr,
           "GOV_NAME":  this.healthUnitobj.governorateNameAr,
@@ -116,28 +112,38 @@ export class NewhealthUnitComponent implements OnInit {
           "x": this.healthUnitobj.long,
           "y": this.healthUnitobj.lat
         }
-      };
-      this.option = features;
+      }];
+      
+      //this.option = features;
       let url = environment.arcgisServerUrl + 'healthAPP/FeatureServer/0/addFeatures';
       let options: any = {
         feature: features,
         Format: JSON
       }
-      Request(url, this.option).then(response => {
-        console.log("result",response)
-        this.router.navigate(['/home/healthUnitsList'])
+      
+        Request("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",{
+        query:
+        {
+          rollbackOnFailure:true,
+          features:JSON.stringify(features),
+          f:"pjson",
+        },
+        responseType:"json",
+        method:"post"
+      }).then((response:any) => 
+      {
+        console.log("response1111",response)
       },
-        error => {
-          console.log("error",error)
-        }
-      );
-    //  }, 
-      // error=>{
-      //   this.errorDialog=true,
-      //   this.error=error.error.message;
+      error=>{
+        console.log("res",error);
+      });
+     }, 
+      error=>{
+        this.errorDialog=true,
+        this.error=error.error.message;
         
-      // }
-      //);
+      }
+      );
     
   }
   hideDialog(){
