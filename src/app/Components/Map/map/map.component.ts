@@ -354,61 +354,38 @@ export class MapComponent implements OnInit {
     });
     graphicLayer.add(pointGraphic);
     var formData = new FormData();
-    let Features:any =
-    {
-        responseType: 'html',
-        rollbackOnFailure:true,
-        f: 'json',
-        Features: {
-          EST_NAME: "مستشفى جديده117",
-          GOV_NAME: "القاهره الجديده17",
-          EDARA_NAME: "17الجديده",
-          COD: "20005",
-          CityCode: "212017",
-          ESTEng_NAME: "newHost17",
-          GOVEng_NAME: "newCairo17",
-          EDAEng_NAME: "newNew17",
-        },
-        geometry: {
-          x: 31.233334,
-          y: 30.033333
-        },
-        geometryType:"esriGeometryPoint"
-      };
-
-      // let queryOption: any = {
-      //   responseType: 'json',
-      //   query: {
-      //     f: 'json',
-      //     where: `MohafazaCode in (${this.mohafazatCode})`,
-      //     returnCountOnly: false,
-      //     outFields: '*',
-      //     returnGeometry: true,
-      //   },
-      // };
-      
-      
-      let url = environment.arcgisServerUrl + 'healthAPP/FeatureServer/0/addFeatures/';
-      // this.getStaticAPIService.postdata(url,Features).subscribe(d=>{
-      //   console.log("d",d)
-      // },
-      // error=>{
-      //   console.log('err',error)
-      // });
-    
-    // let options: any = {
-    //   feature: features,
-    //   Format: JSON
-    // }
-    // JSON.stringify(Features)
-   
-
-    Request("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",Features).then((response:any) => {
-      console.log("response1111",response)
-  },
-    error=>{
-      console.log("res",error);
-    });
+    let features = [{
+          "attributes": {
+            "EST_NAME": "مستشفى جديده117",
+            "GOV_NAME": "القاهره الجديده17",
+            "EDARA_NAME": "17الجديده",
+            "COD": 205,
+            "CityCode": "212017",
+            "ESTEng_NAME": "newHost17",
+            "GOVEng_NAME": "newCairo17",
+            "EDAEng_NAME": "newNew17",
+          },
+          "geometry": {
+            "x": 31.233334,
+            "y": 30.033333
+          },
+        }]
+    // Request("http://10.10.0.147/arcgis/rest/services/healthAPP/FeatureServer/0/addFeatures",{
+    //   query:
+    //   {
+    //     rollbackOnFailure:true,
+    //     features:JSON.stringify(features),
+    //     f:"pjson",
+    //   },
+    //   responseType:"json",
+    //   method:"post"
+    // }).then((response:any) => 
+    // {
+    //   console.log("response1111",response)
+    // },
+    // error=>{
+    //   console.log("res",error);
+    // });
 }
   selectMohafza() {
     this.map.remove(this.featureService.ELSHARKYA);
