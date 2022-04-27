@@ -69,6 +69,7 @@ export class Equipment {
     contractRequestId:number;
     organizationrequestid:number;
     contractid:number;
+    DepreciationRate:number;
 }
 
 export class BrandVM {

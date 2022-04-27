@@ -198,7 +198,8 @@ export class NewEquipmentComponent implements OnInit {
       organizationId:0,
       contractRequestId:0,
       organizationrequestid:0,
-      contractid:0
+      contractid:0,
+      DepreciationRate:0
     }
     // this.invent = {
 

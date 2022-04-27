@@ -146,7 +146,8 @@ export class EquipmentDetailsAdminComponent implements OnInit {
       organizationId:0,
       contractRequestId:0,
       organizationrequestid:0,
-      contractid:0
+      contractid:0,
+      DepreciationRate:0
     }
     this.equipmentObj.employeeIDs = [];
     this.openNew(this.activeRoute.snapshot.params['id']);

@@ -129,7 +129,8 @@ export class ServiceRequestAddComponent implements OnInit {
       organizationId:0,
       contractRequestId:0,
       organizationrequestid:0,
-      contractid:0
+      contractid:0,
+      DepreciationRate:0
     }
     this.districtsEquipments = []
     this.s = this.datePipe.transform(this.myDate, 'yyyy-MM-dd')

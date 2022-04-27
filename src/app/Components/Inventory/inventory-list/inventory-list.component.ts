@@ -137,7 +137,8 @@ export class InventoryListComponent implements OnInit {
       organizationId:0,
       contractRequestId:0,
       organizationrequestid:0,
-      contractid:0
+      contractid:0,
+      DepreciationRate:0
     }
     this.Attach = {
       id: 0,

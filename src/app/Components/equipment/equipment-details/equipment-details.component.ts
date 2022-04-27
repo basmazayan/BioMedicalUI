@@ -167,7 +167,8 @@ export class EquipmentDetailsComponent implements OnInit {
      ,
       contractRequestId:0,
       organizationrequestid:0,
-      contractid:0
+      contractid:0,
+      DepreciationRate:0
     }
 
     this.equipmentObj.employeeIDs = [];

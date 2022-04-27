@@ -158,7 +158,8 @@ export class PdFCreateComponent implements OnInit {
    
       contractRequestId:0,
       organizationrequestid:0,
-      contractid:0
+      contractid:0,
+      DepreciationRate:0
     }
 
     this.filteredObj = {
