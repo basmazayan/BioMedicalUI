@@ -395,6 +395,7 @@ export class MapComponent implements OnInit {
     this.map.remove(this.featureService.HOSP_ELSHARKYA);
     this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
     this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+    console.log("this.mohafazatCode.length",this.mohafazatCode.length)
     if (this.mohafazatCode.length > 0) {
       this.organizationIds = [];
       this.ctyCode = [];
