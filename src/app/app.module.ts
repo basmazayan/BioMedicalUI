@@ -163,6 +163,9 @@ import { RequestListComponent } from './Components/ContractRequest/request-list/
 import { MapComponent } from './Components/Map/map/map.component';
 import { Storage } from '@ionic/storage-angular';
 import { AgmCoreModule } from '@agm/core';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatExpansionModule} from '@angular/material/expansion';
+// import { MatNativeDateModule } from '@angular/material/core';
 // import { JwPaginationComponent } from 'jw-angular-pagination';
 @NgModule({
   declarations: [
@@ -236,6 +239,8 @@ import { AgmCoreModule } from '@agm/core';
       MapComponent,
   ],
   imports: [
+    MatExpansionModule,
+    MatNativeDateModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -314,6 +319,8 @@ import { AgmCoreModule } from '@agm/core';
     DialogService,
     DatePipe,
     Storage,
+    
+    
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 

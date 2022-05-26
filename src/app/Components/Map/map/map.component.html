@@ -1,243 +1,155 @@
 <div class="row">
-<aside class="col-5 col-md-2 ">
-    <div class="accordion" id="accordionExample">
-      <div class="accordion-item">
-
-        <!-- //////////////////////// Directories-->
-          <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse2" role="button" aria-expanded="false" 
-              aria-controls="collapseExample">{{'equipment.healthDirectory' |translate}}</a>
-                <div id="collapse2"  class="panel-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body p-0" style="margin-top: -20px;">
-                        <div style="display: block;" class="input-group">
-                        <div class="form-outline ">
-                            <label class="form-label" for="formS1"></label>
-                        </div>
-                        </div>
-                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                            <li class="list-group-item" *ngFor="let item of this.ELSHARKYAArr">
-                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                            [value]="item.code">
-                                             {{item.arName}} -->
-                                <p-checkbox name="group1" [value]="item.code" [(ngModel)]="mohafazatCode"
-                                                (click)="selectMohafza()"></p-checkbox>
-                                                <!-- {{item.arName}} -->
+    <aside class="col-5 col-md-2 ">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <!---------------------Governorate-------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.healthDirectory' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of this.ELSHARKYAArr"
+                            class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.code" [(ngModel)]="mohafazatCode"
+                                (click)="selectMohafza()"></p-checkbox>
                                 {{translate.currentLang == "En" ?
                                 item.enName:item.arName}}
-                            </li>
-                        </ul>
+                        </mat-nav-list>
                     </div>
-                </div>
-
-
-
-        <!------------------Cities-------------------------->
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse3" role="button" aria-expanded="false" 
-              aria-controls="collapseExample">{{'equipment.district' |translate}}</a>
-                <div id="collapse3"  class="panel-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body p-0" style="margin-top: -20px;">
-                        <div style="display: block;" class="input-group">
-                        <div class="form-outline ">
-                            <label class="form-label" for="formS1"></label>
-                        </div>
-                        </div>
-                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                            <li class="list-group-item" *ngFor="let item of this.ADMIN_ELSHARKYAArr">
-                                
-                                <p-checkbox name="group1" [value]="item.cityCode" [(ngModel)]="ctyCode"
-                                                (click)="selectCity()"></p-checkbox>
-                                               
-                                {{translate.currentLang == "En" ?
+                </mat-expansion-panel>
+                <!-----------------------Cities--------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.district' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of this.ADMIN_ELSHARKYAArr"
+                            class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.code" [(ngModel)]="ctyCode" (click)="selectCity()">
+                            </p-checkbox>
+                            {{translate.currentLang == "En" ?
                                 item.enName:item.arName}}
-                            </li>
-                        </ul>
+                        </mat-nav-list>
                     </div>
-                </div>
-
-        <!--------------------Organizations------------------->
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse4" role="button" aria-expanded="false" 
-              aria-controls="collapseExample">{{'equipment.organization' |translate}}</a>
-                <div id="collapse4"  class="panel-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body p-0" style="margin-top: -20px;">
-                        <div style="display: block;" class="input-group">
-                        <div class="form-outline ">
-                            <label class="form-label" for="formS1"></label>
-                        </div>
-                        </div>
-                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                            <li class="list-group-item" *ngFor="let item of orginataions">
-                             
-                                <p-checkbox name="group1" [value]="item.id" [(ngModel)]="organizationIds"
+                </mat-expansion-panel>
+                <!-----------------------Organizations--------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.organization' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of orginataions" class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.id" [(ngModel)]="organizationIds"
                                 (click)="selectOrginataions()"></p-checkbox>
-                                                
                                 {{translate.currentLang == "En" ?
                                 item.name:item.nameAr}}
-                            </li>
-                        </ul>
+                        </mat-nav-list>
                     </div>
-                </div>
-        <!-----------------------SubOrganization--------------------------->
-
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse5" role="button" aria-expanded="false" 
-              aria-controls="collapseExample">{{'equipment.SubOrganization' |translate}}</a>
-                <div id="collapse5"  class="panel-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body p-0" style="margin-top: -20px;">
-                        <div style="display: block;" class="input-group">
-                        <div class="form-outline ">
-                            <label class="form-label" for="formS1"></label>
-                        </div>
-                        </div>
-                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                            <li class="list-group-item" *ngFor="let item of subOrginataions">
-                                <!-- <input class="form-check-input me-1" (click)="selectMohafza($event)" type="checkbox"
-                                            [value]="item.code">
-                                             {{item.arName}} -->
-                                <p-checkbox name="group1" [value]="item.id" [(ngModel)]="subOrganizationIds"
+                </mat-expansion-panel>
+                <!-----------------------SubOrganizations--------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.SubOrganization' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of subOrginataions" class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.id" [(ngModel)]="subOrganizationIds"
                                 (click)="selectSubOrginataions()"></p-checkbox>
-                                                <!-- {{item.name}} -->
                                 {{translate.currentLang == "En" ?
                                 item.name:item.nameAr}}
-                            </li>
-                        </ul>
+                        </mat-nav-list>
                     </div>
-                </div>
-
-        <!-----------------------Department----------------------------->
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse6" role="button" aria-expanded="false" 
-              aria-controls="collapseExample">{{'equipment.Department' |translate}}</a>
-                <div id="collapse6"  class="panel-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body p-0" style="margin-top: -20px;">
-                        <div style="display: block;" class="input-group">
-                        <div class="form-outline ">
-                            <label class="form-label" for="formS1"></label>
-                        </div>
-                        </div>
-                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                            <li class="list-group-item" *ngFor="let item of DepartmantsData">
-                                
-                                <p-checkbox name="group1" [value]="item.departmentID" [(ngModel)]="departmentIds"
+                </mat-expansion-panel>
+                <!-----------------------Departments--------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.Department' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of DepartmantsData" class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.departmentID" [(ngModel)]="departmentIds"
                                 (click)="selectDepartmants()"></p-checkbox>
-                                       
                                 {{translate.currentLang == "En" ?
                                 item.departmentEngName:item.departmentArName}}
-                            </li>
-                        </ul>
+                        </mat-nav-list>
                     </div>
-                </div>
-
-        <!-----------------------Manufacturer----------------------------->
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse7" role="button" aria-expanded="false" 
-              aria-controls="collapseExample">{{'equipment.Manufacturer' |translate}}</a>
-                <div id="collapse7"  class="panel-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body p-0" style="margin-top: -20px;">
-                        <div style="display: block;" class="input-group">
-                        <div class="form-outline ">
-                            <label class="form-label" for="formS1"></label>
-                        </div>
-                        </div>
-                        <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                            <li class="list-group-item" *ngFor="let item of brands">
-                                <p-checkbox name="group1" [value]="item.hospitalCode" [(ngModel)]="hosCodesInBrand"
+                </mat-expansion-panel>
+                <!-----------------------Brands--------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.Manufacturer' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of brands" class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.id" [(ngModel)]="hosCodesInBrand"
                                 (click)="selectBrand()"></p-checkbox>
                                 {{translate.currentLang == "En" ?
                                 item.name:item.nameAr}}
-                            </li>
-                        </ul>
+                        </mat-nav-list>
                     </div>
-                </div>
-        
-        <!-----------------------Suppliers----------------------------->
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse8" role="button" aria-expanded="false" 
-        aria-controls="collapseExample">{{'equipment.Supplier' |translate}}</a>
-          <div id="collapse8"  class="panel-collapse collapse" aria-labelledby="headingOne"
-              data-bs-parent="#accordionExample">
-              <div class="accordion-body p-0" style="margin-top: -20px;">
-                  <div style="display: block;" class="input-group">
-                  <div class="form-outline ">
-                      <label class="form-label" for="formS1"></label>
-                  </div>
-                  </div>
-                  <ul class="list-group p-1" style="height: auto;max-height: 300px;width: auto; max-width: 100vm; overflow: auto;">
-                      <li class="list-group-item" *ngFor="let item of supplierNames">
-                          <p-checkbox name="group1" [value]="item.id" [(ngModel)]="supplierIds"
-                          (click)="selectSupplier()"></p-checkbox>
-                          {{translate.currentLang == "En" ?
-                          item.name:item.nameAr}}
-                      </li>
-                  </ul>
-              </div>
-          </div>
-
-    <!-----------------------Prices----------------------------->
-        <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse9" role="button" aria-expanded="false" 
-          aria-controls="collapseExample">{{'map.PriceRange'|translate}}</a>
-          <div id="collapse9"  class="panel-collapse collapse" aria-labelledby="headingOne"
-              data-bs-parent="#accordionExample">
-              <div class="accordion-body p-0" style="margin-top: -20px;">
-                  <div style="display: block;" class="input-group">
-                    <div class="form-outline ">
-                        <label class="form-label" for="formS1"></label>
+                </mat-expansion-panel>
+                <!-----------------------Suppliers--------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'equipment.Supplier' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                        <mat-nav-list class="mat-nav-list" *ngFor="let item of supplierNames" class="list-group-item">
+                            <p-checkbox name="group1" [value]="item.id" [(ngModel)]="supplierIds"
+                                (click)="selectSupplier()"></p-checkbox>
+                                {{translate.currentLang == "En" ?
+                                item.name:item.nameAr}}
+                        </mat-nav-list>
                     </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-lg-6">
-                          <label id="fprice1">{{'map.From'|translate}}: </label>
-                          <input type="text" class="form-control" id="fprice2" name="director"
-                                 (focusout)="onFocusOutEvent($event,'from')" [(ngModel)]="fromPrice" 
-                                 pTooltip="Enter From Value" tooltipPosition="bottom">
-                      </div>
-                      <div class="col-lg-6">
-                        <label id="tprice1">{{'map.To'|translate}}: </label>
-                        <input type="text" class="form-control" id="tprice2" name="director"
-                               (focusout)="onFocusOutEvent($event,'to')" [(ngModel)]="toPrice" 
-                               pTooltip="Enter To Value" tooltipPosition="bottom">
-                      </div>
-                      <br>
-                  </div>
-              </div>
-          </div>
+                </mat-expansion-panel>
 
-          
-    <!-----------------------Date Range----------------------------->
-    <a data-toggle="collapse" class="list-group-item list-group-item-action   dropdown-toggle sidetoggle"  href="#collapse10" role="button" aria-expanded="false" 
-        aria-controls="collapseExample">{{'map.DateRange'|translate}}</a>
-        <div id="collapse10"  class="panel-collapse collapse" aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body p-0" style="margin-top: -20px;">
-                <div style="display: block;" class="input-group">
-                  <div class="form-outline ">
-                      <label class="form-label" for="formS1"></label>
-                  </div>
-                </div>
-                <div class="row fdate" style="width: 80%;">
-                        <label id="fdate1">{{'map.From'|translate}}: </label>
-                        <div class="text-field-position"><input id="fdate2" type="date" class="form-control date-input" name="director" 
-                              (change)="getDate('fromdate')" pTooltip="Enter From Value" tooltipPosition="bottom">
-                              <span class="removeClick" type="button" (click)="clearDate('f')">&times;</span></div>
-                              <!-- <i class="form-control-clear pi pi-times" id="clcbtn"></i> -->
-                </div>
-                <div class="row fdate" style="width: 80%;">
-                    <label id="tdate1">{{'map.To'|translate}}: </label>
-                    <div class="text-field-position"><input id="tdate2" type="date" class="form-control" name="director"
-                            (change)="getDate('todate')" pTooltip="Enter To Value" tooltipPosition="bottom">
-                            <span class="removeClick" type="button" (click)="clearDate('t')">&times;</span></div>
-                </div>
+                <!-----------------------Prices----------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'map.PriceRange' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'En' ? 'priceStyle': 'priceStyleAr'">
+                            <mat-form-field class="example-full-width">
+                                <mat-label [ngClass]="translate.currentLang == 'En' ? 'inputStyle': 'inputStyleAr'">{{'map.From'|translate}}:</mat-label>
+                                <input matInput placeholder="Ex. 1000..." id="fprice2"
+                                    (focusout)="onFocusOutEvent($event,'from')" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="fromPrice">
+                            </mat-form-field>
+                            <mat-form-field class="example-full-width">
+                                <mat-label [ngClass]="translate.currentLang == 'En' ? 'inputStyle': 'inputStyleAr'">{{'map.To'|translate}}:</mat-label>
+                                <input matInput placeholder="Ex. 1000..." id="tprice2"
+                                    (focusout)="onFocusOutEvent($event,'to')" [(ngModel)]="toPrice"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+                    </div>
+                </mat-expansion-panel>
+
+                <!-----------------------Date----------------------------->
+                <mat-expansion-panel [class.mat-elevation-z0]="true" style="border:1px solid gray ;">
+                    <mat-expansion-panel-header style="background-color:menu; height:30px;">
+                        {{'map.DateRange' |translate}}
+                    </mat-expansion-panel-header>
+                    <div [ngClass]="translate.currentLang == 'En' ? 'dateStyle': 'dateStyleAr'">
+                            <mat-form-field>
+                                <mat-label [ngClass]="translate.currentLang == 'En' ? 'inputStyle': 'inputStyleAr'">{{'map.From'|translate}}:</mat-label>
+                                <input matInput [matDatepicker]="picker1" id="fdate2" (dateChange)="getDate()">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label [ngClass]="translate.currentLang == 'En' ? 'inputStyle': 'inputStyleAr'">{{'map.To'|translate}}:</mat-label>
+                                <input matInput [matDatepicker]="picker2" id="tdate2" (dateChange)="getDate()">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                    </div>
+                </mat-expansion-panel>
             </div>
         </div>
-  </div>
- </div>
-</aside>
 
-<!-- <div *ngIf="translate.currentLang==='Ar'" class="col-7  col-md-10" style="height: 100vh;">
-    <div id="viewDiv" class="w-100 h-100 "></div>
-</div> -->
-<div class="col-7 col-md-10" style="height: 100vh;">
-    <div id="viewDiv" class="w-100 h-100 "></div>
-</div>
+    </aside>
 
+    <div class="col-7 col-md-10" style="height: 100vh;">
+        <div id="viewDiv" class="w-100 h-100"></div>
+    </div>
 </div>

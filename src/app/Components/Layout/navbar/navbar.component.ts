@@ -69,7 +69,7 @@ export class NavbarComponent implements OnInit {
     this.Lang = lang;
     this.href = this.router.url;
     this.translate.use(lang);
-    this.lng.emit(lang);
+    // this.lng.emit(lang);
     this.behaviorSubject.updateData(lang);
     // let currentUrl = this.route.url;
     // this.route.routeReuseStrategy.shouldReuseRoute = () => false;

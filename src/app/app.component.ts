@@ -17,12 +17,12 @@ export class AppComponent {
       if(event.lang == 'Ar')
       {
         this.direction = 'rtl';
-        this.selectedLang='Ar';      
+        this.selectedLang='Ar';     
       } 
       else       
       {
         this.direction = 'ltr';
-        this.selectedLang='En';  
+        this.selectedLang='En';    
       }
     });
   }

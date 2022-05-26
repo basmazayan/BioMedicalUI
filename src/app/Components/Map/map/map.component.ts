@@ -97,10 +97,10 @@ export class MapComponent implements OnInit {
     this.defaultBaseMap = 'streets';
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       if (event.lang == 'Ar') {
-        document.getElementById('fdate1').style.marginRight="15%";
-        document.getElementById('fdate2').style.marginRight="15%";
-        document.getElementById('tdate1').style.marginRight="15%";
-        document.getElementById('tdate2').style.marginRight="15%";
+        // document.getElementById('fdate1').style.marginRight="15%";
+        // document.getElementById('fdate2').style.marginRight="15%";
+        // document.getElementById('tdate1').style.marginRight="15%";
+        // document.getElementById('tdate2').style.marginRight="15%";
         if(this.fromPrice!=0 || this.toPrice!=0)
         {
           var frm=$('#fprice2').val();
@@ -116,16 +116,20 @@ export class MapComponent implements OnInit {
         }
         else if(this.dates.from!=null || this.dates.to!=null)
         {
-          if(this.dates.to==null)
-          {
-            this.dates.from=new Date($('#fdate2').val().toString());
-            this.getDate('fromdate');
-          }
-          else if(this.dates.from==null)
-          {
-            this.dates.to=new Date($('#tdate2').val().toString());
-            this.getDate('todate');
-          }
+          this.dates.from=new Date($('#fdate2').val().toString());
+          this.dates.to=new Date($('#tdate2').val().toString());
+          this.getDate();
+
+          // if(this.dates.to==null)
+          // {
+          //   this.dates.from=new Date($('#fdate2').val().toString());
+          //   this.getDate('fromdate');
+          // }
+          // else if(this.dates.from==null)
+          // {
+          //   this.dates.to=new Date($('#tdate2').val().toString());
+          //   this.getDate('todate');
+          // }
         }
         else if(this.supplierIds.length>0 && this.supplierIds!=null){
           this.selectSupplier();
@@ -165,16 +169,9 @@ export class MapComponent implements OnInit {
         }
         else if(this.dates.from!=null || this.dates.to!=null)
         {
-          if(this.dates.to==null)
-          {
-            this.dates.from=new Date($('#fdate2').val().toString());
-            this.getDate('fromdate');
-          }
-          else if(this.dates.from==null)
-          {
-            this.dates.to=new Date($('#tdate2').val().toString());
-            this.getDate('todate');
-          }
+          this.dates.from=new Date($('#fdate2').val().toString());
+          this.dates.to=new Date($('#tdate2').val().toString());
+          this.getDate();
         }
         else if(this.supplierIds.length>0 && this.supplierIds!=null){
           this.selectSupplier();
@@ -252,6 +249,7 @@ export class MapComponent implements OnInit {
   }
 
   initializeMap() {
+    console.log("initializeMap")
     const bufferLayer = new GraphicsLayer({
       blendMode: 'hard-light',
     });
@@ -486,16 +484,9 @@ export class MapComponent implements OnInit {
                     }
                     else if(this.dates.from!=null || this.dates.to!=null)
                     {
-                      if(this.dates.to==null)
-                      {
-                        this.dates.from=new Date($('#fdate2').val().toString());
-                        this.getDate('fromdate');
-                      }
-                      else if(this.dates.from==null)
-                      {
-                        this.dates.to=new Date($('#tdate2').val().toString());
-                        this.getDate('todate');
-                      }
+                      this.dates.from=new Date($('#fdate2').val().toString());
+                      this.dates.to=new Date($('#tdate2').val().toString());
+                      this.getDate();
                     }
                     else {this.selectHospital(true, this.hspitalCode)}
                   });
@@ -592,16 +583,9 @@ export class MapComponent implements OnInit {
                     }
                     else if(this.dates.from!=null || this.dates.to!=null)
                     {
-                      if(this.dates.to==null)
-                      {
-                        this.dates.from=new Date($('#fdate2').val().toString());
-                        this.getDate('fromdate');
-                      }
-                      else if(this.dates.from==null)
-                      {
-                        this.dates.to=new Date($('#tdate2').val().toString());
-                        this.getDate('todate');
-                      }
+                      this.dates.from=new Date($('#fdate2').val().toString());
+                      this.dates.to=new Date($('#tdate2').val().toString());
+                      this.getDate();
                     }
                     else{this.selectHospital(true, this.hspitalCode)}
                   });
@@ -626,16 +610,9 @@ export class MapComponent implements OnInit {
       }
       else if(this.dates.from!=null || this.dates.to!=null)
       {
-        if(this.dates.to==null)
-        {
-          this.dates.from=new Date($('#fdate2').val().toString());
-          this.getDate('fromdate');
-        }
-        else if(this.dates.from==null)
-        {
-          this.dates.to=new Date($('#tdate2').val().toString());
-          this.getDate('todate');
-        }
+        this.dates.from=new Date($('#fdate2').val().toString());
+        this.dates.to=new Date($('#tdate2').val().toString());
+        this.getDate();
       }
       // this.hspitalCode=[];
      // else {this.selectHospital(true, this.hspitalCode)}
@@ -702,16 +679,9 @@ export class MapComponent implements OnInit {
             }
             else if(this.dates.from!=null || this.dates.to!=null)
             {
-              if(this.dates.to==null)
-              {
-                this.dates.from=new Date($('#fdate2').val().toString());
-                this.getDate('fromdate');
-              }
-              else if(this.dates.from==null)
-              {
-                this.dates.to=new Date($('#tdate2').val().toString());
-                this.getDate('todate');
-              }
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate();
             }
             else{this.selectHospital(true, this.hspitalCode)}
           });
@@ -727,6 +697,8 @@ export class MapComponent implements OnInit {
         this.hospitalCode = [];
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
+          console.log("hospitalsInCity",re)
+
             this.getStaticAPIService
               .GetOrginisations(this.model)
               .subscribe((res: any) => {
@@ -768,16 +740,9 @@ export class MapComponent implements OnInit {
             }
             else if(this.dates.from!=null || this.dates.to!=null)
             {
-              if(this.dates.to==null)
-              {
-                this.dates.from=new Date($('#fdate2').val().toString());
-                this.getDate('fromdate');
-              }
-              else if(this.dates.from==null)
-              {
-                this.dates.to=new Date($('#tdate2').val().toString());
-                this.getDate('todate');
-              }
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate();
             }
             else {this.selectHospital(true, this.hspitalCode)}
           });
@@ -855,16 +820,9 @@ export class MapComponent implements OnInit {
           }
           else if(this.dates.from!=null || this.dates.to!=null)
           {
-            if(this.dates.to==null)
-            {
-              this.dates.from=new Date($('#fdate2').val().toString());
-              this.getDate('fromdate');
-            }
-            else if(this.dates.from==null)
-            {
-              this.dates.to=new Date($('#tdate2').val().toString());
-              this.getDate('todate');
-            }
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate();
           }
           else{this.selectHospital(true, this.hspitalCode)}
         });
@@ -1269,16 +1227,9 @@ export class MapComponent implements OnInit {
             }
             else if(this.dates.from!=null || this.dates.to!=null)
             {
-              if(this.dates.to==null)
-              {
-                this.dates.from=new Date($('#fdate2').val().toString());
-                this.getDate('fromdate');
-              }
-              else if(this.dates.from==null)
-              {
-                this.dates.to=new Date($('#tdate2').val().toString());
-                this.getDate('todate');
-              }
+              this.dates.from=new Date($('#fdate2').val().toString());
+              this.dates.to=new Date($('#tdate2').val().toString());
+              this.getDate();
             }
             else {this.selectHospital(true,this.hosCodesInOrganization);}
           })
@@ -1298,6 +1249,7 @@ export class MapComponent implements OnInit {
   }
   selectSubOrginataions() {
     //var hcodesInSubOrganization=[];
+    console.log("this.hosCodesInOrganization",this.hosCodesInOrganization)
     if (this.subOrganizationIds.length > 0) {
       this.map.remove(this.featureService.ADMIN_ELSHARKYA);
         this.map.remove(this.featureService.HOSP_ELSHARKYA);
@@ -1341,16 +1293,9 @@ export class MapComponent implements OnInit {
           }
           else if(this.dates.from!=null || this.dates.to!=null)
           {
-            if(this.dates.to==null)
-            {
-              this.dates.from=new Date($('#fdate2').val().toString());
-              this.getDate('fromdate');
-            }
-            else if(this.dates.from==null)
-            {
-              this.dates.to=new Date($('#tdate2').val().toString());
-              this.getDate('todate');
-            }
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate();
           }
           else{this.selectHospital(true, this.hcodesInSubOrganization)}
         })
@@ -1397,16 +1342,9 @@ export class MapComponent implements OnInit {
         }
         else if(this.dates.from!=null || this.dates.to!=null)
         {
-          if(this.dates.to==null)
-          {
-            this.dates.from=new Date($('#fdate2').val().toString());
-            this.getDate('fromdate');
-          }
-          else if(this.dates.from==null)
-          {
-            this.dates.to=new Date($('#tdate2').val().toString());
-            this.getDate('todate');
-          }
+          this.dates.from=new Date($('#fdate2').val().toString());
+          this.dates.to=new Date($('#tdate2').val().toString());
+          this.getDate();
         }
         else{this.selectHospital(true, this.hosCodeInDeprement)}
       })
@@ -1455,16 +1393,9 @@ export class MapComponent implements OnInit {
           }
           else if(this.dates.from!=null || this.dates.to!=null)
           {
-            if(this.dates.to==null)
-            {
-              this.dates.from=new Date($('#fdate2').val().toString());
-              this.getDate('fromdate');
-            }
-            else if(this.dates.from==null)
-            {
-              this.dates.to=new Date($('#tdate2').val().toString());
-              this.getDate('todate');
-            }
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate();
           }
           else{this.selectHospital(true,this.hosCodeInBrand)}
         });
@@ -1512,16 +1443,9 @@ export class MapComponent implements OnInit {
           }
           else if(this.dates.from!=null || this.dates.to!=null)
           {
-            if(this.dates.to==null)
-            {
-              this.dates.from=new Date($('#fdate2').val().toString());
-              this.getDate('fromdate');
-            }
-            else if(this.dates.from==null)
-            {
-              this.dates.to=new Date($('#tdate2').val().toString());
-              this.getDate('todate');
-            }
+            this.dates.from=new Date($('#fdate2').val().toString());
+            this.dates.to=new Date($('#tdate2').val().toString());
+            this.getDate();
           }
           else{this.selectHospital(true,this.hosCodeInSupplier)}
         })
@@ -1699,15 +1623,11 @@ export class MapComponent implements OnInit {
   }
 
   onFocusOutEvent(event,arg){
-    if(event.target.value=="")
-    {
-      event.target.value=0;
-    }
-    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
-    this.map.remove(this.featureService.HOSP_ELSHARKYA);
-    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
-    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
     if(event.target!=undefined){
+      if(event.target.value=="")
+      {
+        event.target.value=0;
+      }
       if(arg=='from'){
         this.fromPrice=event.target.value;
         this.toPrice=Number($('#tprice2').val());
@@ -1727,6 +1647,12 @@ export class MapComponent implements OnInit {
         this.fromPrice=Number($('#fprice2').val());
       }
     }
+    
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA);
+    this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
+    this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
+    
     this.getStaticAPIService.GetPriceRange(this.fromPrice,this.toPrice).subscribe(hos=>{
       if(this.supplierIds.length>0 && this.supplierIds!=null){
         this.hosCodeInSupplier.forEach(hCode=>{
@@ -1835,22 +1761,25 @@ export class MapComponent implements OnInit {
       this.hosCodeForPrice=[];
     })
   }
-  getDate(arg)
+  getDate()//arg)
   {
+    console.log("getDate")
     this.map.remove(this.featureService.ADMIN_ELSHARKYA);
     this.map.remove(this.featureService.HOSP_ELSHARKYA);
     this.map.remove(this.featureService.ADMIN_ELSHARKYA_En);
     this.map.remove(this.featureService.HOSP_ELSHARKYA_En);
-    if(arg=='fromdate')
-    {
+   // if(arg=='fromdate')
+   // {
       this.dates.from=new Date($('#fdate2').val().toString());
-      this.dates.to=null;
-    }
-    else if(arg=='todate')
-    {
       this.dates.to=new Date($('#tdate2').val().toString());
-      this.dates.from=null;
-    }
+   
+      //   this.dates.to=null;
+   // }
+    //else if(arg=='todate')
+   // {
+     // this.dates.to=new Date($('#tdate2').val().toString());
+   //   this.dates.from=null;
+  //  }
     this.getStaticAPIService.GetDateRange(this.dates).subscribe(hos=>{
       if(this.supplierIds.length>0 && this.supplierIds!=null){
         this.hosCodeInSupplier.forEach(hCode=>{
