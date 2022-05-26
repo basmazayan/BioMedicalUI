@@ -33,9 +33,9 @@
 {
     max-height: 300px;
     overflow: auto; 
-    width: 180px;
+    /* width: 180px; */
     position: relative;
-    right: 30px;
+    /* right: 30px; */
 }
 .listStyleAr
 {

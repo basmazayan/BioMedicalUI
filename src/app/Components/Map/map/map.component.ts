@@ -24,6 +24,7 @@ import { environment } from 'src/environments/environment';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { HealthCareUnit } from 'src/app/Shared/Models/HealthCareUnit';
 import { dateVM } from 'src/app/Shared/Models/dateVM';
+import { type } from 'os';
 
 // import * as L from 'leaflet';
 // import 'esri-leaflet';
@@ -47,7 +48,7 @@ export class MapComponent implements OnInit {
   citycode: any[] = []
   ELSHARKYAArr: any[] = [];
   ADMIN_ELSHARKYAArr: any[] = [];
-  ctyCode: string[] = [];
+  ctyCode: string[]=[];
   hospitalCode: number[] = [];
   orginataions: any[] = [];
   subOrginataions: any = [];
@@ -430,6 +431,7 @@ export class MapComponent implements OnInit {
               ];
               this.ADMIN_ELSHARKYAArr.push(...arr);
             }
+            console.log("ADMIN_ELSHARKYAArr",this.ADMIN_ELSHARKYAArr)
 
             let queryOptionCity: any = {
               responseType: 'json',
@@ -639,10 +641,12 @@ export class MapComponent implements OnInit {
         this.model.id = this.ctyCode
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
           this.hospitalsInCity=re;
+          
             this.getStaticAPIService
               .GetOrginisations(this.model)
               .subscribe((res: any) => {
                 this.orginataions = res;
+                console.log("orgs",this.orginataions)
               });
 
         });
@@ -695,7 +699,10 @@ export class MapComponent implements OnInit {
           `CityCode in (${this.ctyCode})`
         );
         this.hospitalCode = [];
+        var ay7aga=["1"]
         this.model.id = this.ctyCode
+        console.log("this.ctyCode",this.ctyCode,"another",ay7aga)
+
         this.getStaticAPIService.getHospitalInCity(this.ctyCode).subscribe(re => {
           console.log("hospitalsInCity",re)
 
@@ -703,6 +710,8 @@ export class MapComponent implements OnInit {
               .GetOrginisations(this.model)
               .subscribe((res: any) => {
                 this.orginataions = res;
+          console.log("orginataions",this.orginataions)
+
               });
 
         });

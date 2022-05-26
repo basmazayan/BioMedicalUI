@@ -7,7 +7,7 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.healthDirectory' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of this.ELSHARKYAArr"
                             class="list-group-item">
                             <p-checkbox name="group1" [value]="item.code" [(ngModel)]="mohafazatCode"
@@ -22,10 +22,10 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.district' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of this.ADMIN_ELSHARKYAArr"
                             class="list-group-item">
-                            <p-checkbox name="group1" [value]="item.code" [(ngModel)]="ctyCode" (click)="selectCity()">
+                            <p-checkbox name="group1" [value]="item.cityCode" [(ngModel)]="ctyCode" (click)="selectCity()">
                             </p-checkbox>
                             {{translate.currentLang == "En" ?
                                 item.enName:item.arName}}
@@ -37,7 +37,7 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.organization' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of orginataions" class="list-group-item">
                             <p-checkbox name="group1" [value]="item.id" [(ngModel)]="organizationIds"
                                 (click)="selectOrginataions()"></p-checkbox>
@@ -51,7 +51,7 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.SubOrganization' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of subOrginataions" class="list-group-item">
                             <p-checkbox name="group1" [value]="item.id" [(ngModel)]="subOrganizationIds"
                                 (click)="selectSubOrginataions()"></p-checkbox>
@@ -65,7 +65,7 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.Department' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of DepartmantsData" class="list-group-item">
                             <p-checkbox name="group1" [value]="item.departmentID" [(ngModel)]="departmentIds"
                                 (click)="selectDepartmants()"></p-checkbox>
@@ -79,7 +79,7 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.Manufacturer' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of brands" class="list-group-item">
                             <p-checkbox name="group1" [value]="item.id" [(ngModel)]="hosCodesInBrand"
                                 (click)="selectBrand()"></p-checkbox>
@@ -93,7 +93,7 @@
                     <mat-expansion-panel-header style="background-color:menu; height:30px;">
                         {{'equipment.Supplier' |translate}}
                     </mat-expansion-panel-header>
-                    <div [ngClass]="translate.currentLang == 'en' ? 'listStyle': 'listStyleAr'">
+                    <div [ngClass]="translate.currentLang == 'En' ? 'listStyle': 'listStyleAr'">
                         <mat-nav-list class="mat-nav-list" *ngFor="let item of supplierNames" class="list-group-item">
                             <p-checkbox name="group1" [value]="item.id" [(ngModel)]="supplierIds"
                                 (click)="selectSupplier()"></p-checkbox>
