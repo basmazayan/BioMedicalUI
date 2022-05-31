@@ -101,7 +101,7 @@
                             pTooltip="Please,Enter A healthCareUnit" tooltipPosition="bottom">
                             <option selected>--select--</option>
                             <option *ngFor="let h of healthUnits" [value]="h.id">
-                                {{translate.currentLang == "En" ? h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                {{translate.currentLang == "En" ? h.name:h.nameAr}}
                             </option>
                         </select>
                         <div *ngIf="user.roleName == 'Hospital'">
@@ -120,7 +120,7 @@
                             [(ngModel)]="user.healthdirId" (change)="loadDistricts(user.healthdirId)">
                             <option>{{'healthCareUnit.directory'|translate}}</option>
                             <option *ngFor="let h of healthDirectories" [value]="h.id">
-                                {{translate.currentLang == "En" ? h.healthDirectoryName:h.hhealthDirectoryNameAr}}
+                                {{translate.currentLang == "En" ? h.name:h.nameAr}}
                             </option>
                         </select>
                         <!-- <div
@@ -138,7 +138,7 @@
                             [(ngModel)]="user.healthDistrictId">
                             <option>{{'healthCareUnit.district'|translate}}</option>
                             <option *ngFor="let h of healthDistricts" [value]="h.id">
-                                {{translate.currentLang == "En" ? h.healthDistrictName:h.healthDistrictNameAr}}
+                                {{translate.currentLang == "En" ? h.name:h.nameAr}}
                             </option>
                         </select>
 

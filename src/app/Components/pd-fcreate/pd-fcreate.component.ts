@@ -85,9 +85,9 @@ export class PdFCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sharedService.getAllunits().subscribe(data => { this.healthCareUnitsList = data });
+    this.sharedService.getAllunits().subscribe(data => { this.healthCareUnitsList = data});
     this.sharedService.getAllmanufacturer().subscribe(data => { this.manufacturerList = data });
-    this.sharedService.getAllSuppliers().subscribe(data => { this.suppliersList = data });
+    this.sharedService.getAllSuppliers().subscribe(data => { this.suppliersList = data});
     this.sharedService.getAllHealthDirectories().subscribe(data => { this.healthDirectoriesList = data });
     this.sharedService.getAllHealthDistrict().subscribe(data => { this.districtsList = data });
     this.getAll();
@@ -182,6 +182,7 @@ export class PdFCreateComponent implements OnInit {
   }
   fillDistrict(name: string) {
     this.sharedService.getDirectoryIdByname(name).subscribe(data => {
+      console.log("data",data)
       this.sharedService.getAllHealthDistricts(data).subscribe(data => {
         this.HealthDistrictsList = data
       });
@@ -532,6 +533,7 @@ export class PdFCreateComponent implements OnInit {
     });
   }
   filterByBrand(elem) {
+    console.log("filterByBrand",elem)
     this.filteredObj.brandName = elem;
     this.equipmentService.FilterData(this.filteredObj).subscribe(data => {
       this.equipments = data;
@@ -637,6 +639,7 @@ export class PdFCreateComponent implements OnInit {
   }
 
   selectElement(elem) {
+    console.log("selectElement")
     this.selectedElement = elem;
     if (elem != "") {
         document.getElementById('clcgroupingbtn').style.display = "block";

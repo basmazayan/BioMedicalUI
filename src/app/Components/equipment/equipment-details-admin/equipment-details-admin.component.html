@@ -134,7 +134,7 @@
                                     disabled>
                                     <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
                                         {{translate.currentLang == "En" ?
-                                        h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                        h.name:h.nameAr}}
                                     </option>
                                 </select>
                             </div>
@@ -146,7 +146,7 @@
                                     [(ngModel)]="equipmentObj.departmentId" disabled>
                                     <option selected disabled>--select--</option>
                                     <option *ngFor="let d of departmentsList" [value]="d.id">
-                                        {{translate.currentLang == "En" ? d.departmentName:d.departmentNameAr}}
+                                        {{translate.currentLang == "En" ? d.name:d.nameAr}}
                                     </option>
                                 </select>
                             </div>

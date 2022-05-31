@@ -182,7 +182,7 @@ export class EquipmentDetailsComponent implements OnInit {
     console.log("installationDate", this.InstallationDate);
     console.log("purchaseDate", this.purchaseDat);
     this.sharedService.getAllSuppliers().subscribe(data => { this.suppliersList = data });
-    this.sharedService.getAllunits().subscribe(data => { this.healthCareUnitsList = data });
+    this.sharedService.getAllunits().subscribe(data => { this.healthCareUnitsList = data,console.log("ff",this.healthCareUnitsList) });
     this.sharedService.getAllDepartments().subscribe(data => { this.departmentsList = data });
     this.sharedService.getAllstatuses().subscribe(data => { this.statusList = data });
     this.equipmentService.getEquipmentById(id).subscribe(data => { this.equipmentObj = data },

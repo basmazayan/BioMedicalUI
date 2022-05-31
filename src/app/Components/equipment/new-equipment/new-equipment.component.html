@@ -192,7 +192,7 @@
                                         <option selected disabled>--select--</option>
                                         <option *ngFor="let h of healthCareUnitsList" [value]="h.id">
                                             {{translate.currentLang == "En" ?
-                                            h.healthCareUnitName:h.healthCareUnitNameAr}}
+                                            h.name:h.nameAr}}
                                         </option>
                                     </select>
                                     <div

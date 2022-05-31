@@ -223,7 +223,7 @@
                                     <label for="category">{{'equipment.Category'| translate}}</label>
                                     <select class="form-control" id="category" name="category" #category="ngModel"
                                         [(ngModel)]="masterEquipmentObj.categoryId"
-                                        (change)="fillSubCategory(masterEquipment.equipmentCategoryId)" 
+                                        (change)="fillSubCategory(masterEquipmentObj.categoryId)" 
                                         pTooltip="Please,Select Category" tooltipPosition="bottom">
                                         <option selected value="0">--select--</option>
                                         <option *ngFor="let cat of categoriesList" [value]="cat.id">

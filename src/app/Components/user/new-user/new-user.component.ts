@@ -95,31 +95,22 @@ export class NewUserComponent implements OnInit {
   openNew() {
 
 
-    this.sharedService.getAllunits().subscribe(data => { this.healthUnits = data });
-    this.subOrganizationService.getAllSubOrganization().subscribe(data => { this.subOrganizationList = data });
-    this.organizationService.getAllOrganization().subscribe(data => { this.organizationList = data });
-    this.sharedService.getAllHealthDistrict().subscribe(data => { this.healthDistricts = data });
-    this.sharedService.getAllHealthDirectories().subscribe(data => { this.healthDirectories = data });
-    this.sharedService.getAllSuppliers().subscribe(data=>{this.suppliersList=data,console.log(this.suppliersList)})
+    this.sharedService.getAllunits().subscribe(data => { this.healthUnits = data});
+    this.subOrganizationService.getAllSubOrganization().subscribe(data => { this.subOrganizationList = data});
+    this.organizationService.getAllOrganization().subscribe(data => { this.organizationList = data});
+    this.sharedService.getAllHealthDistrict().subscribe(data => { this.healthDistricts = data});
+    this.sharedService.getAllHealthDirectories().subscribe(data => { this.healthDirectories = data});
+    this.sharedService.getAllSuppliers().subscribe(data=>{this.suppliersList=data})
     this.userDialog = true
     this.submitted = false;
-    // this.userService.getUnRegisteredUsers().subscribe(data => {
-    //   console.log(data);
-    //   this.unAssignedUsers = data, console.log(data);
-    // });
-
     this.userService.getRoles().subscribe(data => {
-      console.log("roleset", data);
-      this.rolesList = data, console.log("roles", data)
+      this.rolesList = data
 
       if (this.currentUser.roleName == 'Admin') {
         this.rolesList = this.rolesList
 
       }
       else if (this.currentUser.roleName == 'Governorate') {
-        // this.dirctoryRoleList = this.rolesList.splice(1, 1, 5)
-        // this.rolesList = this.dirctoryRoleList
-        // console.log(this.dirctoryRoleList, "dir")
         this.rolesList.forEach(element => {
           if (element.name == 'City') {
 
@@ -129,9 +120,6 @@ export class NewUserComponent implements OnInit {
         })
       }
       else if (this.currentUser.roleName == 'Hospital') {
-        // this.dirctoryRoleList = this.rolesList.splice(3, 1, 5)
-        // this.rolesList = this.dirctoryRoleList
-        // console.log(this.dirctoryRoleList, "hospital")
         this.rolesList.forEach(element => {
           if (element.name == 'Technician') {
             this.TechnicianRoleList.push(element)
@@ -140,9 +128,6 @@ export class NewUserComponent implements OnInit {
         })
       }
       else if (this.currentUser.roleName == 'City') {
-        // this.dirctoryRoleList = this.rolesList.splice(0, 1, 5)
-        // this.rolesList = this.dirctoryRoleList
-        // console.log(this.dirctoryRoleList, "district")
         this.rolesList.forEach(element => {
           if (element.name == 'Hospital') {
             this.HospitalRoleList.push(element)
@@ -161,14 +146,12 @@ export class NewUserComponent implements OnInit {
     this.router.navigate(['/home/users'])
   }
   saveUser() {
-    console.log("inside save");
     this.submitted = true;
     this.addUser();
 
   }
   addUser() {
-    console.log("user", this.user)
-    this.userService.register(this.user).subscribe(data => { console.log(data), this.hideDialog() },
+    this.userService.register(this.user).subscribe(data => {this.hideDialog(),console.log(data) },
     error => {
       this.errorDialog = true,
         this.error = error.error.message;
@@ -177,8 +160,7 @@ export class NewUserComponent implements OnInit {
   }
   loadDistricts(DirectoryId: number) {
     this.sharedService.getAllHealthDistricts(DirectoryId).subscribe(data => {
-      this.healthDistricts = data,
-      console.log(DirectoryId)
+      this.healthDistricts = data
     });
   }
 

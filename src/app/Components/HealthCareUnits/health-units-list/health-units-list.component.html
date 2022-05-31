@@ -280,7 +280,7 @@
                                 <label for="organization">{{'healthCareUnit.organization'|translate}}</label>
                                 <select class="form-control" id="organization" pTooltip="select A organization Name"
                                     tooltipPosition="bottom" name="organization" #organization="ngModel"
-                                    [(ngModel)]="healthUnitobj.organizationId"
+                                    [(ngModel)]="healthUnitobj.id"
                                     [class.is-invalid]="organization.touched && organization.errors || editUnitForm.submitted"
                                     [class.is-valid]=" organization.valid && editUnitForm.submitted" required>
                                     <option>{{'healthUnit.name'|translate}}</option>

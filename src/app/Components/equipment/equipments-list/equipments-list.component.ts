@@ -140,9 +140,7 @@ export class EquipmentsListComponent implements OnInit {
   {
     this.count=data
   })
-    this.equipmentService.getAllwithpaging(this.page).subscribe(data=>{
-      this.equipments=data;      
-    })
+    this.getAllWithPaging(this.page)
     this.equipmentObj = {
       id: 0,
       equipmentDescription: '',
@@ -352,6 +350,95 @@ onItemDeSelect(item){
             });
         }
   }
+  getAllWithPaging(page)
+  {
+    this.equipmentService.getAllwithpaging(page).subscribe(data=>{
+      if (this.currentUser.roleName == 'Admin') {
+        this.equipmentService.getAllEquipments().
+          subscribe(data => { this.equipments = data})
+      }
+  
+      if (this.currentUser.roleName == 'Governorate') {
+        this.equipmentService.getAllEquipments().
+          subscribe(data => {
+            this.equipments = data,
+  
+  
+              this.equipments.forEach(element => {
+                if (element.healthDirectoryId == this.currentUser.healthdirId) {
+  
+                  this.directories.push(element)
+                  this.equipments = this.directories
+                }
+              })
+          });
+      }
+  
+      if (this.currentUser.roleName == 'Hospital') {
+        this.equipmentService.getAllEquipments().
+          subscribe(data => {
+            this.equipments = data,
+              this.equipments.forEach(element => {
+                if (element.healthCareUnitId == this.currentUser.healthCareUnitId) {
+                  this.hospitals.push(element)
+                }
+                if (this.currentUser.roleName == 'Hospital') {
+                  this.equipments = this.hospitals
+                }
+              })
+          });
+      }
+  
+      if (this.currentUser.roleName == 'City') {
+        this.equipmentService.getAllEquipments().
+          subscribe(data => {
+            this.equipments = data,
+              this.equipments.forEach(element => {
+                if (element.healthDistrictId == this.currentUser.healthDistrictId) {
+                  this.districts.push(element)
+                }
+                if (this.currentUser.roleName == 'City') {
+                  this.equipments = this.districts
+                }
+              })
+          });
+      }
+  
+      if (this.currentUser.roleName == 'Technician') {
+      
+        this.equipmentService.getAllEquipments().
+          subscribe(data => {
+            this.equipments = data,
+              this.equipments.forEach(element => {
+                element.employeeIDs.forEach(usrElement => {
+                  if (usrElement == this.currentUser.id) {                
+                    this.techniciens.push(element)
+                  }
+                 
+                })              
+              })
+              if (this.currentUser.roleName == 'Technician') {
+                this.equipments = this.techniciens
+              }
+          });
+        }
+  
+          if (this.currentUser.roleName == 'Organization') {
+            this.equipmentService.getAllEquipments().
+              subscribe(data => {
+                this.equipments = data,
+                  this.equipments.forEach(element => {
+                    if (element.organizationId == this.currentUser.organizationId) {
+                      this.organizations.push(element)
+                    }
+                    if (this.currentUser.roleName == 'Organization') {
+                      this.equipments = this.organizations
+                    }
+                  })
+              });
+          }      
+    })
+  }
   openNew(eq) {
     this.InstallationDate = this.datePipe.transform(eq.installationDate, 'yyyy-MM-dd');
     this.purchaseDat = this.datePipe.transform(eq.purchaseDate, 'yyyy-MM-dd');
@@ -458,7 +545,7 @@ onItemDeSelect(item){
 
     this.equipmentService.deleteEquipment(equipmentId).subscribe(
       data => {
-    this.getAll();
+        this.getAllWithPaging(this.page);
       });
 
   }

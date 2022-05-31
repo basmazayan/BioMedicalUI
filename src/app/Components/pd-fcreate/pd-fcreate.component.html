@@ -29,13 +29,13 @@
                     <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle1,'black': !toggle1}"
                         role="button">{{'equipmentElements.Brand' |translate}}</a>
                     <p-dropdown *ngIf="translate.currentLang==='En'" [options]="manufacturerList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerName"
-                        optionValue="manufacturerName" [showClear]="true" #equipBrandName
+                        placeholder="{{'search.Search'|translate}}" optionLabel="name"
+                        optionValue="name" [showClear]="true" #equipBrandName
                         (onChange)="filterByBrand(equipBrandName.value)" styleClass="ui-column-filter"
                         class="filterDropdwon"></p-dropdown>
                     <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="manufacturerList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="manufacturerNameAr"
-                        optionValue="manufacturerNameAr" [showClear]="true" #equipBrandNameAr
+                        placeholder="{{'search.Search'|translate}}" optionLabel="nameAr"
+                        optionValue="nameAr" [showClear]="true" #equipBrandNameAr
                         (onChange)="filterByBrand(equipBrandNameAr.value)" styleClass="ui-column-filter">
                     </p-dropdown>
                 </div>
@@ -43,13 +43,13 @@
                     <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle2,'black': !toggle2}"
                         role="button">{{'equipmentElements.Governorate'| translate}}</a>
                     <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthDirectoriesList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryName"
-                        optionValue="healthDirectoryName" [showClear]="true" #equipBrandGov
+                        placeholder="{{'search.Search'|translate}}" optionLabel="name"
+                        optionValue="name" [showClear]="true" #equipBrandGov
                         (onChange)="filterByGov(equipBrandGov.value);fillDistrict($event.value)"
                         styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
                     <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthDirectoriesList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDirectoryNameAr"
-                        optionValue="healthDirectoryNameAr" [showClear]="true" #equipBrandGovar
+                        placeholder="{{'search.Search'|translate}}" optionLabel="nameAr"
+                        optionValue="nameAr" [showClear]="true" #equipBrandGovar
                         (onChange)="filterByGov(equipBrandGovar.value);fillDistrict($event.value)"
                         styleClass="ui-column-filter">
                     </p-dropdown>
@@ -58,13 +58,13 @@
                     <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle3,'black': !toggle3}"
                         role="button">{{'equipmentElements.City'|translate}}</a>
                     <p-dropdown *ngIf="translate.currentLang==='En'" [options]="HealthDistrictsList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictName"
-                        optionValue="healthDistrictName" [showClear]="true" #equipCity
+                        placeholder="{{'search.Search'|translate}}" optionLabel="name"
+                        optionValue="name" [showClear]="true" #equipCity
                         (onChange)="filterByCity(equipCity.value); fillHospital($event.value)"
                         styleClass="ui-column-filter" class="filterDropdwon"></p-dropdown>
                     <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="HealthDistrictsList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="healthDistrictNameAr"
-                        optionValue="healthDistrictNameAr" [showClear]="true" #equipCityAr
+                        placeholder="{{'search.Search'|translate}}" optionLabel="nameAr"
+                        optionValue="nameAr" [showClear]="true" #equipCityAr
                         (onChange)="filterByCity(equipCityAr.value); fillHospital($event.value)"
                         styleClass="ui-column-filter">
                     </p-dropdown>
@@ -73,13 +73,13 @@
                     <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle4,'black': !toggle4}"
                         role="button">{{'equipmentElements.Hospital'|translate}}</a>
                     <p-dropdown *ngIf="translate.currentLang==='En'" [options]="healthCareUnits"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitName"
-                        optionValue="healthCareUnitName" [showClear]="true" #equiHos
+                        placeholder="{{'search.Search'|translate}}" optionLabel="name"
+                        optionValue="name" [showClear]="true" #equiHos
                         (onChange)="filterByHos(equiHos.value)" styleClass="ui-column-filter" class="filterDropdwon">
                     </p-dropdown>
                     <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="healthCareUnits"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="healthCareUnitNameAr"
-                        optionValue="healthCareUnitNameAr" [showClear]="true" #equipHosAr
+                        placeholder="{{'search.Search'|translate}}" optionLabel="nameAr"
+                        optionValue="nameAr" [showClear]="true" #equipHosAr
                         (onChange)="filterByHos(equipHosAr.value)" styleClass="ui-column-filter">
                     </p-dropdown>
                 </div>
@@ -87,13 +87,13 @@
                     <i class="pi pi-filter"></i>&nbsp;<a [ngClass]="{'blue' : toggle4,'black': !toggle4}"
                         role="button">{{'equipmentElements.Supplier'|translate}}</a>
                     <p-dropdown *ngIf="translate.currentLang==='En'" [options]="suppliersList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="supplierName"
-                        optionValue="supplierName" [showClear]="true" #equiSupplier
+                        placeholder="{{'search.Search'|translate}}" optionLabel="name"
+                        optionValue="name" [showClear]="true" #equiSupplier
                         (onChange)="filterBySupplier(equiSupplier.value)" styleClass="ui-column-filter"
                         class="filterDropdwon"></p-dropdown>
                     <p-dropdown *ngIf="translate.currentLang==='Ar'" [options]="suppliersList"
-                        placeholder="{{'search.Search'|translate}}" optionLabel="supplierNameAr"
-                        optionValue="supplierNameAr" [showClear]="true" #equiSupplierAr
+                        placeholder="{{'search.Search'|translate}}" optionLabel="nameAr"
+                        optionValue="nameAr" [showClear]="true" #equiSupplierAr
                         (onChange)="filterBySupplier(equiSupplierAr.value)" styleClass="ui-column-filter">
                     </p-dropdown>
                 </div>
